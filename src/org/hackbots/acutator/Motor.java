@@ -7,16 +7,24 @@ import com.ctre.CANTalon;
 public class Motor extends MotorBase
 {
 	private CANTalon talon;//The talon that controls the motor
-	private RotationalDirection direction;//The direction the motor is spinning
 
+	/**
+	 * Creates a motor
+	 * @param talon
+	 */
 	public Motor(CANTalon talon)
 	{
 		this.talon = talon;
 		direction = RotationalDirection.NONE;
 	}
-	
+		
 	public void setSpeed(double speed)
 	{
+		if(isReversed)
+		{
+			speed = -speed;
+		}
+				
 		if(speed < 0)
 		{
 			direction = RotationalDirection.COUNTERCLOCKWISE;
@@ -43,9 +51,8 @@ public class Motor extends MotorBase
 		return direction;
 	}
 
-
 	public void setDirection(RotationalDirection direction)
 	{
 		this.direction = direction;
-	}
+	}		
 }
