@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team3414.robot;
 
+import org.hackbots.acutator.DoubleMotor;
 import org.hackbots.acutator.Motor;
 
 import com.ctre.CANTalon;
@@ -23,6 +24,9 @@ public class Robot extends IterativeRobot
 	private Motor rightMotorTwo;
 	private Motor leftMotorOne;
 	
+	private DoubleMotor leftDoubleMotor;
+	private DoubleMotor rightDoubleMotor;
+	
 	@Override
 	public void robotInit() 
 	{
@@ -30,15 +34,18 @@ public class Robot extends IterativeRobot
 		leftJoystick = new Joystick(1);
 		
 		rightTalonOne = new CANTalon(1);
-		leftTalonTwo = new CANTalon(2);
-		rightTalonTwo = new CANTalon(3);
+		leftTalonTwo = new CANTalon(3);
+		rightTalonTwo = new CANTalon(2);
 		leftTalonOne = new CANTalon(4);
 		
 		rightMotorOne = new Motor(rightTalonOne);
 		rightMotorTwo = new Motor(rightTalonTwo);
 		
 		leftMotorTwo = new Motor(leftTalonTwo);
-		leftMotorOne = new Motor(leftTalonOne);			
+		leftMotorOne = new Motor(leftTalonOne);		
+		
+		leftDoubleMotor = new DoubleMotor(leftMotorOne, leftMotorTwo);
+		rightDoubleMotor = new DoubleMotor(rightMotorOne, rightMotorTwo);
 	}
 
 	@Override
@@ -51,10 +58,13 @@ public class Robot extends IterativeRobot
 	public void teleopPeriodic() 
 	{
 		System.out.println("Running!");
-		rightMotorOne.setSpeed(rightJoystick.getY());
-		//rightMotorTwo.setSpeed(rightJoystick.getY());
-		//leftMotorTwo.setSpeed(leftJoystick.getY());
-		//leftMotorOne.setSpeed(leftJoystick.getY());
+		/*rightMotorOne.setSpeed(rightJoystick.getY());
+		rightMotorTwo.setSpeed(rightJoystick.getY());
+		leftMotorTwo.setSpeed(leftJoystick.getY());
+		leftMotorOne.setSpeed(leftJoystick.getY());*/
+		
+		rightDoubleMotor.setSpeed(rightJoystick.getY());
+		leftDoubleMotor.setSpeed(leftJoystick.getY());
 	}
 	
 	@Override
