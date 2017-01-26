@@ -2,6 +2,7 @@
 package org.usfirst.frc.team3414.robot;
 
 import org.hackbots.acutator.DoubleMotor;
+import org.hackbots.acutator.Drivetrain;
 import org.hackbots.acutator.Motor;
 
 import com.ctre.CANTalon;
@@ -27,6 +28,8 @@ public class Robot extends IterativeRobot
 	private DoubleMotor leftDoubleMotor;
 	private DoubleMotor rightDoubleMotor;
 	
+	private Drivetrain drivetrain;
+	
 	@Override
 	public void robotInit() 
 	{
@@ -46,6 +49,8 @@ public class Robot extends IterativeRobot
 		
 		leftDoubleMotor = new DoubleMotor(leftMotorOne, leftMotorTwo);
 		rightDoubleMotor = new DoubleMotor(rightMotorOne, rightMotorTwo);
+		
+		drivetrain = new Drivetrain(rightDoubleMotor, leftDoubleMotor);
 	}
 
 	@Override
@@ -58,13 +63,16 @@ public class Robot extends IterativeRobot
 	public void teleopPeriodic() 
 	{
 		System.out.println("Running!");
+		
 		/*rightMotorOne.setSpeed(rightJoystick.getY());
 		rightMotorTwo.setSpeed(rightJoystick.getY());
 		leftMotorTwo.setSpeed(leftJoystick.getY());
 		leftMotorOne.setSpeed(leftJoystick.getY());*/
 		
-		rightDoubleMotor.setSpeed(rightJoystick.getY());
-		leftDoubleMotor.setSpeed(leftJoystick.getY());
+		/*rightDoubleMotor.setSpeed(rightJoystick.getY());
+		leftDoubleMotor.setSpeed(leftJoystick.getY());*/
+		
+		drivetrain.setSpeed(leftJoystick.getY(), rightJoystick.getY());
 	}
 	
 	@Override
