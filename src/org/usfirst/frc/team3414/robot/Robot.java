@@ -9,21 +9,32 @@ import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.GamepadBase;
+import org.hackbots.sensors.DualShockTwoController;
+import org.hackbots.sensors.IGamepad;
 
 public class Robot extends IterativeRobot
 {
 	private Joystick rightJoystick;
 	private Joystick leftJoystick;
 	
+	private IGamepad gamepad;
+	
 	private CANTalon rightTalonOne;
 	private CANTalon leftTalonTwo;
 	private CANTalon rightTalonTwo;
 	private CANTalon leftTalonOne;
+	private CANTalon pickupTalon;
+	private CANTalon shootTalon;
+	private CANTalon climbTalon;
 	
 	private Motor rightMotorOne;
 	private Motor leftMotorTwo;
 	private Motor rightMotorTwo;
 	private Motor leftMotorOne;
+	private Motor pickupMotor;
+	private Motor shootMotor;
+	private Motor climbMotor;
 	
 	private DoubleMotor leftDoubleMotor;
 	private DoubleMotor rightDoubleMotor;
@@ -36,10 +47,15 @@ public class Robot extends IterativeRobot
 		rightJoystick = new Joystick(0);
 		leftJoystick = new Joystick(1);
 		
+		gamepad = new DualShockTwoController(2);
+		
 		rightTalonOne = new CANTalon(1);
 		leftTalonTwo = new CANTalon(3);
 		rightTalonTwo = new CANTalon(2);
 		leftTalonOne = new CANTalon(4);
+		pickupTalon = new CANTalon(5);
+		shootTalon = new CANTalon(6);
+		climbTalon = new CANTalon(7);
 		
 		rightMotorOne = new Motor(rightTalonOne);
 		rightMotorTwo = new Motor(rightTalonTwo);
