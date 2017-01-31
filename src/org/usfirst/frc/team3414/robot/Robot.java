@@ -12,14 +12,14 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GamepadBase;
 import org.hackbots.sensors.DualShockTwoController;
 import org.hackbots.sensors.IGamepad;
+import org.hackbots.util.ButtonGamepad;
 
-public class Robot extends IterativeRobot
-{
+public class Robot extends IterativeRobot {
 	private Joystick rightJoystick;
 	private Joystick leftJoystick;
-	
+
 	private IGamepad gamepad;
-	
+
 	private CANTalon rightTalonOne;
 	private CANTalon leftTalonTwo;
 	private CANTalon rightTalonTwo;
@@ -27,7 +27,7 @@ public class Robot extends IterativeRobot
 	private CANTalon pickupTalon;
 	private CANTalon shootTalon;
 	private CANTalon climbTalon;
-	
+
 	private Motor rightMotorOne;
 	private Motor leftMotorTwo;
 	private Motor rightMotorTwo;
@@ -35,20 +35,19 @@ public class Robot extends IterativeRobot
 	private Motor pickupMotor;
 	private Motor shootMotor;
 	private Motor climbMotor;
-	
+
 	private DoubleMotor leftDoubleMotor;
 	private DoubleMotor rightDoubleMotor;
-	
+
 	private Drivetrain drivetrain;
-	
+
 	@Override
-	public void robotInit() 
-	{
+	public void robotInit() {
 		rightJoystick = new Joystick(0);
 		leftJoystick = new Joystick(1);
-		
+
 		gamepad = new DualShockTwoController(2);
-		
+
 		rightTalonOne = new CANTalon(1);
 		leftTalonTwo = new CANTalon(3);
 		rightTalonTwo = new CANTalon(2);
@@ -56,50 +55,62 @@ public class Robot extends IterativeRobot
 		pickupTalon = new CANTalon(5);
 		shootTalon = new CANTalon(6);
 		climbTalon = new CANTalon(7);
-		
+
 		rightMotorOne = new Motor(rightTalonOne);
 		rightMotorTwo = new Motor(rightTalonTwo);
-		
+
 		leftMotorTwo = new Motor(leftTalonTwo);
-		leftMotorOne = new Motor(leftTalonOne);		
-		
+		leftMotorOne = new Motor(leftTalonOne);
+
 		leftDoubleMotor = new DoubleMotor(leftMotorOne, leftMotorTwo);
 		rightDoubleMotor = new DoubleMotor(rightMotorOne, rightMotorTwo);
-		
+
 		drivetrain = new Drivetrain(rightDoubleMotor, leftDoubleMotor);
+
+		if (gamepad.getButtonValue(ButtonGamepad.ONE) == true) {
+			pickupMotor.setSpeed(-0.5);
+		}
+
+		if (gamepad.getButtonValue(ButtonGamepad.TWO) == true) {
+			shootMotor.setSpeed(0.8);
+		}
+
+		if (gamepad.getButtonValue(ButtonGamepad.THREE) == true) {
+			climbMotor.setSpeed(0.5);
+		}
 	}
 
 	@Override
-	public void teleopInit() 
-	{
+	public void teleopInit() {
 
 	}
 
 	@Override
-	public void teleopPeriodic() 
-	{
+	public void teleopPeriodic() {
 		System.out.println("Running!");
-		
-		/*rightMotorOne.setSpeed(rightJoystick.getY());
-		rightMotorTwo.setSpeed(rightJoystick.getY());
-		leftMotorTwo.setSpeed(leftJoystick.getY());
-		leftMotorOne.setSpeed(leftJoystick.getY());*/
-		
-		/*rightDoubleMotor.setSpeed(rightJoystick.getY());
-		leftDoubleMotor.setSpeed(leftJoystick.getY());*/
-		
+
+		/*
+		 * rightMotorOne.setSpeed(rightJoystick.getY());
+		 * rightMotorTwo.setSpeed(rightJoystick.getY());
+		 * leftMotorTwo.setSpeed(leftJoystick.getY());
+		 * leftMotorOne.setSpeed(leftJoystick.getY());
+		 */
+
+		/*
+		 * rightDoubleMotor.setSpeed(rightJoystick.getY());
+		 * leftDoubleMotor.setSpeed(leftJoystick.getY());
+		 */
+
 		drivetrain.setSpeed(leftJoystick.getY(), rightJoystick.getY());
 	}
-	
+
 	@Override
-	public void autonomousInit()
-	{
-		
+	public void autonomousInit() {
+
 	}
-	
+
 	@Override
-	public void autonomousPeriodic()
-	{
-		
+	public void autonomousPeriodic() {
+
 	}
 }
