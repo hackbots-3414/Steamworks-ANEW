@@ -39,7 +39,6 @@ public class JuniorTeleop implements ITeleop
 
 	private Drivetrain drivetrain;
 	
-	
 	public void init() 
 	{
 		rightJoystick = new Joystick(0);
@@ -52,9 +51,9 @@ public class JuniorTeleop implements ITeleop
 		rightTalonTwo = new CANTalon(2);
 		leftTalonOne = new CANTalon(4);
 		pickupTalon = new CANTalon(5);
-		shootTalon = new CANTalon(6);
-		climbTalon = new CANTalon(7);
-
+		//shootTalon = new CANTalon(6);
+		//climbTalon = new CANTalon(7);
+		
 		rightMotorOne = new Motor(rightTalonOne);
 		rightMotorTwo = new Motor(rightTalonTwo);
 
@@ -67,20 +66,24 @@ public class JuniorTeleop implements ITeleop
 		drivetrain = new Drivetrain(rightDoubleMotor, leftDoubleMotor);
 		
 		pickupMotor = new Motor(pickupTalon);
-		shootMotor = new Motor(shootTalon);
-		climbMotor = new Motor(climbTalon);
+		//shootMotor = new Motor(shootTalon);
+		//climbMotor = new Motor(climbTalon);
 	}
 	
 	public void update()
 	{
 		drivetrain.setSpeed(leftJoystick.getY(), rightJoystick.getY());
 		
-		if (gamepad.getButtonValue(ButtonGamepad.ONE) == true)
+		if(gamepad.getButtonValue(ButtonGamepad.ONE))
 		{
 			pickupMotor.setSpeed(-0.5);
 		}
+		else
+		{
+			pickupMotor.stop();
+		}
 
-		if (gamepad.getButtonValue(ButtonGamepad.TWO) == true)
+		/*if (gamepad.getButtonValue(ButtonGamepad.TWO) == true)
 		{
 			shootMotor.setSpeed(0.8);
 		}
@@ -88,6 +91,6 @@ public class JuniorTeleop implements ITeleop
 		if (gamepad.getButtonValue(ButtonGamepad.THREE) == true) 
 		{
 			climbMotor.setSpeed(0.5);
-		}
+		}*/
 	}
 }
