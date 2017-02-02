@@ -25,6 +25,7 @@ public class JuniorTeleop implements ITeleop
 	private CANTalon pickupTalon;
 	private CANTalon shootTalon;
 	private CANTalon climbTalon;
+	private CANTalon hopperTalon;
 
 	private Motor rightMotorOne;
 	private Motor leftMotorTwo;
@@ -33,6 +34,7 @@ public class JuniorTeleop implements ITeleop
 	private Motor pickupMotor;
 	private Motor shootMotor;
 	private Motor climbMotor;
+	private Moter hopperMotor;
 
 	private DoubleMotor leftDoubleMotor;
 	private DoubleMotor rightDoubleMotor;
@@ -68,6 +70,7 @@ public class JuniorTeleop implements ITeleop
 		pickupMotor = new Motor(pickupTalon);
 		//shootMotor = new Motor(shootTalon);
 		//climbMotor = new Motor(climbTalon);
+		//hopperMotor = new Motor(hopperTalon)
 	}
 	
 	public void update()
@@ -83,14 +86,31 @@ public class JuniorTeleop implements ITeleop
 			pickupMotor.stop();
 		}
 
-		/*if (gamepad.getButtonValue(ButtonGamepad.TWO) == true)
-		{
-			shootMotor.setSpeed(0.8);
-		}
+// 		if(gamepad.getButtonValue(ButtonGamepad.TWO))
+// 		{
+// 			shootMotor.setSpeed(-0.5);
+// 		}
+// 		else
+// 		{
+// 			shootMotor.stop();
+// 		}
 
-		if (gamepad.getButtonValue(ButtonGamepad.THREE) == true) 
-		{
-			climbMotor.setSpeed(0.5);
-		}*/
+// 		if(gamepad.getButtonValue(ButtonGamepad.THREE))
+// 		{
+// 			climbMotor.setSpeed(-0.5);
+// 		}
+// 		else
+// 		{
+// 			climbMotor.stop();
+// 		}
+
+// 		if(gamepad.getButtonValue(ButtonGamepad.FOUR))
+// 		{
+// 			hopperMotor.setSpeed(-0.5);
+// 		}
+// 		else
+// 		{
+// 			hopperMotor.stop();
+// 		}
 	}
 }
