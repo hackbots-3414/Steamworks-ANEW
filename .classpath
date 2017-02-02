@@ -12,6 +12,6 @@
 	<classpathentry kind="var" path="wpilib.sources"/>
 	<classpathentry kind="var" path="networktables.sources"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRLib.jar"/>
-	<classpathentry kind="var" path="navx-mxp"/>
+	<classpathentry kind="var" path="NAVX"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
