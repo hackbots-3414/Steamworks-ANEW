@@ -67,8 +67,8 @@ public class JuniorTeleop implements ITeleop
 		leftDoubleMotor = new DoubleMotor(leftMotorOne, leftMotorTwo);
 		rightDoubleMotor = new DoubleMotor(rightMotorOne, rightMotorTwo);
 		
-		leftDoubleMotor.setMotorReveresed(true);
-		rightDoubleMotor.setMotorReveresed(true);
+		//leftDoubleMotor.setMotorReveresed(true);
+		//rightDoubleMotor.setMotorReveresed(true);
 		
 		drivetrain = new Drivetrain(rightDoubleMotor, leftDoubleMotor);
 		
@@ -84,12 +84,25 @@ public class JuniorTeleop implements ITeleop
 		
 		if(gamepad.getButtonValue(ButtonGamepad.ONE))
 		{
-			pickupMotor.setSpeed(-0.5);
+			pickupMotor.setSpeed(0.80);
 		}
 		else
 		{
 			pickupMotor.stop();
 		}
+		
+		if(gamepad.getButtonValue(ButtonGamepad.SEVEN))
+		{
+			leftDoubleMotor.setMotorReveresed(false);
+			rightDoubleMotor.setMotorReveresed(false);
+		}
+		
+		if(gamepad.getButtonValue(ButtonGamepad.EIGHT))
+		{
+			leftDoubleMotor.setMotorReveresed(true);
+			rightDoubleMotor.setMotorReveresed(true);
+		}
+
 
 // 		if(gamepad.getButtonValue(ButtonGamepad.TWO))
 // 		{
