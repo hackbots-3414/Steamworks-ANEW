@@ -1,9 +1,15 @@
 package org.hackbots.sensors;
 
+import edu.wpi.first.wpilibj.CameraServer;
+
 public class MicrosoftLifeCam {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	CameraServer server;
+	
+	public MicrosoftLifeCam(int usbPort){
+		
+		server = CameraServer.getInstance();
+		server.startAutomaticCapture(usbPort);
 	}
+	
 }

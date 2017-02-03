@@ -69,4 +69,13 @@ public class TripleMotor extends MotorBase
 			return isSafeConfig = false;
 		}
 	}
+	
+	public void setMotorReveresed(boolean reverse)
+	{
+		this.isReversed = reverse;
+		
+		motorOne.setMotorReveresed(reverse);
+		motorTwo.setMotorReveresed(reverse);
+		motorThree.setMotorReveresed(reverse);
+	}
 }

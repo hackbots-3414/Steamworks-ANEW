@@ -22,7 +22,7 @@ public class Motor extends MotorBase
 	{
 		if(isReversed)
 		{
-			speed = -speed;
+			speed = 0 - speed;
 		}
 				
 		if(speed < 0)
@@ -54,5 +54,10 @@ public class Motor extends MotorBase
 	public void setDirection(RotationalDirection direction)
 	{
 		this.direction = direction;
-	}		
+	}	
+	
+	public void setMotorReveresed(boolean reverse)
+	{
+		this.isReversed = reverse;
+	}
 }

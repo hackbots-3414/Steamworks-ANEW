@@ -34,7 +34,7 @@ public class JuniorTeleop implements ITeleop
 	private Motor pickupMotor;
 	private Motor shootMotor;
 	private Motor climbMotor;
-	private Moter hopperMotor;
+	private Motor hopperMotor;
 
 	private DoubleMotor leftDoubleMotor;
 	private DoubleMotor rightDoubleMotor;
@@ -61,10 +61,15 @@ public class JuniorTeleop implements ITeleop
 
 		leftMotorTwo = new Motor(leftTalonTwo);
 		leftMotorOne = new Motor(leftTalonOne);
+		
+		
 
 		leftDoubleMotor = new DoubleMotor(leftMotorOne, leftMotorTwo);
 		rightDoubleMotor = new DoubleMotor(rightMotorOne, rightMotorTwo);
-
+		
+		leftDoubleMotor.setMotorReveresed(true);
+		rightDoubleMotor.setMotorReveresed(true);
+		
 		drivetrain = new Drivetrain(rightDoubleMotor, leftDoubleMotor);
 		
 		pickupMotor = new Motor(pickupTalon);

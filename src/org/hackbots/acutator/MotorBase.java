@@ -46,8 +46,5 @@ public abstract class MotorBase
 	 * Reverses the motor if set to true
 	 * @param reverse
 	 */
-	public void setMotorReveresed(boolean reverse)
-	{
-		this.isReversed = reverse;
-	}
+	public abstract void setMotorReveresed(boolean reverse);
 }
