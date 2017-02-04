@@ -6,9 +6,12 @@ import org.hackbots.acutator.Motor;
 import org.hackbots.sensors.DualShockTwoController;
 import org.hackbots.sensors.IGamepad;
 import org.hackbots.util.ButtonGamepad;
+import org.hackbots.sensors.DigitalLimitSwitch;
+import org.hackbots.acutator.Servo;
 
 import com.ctre.CANTalon;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 
 public class JuniorTeleop implements ITeleop
@@ -23,6 +26,7 @@ public class JuniorTeleop implements ITeleop
 	private CANTalon rightTalonTwo;
 	private CANTalon leftTalonOne;
 	private CANTalon pickupTalon;
+	private CANTalon adjustShootTalon;
 	private CANTalon shootTalon;
 	private CANTalon climbTalon;
 	private CANTalon hopperTalon;
@@ -35,9 +39,15 @@ public class JuniorTeleop implements ITeleop
 	private Motor shootMotor;
 	private Motor climbMotor;
 	private Motor hopperMotor;
+	
+	private Servo adjustShootServo;
 
 	private DoubleMotor leftDoubleMotor;
 	private DoubleMotor rightDoubleMotor;
+	
+	private static final int CLIMBER_LIM_SWITCH_CHANNEL = 3;
+	private DigitalInput _climberLimitSwitch = new DigitalInput(CLIMBER_LIM_SWITCH_CHANNEL);
+	private DigitalLimitSwitch climberLimitSwitch = new DigitalLimitSwitch(_climberLimitSwitch);
 
 	private Drivetrain drivetrain;
 	
@@ -55,6 +65,7 @@ public class JuniorTeleop implements ITeleop
 		pickupTalon = new CANTalon(5);
 		//shootTalon = new CANTalon(6);
 		//climbTalon = new CANTalon(7);
+		//adjustShootTalon = new CANTalon(8);
 		
 		rightMotorOne = new Motor(rightTalonOne);
 		rightMotorTwo = new Motor(rightTalonTwo);
@@ -75,7 +86,10 @@ public class JuniorTeleop implements ITeleop
 		pickupMotor = new Motor(pickupTalon);
 		//shootMotor = new Motor(shootTalon);
 		//climbMotor = new Motor(climbTalon);
-		//hopperMotor = new Motor(hopperTalon)
+		//hopperMotor = new Motor(hopperTalon);
+		//adjustShootServo = new Servo (adjustShootTalon);
+		
+		
 	}
 	
 	public void update()
@@ -112,10 +126,25 @@ public class JuniorTeleop implements ITeleop
 // 		{
 // 			shootMotor.stop();
 // 		}
-
+//		if (gamepad.getButtonValue(ButtonGamepad.TWO) && gamepad.getButtonValue(ButtonGamepad.THREE))
+//		{
+//			adjustShootServo.set(0.2);
+//		}
+//		else if (gamepad.getButtonValue(ButtonGamepad.TWO) && gamepad.getButtonValue(ButtonGamepad.FOUR))
+//		{
+//			adjustShootServo.set(-0.2);
+//		}
+//		else
+//		{
+//			adjustShootServos.disengage();
+//		}
 // 		if(gamepad.getButtonValue(ButtonGamepad.THREE))
 // 		{
 // 			climbMotor.setSpeed(-0.5);
+// 		}
+// 		else if (gamepad.getButtonValue(ButtonGamepad.THREE) & climberLimitSwitch.isHit()) 
+// 		{
+// 			climbMotor.stop();
 // 		}
 // 		else
 // 		{
@@ -126,9 +155,9 @@ public class JuniorTeleop implements ITeleop
 // 		{
 // 			hopperMotor.setSpeed(-0.5);
 // 		}
-// 		else
-// 		{
-// 			hopperMotor.stop();
-// 		}
+//		else
+//		{
+//			hopperMotor.stop();
+//		}
 	}
 }

@@ -3,6 +3,7 @@ package org.hackbots.sensors;
 import edu.wpi.first.wpilibj.AnalogGyro;
 
 public class Gyroscope {
+	
 	private AnalogGyro gyro;
 	private boolean isEnabled;
 
