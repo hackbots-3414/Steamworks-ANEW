@@ -132,7 +132,7 @@ public class JuniorTeleop implements ITeleop
 //		}
 //		else if (gamepad.getButtonValue(ButtonGamepad.TWO) && gamepad.getButtonValue(ButtonGamepad.FOUR))
 //		{
-//			adjustShootServo.set(-0.2);
+//			adjustShootServo.set(0);
 //		}
 //		else
 //		{
