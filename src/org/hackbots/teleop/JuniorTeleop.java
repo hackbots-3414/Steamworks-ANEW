@@ -155,6 +155,10 @@ public class JuniorTeleop implements ITeleop
 // 		{
 // 			hopperMotor.setSpeed(-0.5);
 // 		}
+//		else if(gamepad.getButtonValue(ButtonGamepad.FOUR) && gamepad.getButtonValue(ButtonGamepad.ONE))
+//		{
+//			hopperMotor.setSpeed(0.5);
+//		}
 //		else
 //		{
 //			hopperMotor.stop();
