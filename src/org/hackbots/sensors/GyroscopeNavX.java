@@ -17,6 +17,11 @@ public class GyroscopeNavX {
 	}
 
 	
+	public GyroscopeNavX() {
+		// TODO Auto-generated constructor stub
+	}
+
+
 	/**
 	 * Returns values in between -180 and 180
 	 */
@@ -68,6 +73,17 @@ public class GyroscopeNavX {
 	}
 
 	public double getPitch()
+	{
+		return ahrs.getPitch();
+	}
+	
+	public double getYaw()
+	{
+		return ahrs.getYaw();
+	}
+	
+
+	public double getRoll()
 	{
 		return ahrs.getRoll();
 	}

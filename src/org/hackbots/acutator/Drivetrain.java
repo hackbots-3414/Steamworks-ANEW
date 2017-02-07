@@ -28,4 +28,19 @@ public class Drivetrain implements IDriveTrain
 		leftMotor.stop();
 		rightMotor.stop();
 	}
+
+	public void turn(double speed, double angle) 
+	{
+		
+	}
+
+
+	public void turnRight(double speed, double angle)
+	{
+		
+	}
+	public void turnLeft(double speed, double angle)
+	{
+		
+	}
 }

@@ -3,16 +3,20 @@ package org.hackbots.teleop;
 import org.hackbots.acutator.DoubleMotor;
 import org.hackbots.acutator.Drivetrain;
 import org.hackbots.acutator.Motor;
+import org.hackbots.acutator.Servo;
+import org.hackbots.sensors.AccelerometerNavX;
+import org.hackbots.sensors.GyroscopeNavX;
+import org.hackbots.sensors.DigitalLimitSwitch;
 import org.hackbots.sensors.DualShockTwoController;
 import org.hackbots.sensors.IGamepad;
 import org.hackbots.util.ButtonGamepad;
-import org.hackbots.sensors.DigitalLimitSwitch;
-import org.hackbots.acutator.Servo;
 
 import com.ctre.CANTalon;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SPI;
 
 public class JuniorTeleop implements ITeleop
 {
@@ -50,6 +54,11 @@ public class JuniorTeleop implements ITeleop
 	private DigitalLimitSwitch climberLimitSwitch = new DigitalLimitSwitch(_climberLimitSwitch);
 
 	private Drivetrain drivetrain;
+	
+	private AccelerometerNavX accelerometer;
+	private GyroscopeNavX gyro;
+	
+	private boolean reverseJoystics = false;
 	
 	public void init() 
 	{
@@ -89,12 +98,26 @@ public class JuniorTeleop implements ITeleop
 		//hopperMotor = new Motor(hopperTalon);
 		//adjustShootServo = new Servo (adjustShootTalon);
 		
-		
+		//accelerometer = new AccelerometerNavX(new AHRS(SPI.Port.kMXP));
+		gyro = new GyroscopeNavX(new AHRS(SPI.Port.kMXP));
 	}
 	
 	public void update()
 	{
-		drivetrain.setSpeed(leftJoystick.getY(), rightJoystick.getY());
+		if(reverseJoystics)
+		{
+			drivetrain.setSpeed(rightJoystick.getY(), leftJoystick.getY());
+		}
+		else
+		{
+			drivetrain.setSpeed(leftJoystick.getY(), rightJoystick.getY());
+		}
+				
+		System.out.println("------------------------------");
+		System.out.println("Gyro Pitch: " + gyro.getPitch());
+		System.out.println("Gyro Yaw: " + gyro.getYaw());
+		System.out.println("Gyro Roll: " + gyro.getRoll());
+		System.out.println("------------------------------");
 		
 		if(gamepad.getButtonValue(ButtonGamepad.ONE))
 		{
@@ -109,12 +132,16 @@ public class JuniorTeleop implements ITeleop
 		{
 			leftDoubleMotor.setMotorReveresed(false);
 			rightDoubleMotor.setMotorReveresed(false);
+			System.out.println("Unreversing");
+			reverseJoystics = false;
 		}
 		
 		if(gamepad.getButtonValue(ButtonGamepad.EIGHT))
 		{
 			leftDoubleMotor.setMotorReveresed(true);
 			rightDoubleMotor.setMotorReveresed(true);
+			reverseJoystics = true;
+			System.out.println("Reversing");
 		}
 
 
