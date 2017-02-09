@@ -2,15 +2,16 @@ package org.hackbots.acutator;
 
 public class Drivetrain implements IDriveTrain
 {
-	private DoubleMotor rightMotor;
-	private DoubleMotor leftMotor;
+	private TripleMotor rightMotor;
+	private TripleMotor leftMotor;
 	
-	public Drivetrain(DoubleMotor rightMotor, DoubleMotor leftMotor)
+	public Drivetrain(TripleMotor rightMotor, TripleMotor leftMotor)
 	{
 		this.rightMotor = rightMotor;
 		this.leftMotor = leftMotor;
 	}
 	
+
 	public void setSpeed(double speed) 
 	{	
 		rightMotor.setSpeed(speed);

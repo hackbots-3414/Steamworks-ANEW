@@ -1,6 +1,7 @@
 package org.hackbots.teleop;
 
-import org.hackbots.acutator.DoubleMotor;
+//import org.hackbots.acutator.DoubleMotor;
+import org.hackbots.acutator.TripleMotor;
 import org.hackbots.acutator.Drivetrain;
 import org.hackbots.acutator.Motor;
 import org.hackbots.acutator.Servo;
@@ -29,6 +30,8 @@ public class JuniorTeleop implements ITeleop
 	private CANTalon leftTalonTwo;
 	private CANTalon rightTalonTwo;
 	private CANTalon leftTalonOne;
+	private CANTalon rightTalonThree;
+	private CANTalon leftTalonThree;
 	private CANTalon pickupTalon;
 	private CANTalon adjustShootTalon;
 	private CANTalon shootTalon;
@@ -39,6 +42,8 @@ public class JuniorTeleop implements ITeleop
 	private Motor leftMotorTwo;
 	private Motor rightMotorTwo;
 	private Motor leftMotorOne;
+	private Motor rightMotorThree;
+	private Motor leftMotorThree;
 	private Motor pickupMotor;
 	private Motor shootMotor;
 	private Motor climbMotor;
@@ -46,8 +51,8 @@ public class JuniorTeleop implements ITeleop
 	
 	private Servo adjustShootServo;
 
-	private DoubleMotor leftDoubleMotor;
-	private DoubleMotor rightDoubleMotor;
+	private TripleMotor leftTripleMotor;
+	private TripleMotor rightTripleMotor;
 	
 	private static final int CLIMBER_LIM_SWITCH_CHANNEL = 3;
 	private DigitalInput _climberLimitSwitch = new DigitalInput(CLIMBER_LIM_SWITCH_CHANNEL);
@@ -67,30 +72,35 @@ public class JuniorTeleop implements ITeleop
 
 		gamepad = new DualShockTwoController(2);
 
-		rightTalonOne = new CANTalon(1);
-		leftTalonTwo = new CANTalon(3);
-		rightTalonTwo = new CANTalon(2);
-		leftTalonOne = new CANTalon(4);
-		pickupTalon = new CANTalon(5);
-		//shootTalon = new CANTalon(6);
-		//climbTalon = new CANTalon(7);
-		//adjustShootTalon = new CANTalon(8);
+		rightTalonOne = new CANTalon(0);
+		rightTalonTwo = new CANTalon(1);
+		rightTalonThree = new CANTalon(2);
+		
+		leftTalonTwo = new CANTalon(3);	
+		leftTalonOne = new CANTalon(4);		
+		leftTalonThree = new CANTalon(5);
+		//pickupTalon = new CANTalon(6);
+		//shootTalon = new CANTalon(7);
+		//climbTalon = new CANTalon(8);
+		//adjustShootTalon = new CANTalon(9);
 		
 		rightMotorOne = new Motor(rightTalonOne);
 		rightMotorTwo = new Motor(rightTalonTwo);
+		rightMotorThree = new Motor(rightTalonThree);
 
 		leftMotorTwo = new Motor(leftTalonTwo);
 		leftMotorOne = new Motor(leftTalonOne);
+		leftMotorThree = new Motor(leftTalonThree);
 		
+		leftTripleMotor = new TripleMotor(leftMotorOne, leftMotorTwo, leftMotorThree);
+		rightTripleMotor = new TripleMotor(rightMotorOne, rightMotorTwo, rightMotorThree);
 		
-
-		leftDoubleMotor = new DoubleMotor(leftMotorOne, leftMotorTwo);
-		rightDoubleMotor = new DoubleMotor(rightMotorOne, rightMotorTwo);
+		leftTripleMotor.setMotorReveresed(true);
 		
 		//leftDoubleMotor.setMotorReveresed(true);
 		//rightDoubleMotor.setMotorReveresed(true);
 		
-		drivetrain = new Drivetrain(rightDoubleMotor, leftDoubleMotor);
+		drivetrain = new Drivetrain(rightTripleMotor, leftTripleMotor);
 		
 		pickupMotor = new Motor(pickupTalon);
 		//shootMotor = new Motor(shootTalon);
@@ -104,14 +114,17 @@ public class JuniorTeleop implements ITeleop
 	
 	public void update()
 	{
-		if(reverseJoystics)
+		/*if(reverseJoystics)
 		{
 			drivetrain.setSpeed(rightJoystick.getY(), leftJoystick.getY());
 		}
 		else
 		{
+			System.out.println("Driving");
 			drivetrain.setSpeed(leftJoystick.getY(), rightJoystick.getY());
-		}
+		}*/
+		
+		drivetrain.setSpeed(leftJoystick.getY(), rightJoystick.getY());
 				
 		System.out.println("------------------------------");
 		System.out.println("Gyro Pitch: " + gyro.getPitch());
@@ -121,25 +134,25 @@ public class JuniorTeleop implements ITeleop
 		
 		if(gamepad.getButtonValue(ButtonGamepad.ONE))
 		{
-			pickupMotor.setSpeed(0.80);
+//			pickupMotor.setSpeed(0.80);
 		}
 		else
 		{
-			pickupMotor.stop();
+//			pickupMotor.stop();
 		}
 		
 		if(gamepad.getButtonValue(ButtonGamepad.SEVEN))
 		{
-			leftDoubleMotor.setMotorReveresed(false);
-			rightDoubleMotor.setMotorReveresed(false);
+			leftTripleMotor.setMotorReveresed(false);
+			rightTripleMotor.setMotorReveresed(false);
 			System.out.println("Unreversing");
 			reverseJoystics = false;
 		}
 		
 		if(gamepad.getButtonValue(ButtonGamepad.EIGHT))
 		{
-			leftDoubleMotor.setMotorReveresed(true);
-			rightDoubleMotor.setMotorReveresed(true);
+			leftTripleMotor.setMotorReveresed(true);
+			rightTripleMotor.setMotorReveresed(true);
 			reverseJoystics = true;
 			System.out.println("Reversing");
 		}
