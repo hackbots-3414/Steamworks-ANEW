@@ -2,6 +2,7 @@ package org.hackbots.sensors;
 
 import org.hackbots.util.ButtonGamepad;
 
-public interface IGamepad {
-	boolean getButtonValue(ButtonGamepad button);
+public interface IGamepad
+{
+	public boolean getButtonValue(ButtonGamepad button);
 }

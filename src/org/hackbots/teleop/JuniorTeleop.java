@@ -6,7 +6,7 @@ import org.hackbots.acutator.Servo;
 //import org.hackbots.acutator.DoubleMotor;
 import org.hackbots.acutator.TripleMotor;
 import org.hackbots.sensors.LimitSwitch;
-import org.hackbots.sensors.DualShockTwoController;
+import org.hackbots.sensors.Gamepad;
 import org.hackbots.sensors.Encoder;
 import org.hackbots.sensors.IGamepad;
 import org.hackbots.sensors.NavX;
@@ -77,7 +77,7 @@ public class JuniorTeleop implements ITeleop
 		rightJoystick = new Joystick(0);
 		leftJoystick = new Joystick(1);
 
-		gamepad = new DualShockTwoController(2);
+		gamepad = new Gamepad(2);
 
 		rightTalonOne = new CANTalon(0);
 		rightTalonTwo = new CANTalon(1);
@@ -116,7 +116,7 @@ public class JuniorTeleop implements ITeleop
 		//adjustShootServo = new Servo (adjustShootTalon);
 		
 		navX = new NavX(new AHRS(SPI.Port.kMXP));
-		navX.hardResetCount();
+		navX.reset();
 		
 		pdb = new PowerDistributionPanel(8);
 		
@@ -151,7 +151,7 @@ public class JuniorTeleop implements ITeleop
 		//System.out.println("Left Endocer: " + leftEncoder.getCount());
 		
 		// System.out.println("compass Heading: " + compass.getHeading());
-		System.out.println("Compass Heading" + navX.getSoftCount());
+		System.out.println("Compass Heading" + navX.getYaw());
 		
 		if(gamepad.getButtonValue(ButtonGamepad.ONE))
 		{
@@ -180,13 +180,13 @@ public class JuniorTeleop implements ITeleop
 		
 		if (rightJoystick.getRawButton(1))
 		{
-			startingAngle = navX.getSoftCount();
+			startingAngle = navX.getYaw();
 			while (rightJoystick.getRawButton(1)) {
-				if(navX.getSoftCount() < startingAngle - 1)
+				if(navX.getYaw() < startingAngle - 1)
 				{
 					drivetrain.setSpeed(0.2, -0.2);
 				}
-				else if (navX.getSoftCount() > startingAngle + 1)
+				else if (navX.getYaw() > startingAngle + 1)
 				{
 					drivetrain.setSpeed(-0.2, 0.2);
 				}

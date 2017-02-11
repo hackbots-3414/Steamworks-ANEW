@@ -4,31 +4,30 @@ import com.ctre.CANTalon;
 
 public class Encoder
 {
-	private CANTalon canMotor;
+	private CANTalon talon;
 	
-	public Encoder(CANTalon canMotor)
+	public Encoder(CANTalon talon)
 	{
-		this.canMotor = canMotor;
+		this.talon = talon;
 	}
 	
 	public double getCount() 
 	{
-		return canMotor.get();
+		return talon.get();
 	}
 
 	public void enable() 
 	{
-		canMotor.enableControl();
+		talon.enableControl();
 	}
 
 	public void disable() 
 	{
-		canMotor.disableControl();
+		talon.disableControl();
 	}
 
 	public void resetCount() 
 	{
-		canMotor.reset();
+		talon.reset();
 	}
-
 }

@@ -37,21 +37,7 @@ public class NavX
 		ahrs.resetDisplacement();
 	}
 	
-	/**
-	 * Returns values in between -180 and 180
-	 */
-	public double getHardCount()
-	{
-		if (isEnabled)
-		{
-			return ahrs.getYaw();
-		} else
-		{
-			return 0;
-		}
-	}
-	
-	public float getSoftCount()
+	public float getYaw()
 	{
 		pastYaw = ahrs.getYaw();
 		
@@ -79,9 +65,14 @@ public class NavX
 		return ahrs.getRoll();
 	}
 	
-	public double getYaw()
+	public double getRawYaw()
 	{
 		return ahrs.getYaw();
+	}
+	
+	public double getRate()
+	{
+		return ahrs.getRate();
 	}
 
 	public void enable()
@@ -93,27 +84,10 @@ public class NavX
 	{
 		isEnabled = false;
 	}
-
-	public void softResetCount()
-	{
-		pastYaw += ahrs.getYaw();
-		ahrs.reset();
-	}
 	
-	public void hardResetCount()
+	public boolean isEnabled() 
 	{
-		pastYaw = ahrs.getYaw();
-		ahrs.reset();
-	}
-	
-	public double getRate()
-	{
-		return ahrs.getRate();
-	}
-	
-	public double getPitchRate()
-	{
-		return ahrs.getRawGyroY();
+		return isEnabled;
 	}
 	
 	public void reset()

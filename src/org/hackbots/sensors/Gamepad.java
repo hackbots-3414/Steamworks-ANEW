@@ -6,10 +6,10 @@ import org.hackbots.util.ButtonGamepad;
 
 import edu.wpi.first.wpilibj.Joystick;
 
-public class DualShockTwoController implements IGamepad {
+public class Gamepad implements IGamepad {
 	Joystick joy;
 	
-	public DualShockTwoController(int channel)
+	public Gamepad(int channel)
 	{
 		joy = new Joystick(channel);
 	}

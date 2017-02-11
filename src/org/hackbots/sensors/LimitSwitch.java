@@ -2,18 +2,17 @@ package org.hackbots.sensors;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 
-	public class LimitSwitch
+public class LimitSwitch
+{
+	private DigitalInput limitSwitch;
+
+	public LimitSwitch(DigitalInput limitSwitch)
 	{
-		private DigitalInput limitSwitchOne;
-
-		public LimitSwitch(DigitalInput _limitSwitchOne)
-		{
-			limitSwitchOne = _limitSwitchOne;
-		}
-
-		public boolean isHit()
-		{
-			return limitSwitchOne.get();
-		}
-
+		this.limitSwitch = limitSwitch;
 	}
+
+	public boolean isHit()
+	{
+		return limitSwitch.get();
+	}
+}
