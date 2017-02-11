@@ -5,7 +5,7 @@ import org.hackbots.acutator.Motor;
 import org.hackbots.acutator.Servo;
 //import org.hackbots.acutator.DoubleMotor;
 import org.hackbots.acutator.TripleMotor;
-import org.hackbots.sensors.DigitalLimitSwitch;
+import org.hackbots.sensors.LimitSwitch;
 import org.hackbots.sensors.DualShockTwoController;
 import org.hackbots.sensors.Encoder;
 import org.hackbots.sensors.IGamepad;
@@ -57,7 +57,7 @@ public class JuniorTeleop implements ITeleop
 	
 	private static final int CLIMBER_LIM_SWITCH_CHANNEL = 3;
 	private DigitalInput _climberLimitSwitch = new DigitalInput(CLIMBER_LIM_SWITCH_CHANNEL);
-	private DigitalLimitSwitch climberLimitSwitch = new DigitalLimitSwitch(_climberLimitSwitch);
+	private LimitSwitch climberLimitSwitch = new LimitSwitch(_climberLimitSwitch);
 
 	private Drivetrain drivetrain;
 	

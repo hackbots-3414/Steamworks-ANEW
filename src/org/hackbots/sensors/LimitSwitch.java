@@ -2,11 +2,11 @@ package org.hackbots.sensors;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 
-	public class DigitalLimitSwitch
+	public class LimitSwitch
 	{
 		private DigitalInput limitSwitchOne;
 
-		public DigitalLimitSwitch(DigitalInput _limitSwitchOne)
+		public LimitSwitch(DigitalInput _limitSwitchOne)
 		{
 			limitSwitchOne = _limitSwitchOne;
 		}
