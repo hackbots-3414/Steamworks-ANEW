@@ -2,10 +2,11 @@ package org.hackbots.sensors;
 
 import com.ctre.CANTalon;
 
-public class BuiltInCANTalonEncoder {
-	CANTalon canMotor;
+public class Encoder
+{
+	private CANTalon canMotor;
 	
-	public BuiltInCANTalonEncoder(CANTalon canMotor)
+	public Encoder(CANTalon canMotor)
 	{
 		this.canMotor = canMotor;
 	}

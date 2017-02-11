@@ -5,6 +5,11 @@ import org.hackbots.teleop.JuniorTeleop;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 
+/**
+ * 
+ * @author Hackbots
+ *
+ */
 public class Robot extends IterativeRobot 
 {
 	private JuniorTeleop teleop;

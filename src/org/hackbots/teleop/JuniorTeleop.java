@@ -1,15 +1,15 @@
 package org.hackbots.teleop;
 
-//import org.hackbots.acutator.DoubleMotor;
-import org.hackbots.acutator.TripleMotor;
 import org.hackbots.acutator.Drivetrain;
 import org.hackbots.acutator.Motor;
 import org.hackbots.acutator.Servo;
-import org.hackbots.sensors.AccelerometerNavX;
-import org.hackbots.sensors.GyroscopeNavX;
+//import org.hackbots.acutator.DoubleMotor;
+import org.hackbots.acutator.TripleMotor;
 import org.hackbots.sensors.DigitalLimitSwitch;
 import org.hackbots.sensors.DualShockTwoController;
+import org.hackbots.sensors.Encoder;
 import org.hackbots.sensors.IGamepad;
+import org.hackbots.sensors.NavX;
 import org.hackbots.util.ButtonGamepad;
 
 import com.ctre.CANTalon;
@@ -17,6 +17,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
 
 public class JuniorTeleop implements ITeleop
@@ -60,10 +61,16 @@ public class JuniorTeleop implements ITeleop
 
 	private Drivetrain drivetrain;
 	
-	private AccelerometerNavX accelerometer;
-	private GyroscopeNavX gyro;
+	private NavX navX;
 	
 	private boolean reverseJoystics = false;
+	
+	private PowerDistributionPanel pdb;
+	
+	private Encoder rightEncoder;
+	private Encoder leftEncoder;
+	
+	private float startingAngle;
 	
 	public void init() 
 	{
@@ -108,8 +115,13 @@ public class JuniorTeleop implements ITeleop
 		//hopperMotor = new Motor(hopperTalon);
 		//adjustShootServo = new Servo (adjustShootTalon);
 		
-		//accelerometer = new AccelerometerNavX(new AHRS(SPI.Port.kMXP));
-		gyro = new GyroscopeNavX(new AHRS(SPI.Port.kMXP));
+		navX = new NavX(new AHRS(SPI.Port.kMXP));
+		navX.hardResetCount();
+		
+		pdb = new PowerDistributionPanel(8);
+		
+		rightEncoder = new Encoder(rightTalonOne);
+		leftEncoder = new Encoder(leftTalonOne);
 	}
 	
 	public void update()
@@ -124,13 +136,22 @@ public class JuniorTeleop implements ITeleop
 			drivetrain.setSpeed(leftJoystick.getY(), rightJoystick.getY());
 		}*/
 		
-		drivetrain.setSpeed(leftJoystick.getY(), rightJoystick.getY());
-				
-		System.out.println("------------------------------");
-		System.out.println("Gyro Pitch: " + gyro.getPitch());
-		System.out.println("Gyro Yaw: " + gyro.getYaw());
-		System.out.println("Gyro Roll: " + gyro.getRoll());
-		System.out.println("------------------------------");
+		if (leftJoystick.getY() > 0.1 || rightJoystick.getY() > 0.1 || leftJoystick.getY() < -0.1 || rightJoystick.getY() < -0.1)
+		{
+			drivetrain.setSpeed(leftJoystick.getY(), rightJoystick.getY());
+		}
+		else
+		{
+			drivetrain.setSpeed(0);
+		}
+		
+		//System.out.println("Motor Current: " + pdb.getCurrent(15));
+		
+		//System.out.println("Right Endocer: " + -rightEncoder.getCount());
+		//System.out.println("Left Endocer: " + leftEncoder.getCount());
+		
+		// System.out.println("compass Heading: " + compass.getHeading());
+		System.out.println("Compass Heading" + navX.getSoftCount());
 		
 		if(gamepad.getButtonValue(ButtonGamepad.ONE))
 		{
@@ -156,7 +177,23 @@ public class JuniorTeleop implements ITeleop
 			reverseJoystics = true;
 			System.out.println("Reversing");
 		}
+		
+		if (rightJoystick.getRawButton(1))
+		{
+			startingAngle = navX.getSoftCount();
+			while (rightJoystick.getRawButton(1)) {
+				if(navX.getSoftCount() < startingAngle - 1)
+				{
+					drivetrain.setSpeed(0.2, -0.2);
+				}
+				else if (navX.getSoftCount() > startingAngle + 1)
+				{
+					drivetrain.setSpeed(-0.2, 0.2);
+				}
+			}
+		}
 
+		
 
 // 		if(gamepad.getButtonValue(ButtonGamepad.TWO))
 // 		{
@@ -190,6 +227,12 @@ public class JuniorTeleop implements ITeleop
 // 		{
 // 			climbMotor.stop();
 // 		}
+		
+		
+		
+		
+		
+		
 
 // 		if(gamepad.getButtonValue(ButtonGamepad.FOUR))
 // 		{
