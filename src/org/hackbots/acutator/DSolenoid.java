@@ -1,33 +1,49 @@
 package org.hackbots.acutator;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+
 public class DSolenoid
 {
 	private DoubleSolenoid dSol;
 	
-	public DSolenoid(DoubleSolenoid _dSol)
+	public DSolenoid(DoubleSolenoid dSol)
 	{
-		dSol = _dSol;
+		this.dSol = dSol;
 	}
+	
 	public void setValue(boolean value)
 	{
-		if (value == true)
+		if(value == true)
 		{
 			dSol.set(DoubleSolenoid.Value.kForward);
-		} else {
+		} 
+		else 
+		{
 			dSol.set(DoubleSolenoid.Value.kReverse);
 		}
 	}
+	
 	public boolean getValue()
 	{
-		if (dSol.get()== (DoubleSolenoid.Value.kForward))
+		if(dSol.get() == (DoubleSolenoid.Value.kForward))
 		{
 			return true;
-		} else {
+		} 
+		else
+		{
 			return false;
 		}
 		
 	}
+	
+	public void engage()
+	{
+		dSol.set(DoubleSolenoid.Value.kForward);
+	}
+	
+	public void disengage()
+	{
+		dSol.set(DoubleSolenoid.Value.kReverse);
+	}
 
 }
-2

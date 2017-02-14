@@ -1,14 +1,15 @@
 package org.hackbots.teleop;
 
+import org.hackbots.acutator.DSolenoid;
 import org.hackbots.acutator.Drivetrain;
 import org.hackbots.acutator.Motor;
 import org.hackbots.acutator.Servo;
 //import org.hackbots.acutator.DoubleMotor;
 import org.hackbots.acutator.TripleMotor;
-import org.hackbots.sensors.LimitSwitch;
-import org.hackbots.sensors.Gamepad;
 import org.hackbots.sensors.Encoder;
+import org.hackbots.sensors.Gamepad;
 import org.hackbots.sensors.IGamepad;
+import org.hackbots.sensors.LimitSwitch;
 import org.hackbots.sensors.NavX;
 import org.hackbots.util.ButtonGamepad;
 
@@ -16,6 +17,7 @@ import com.ctre.CANTalon;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
@@ -26,6 +28,9 @@ public class JuniorTeleop implements ITeleop
 	private Joystick leftJoystick;
 
 	private IGamepad gamepad;
+	
+	private DSolenoid solenoidOne;
+	private DSolenoid solenoidTwo;
 
 	private CANTalon rightTalonOne;
 	private CANTalon leftTalonTwo;
@@ -45,6 +50,7 @@ public class JuniorTeleop implements ITeleop
 	private Motor leftMotorOne;
 	private Motor rightMotorThree;
 	private Motor leftMotorThree;
+	
 	private Motor pickupMotor;
 	private Motor shootMotor;
 	private Motor climbMotor;
@@ -70,6 +76,9 @@ public class JuniorTeleop implements ITeleop
 	private Encoder rightEncoder;
 	private Encoder leftEncoder;
 	
+	private Thread driveThread;
+	private Thread controlThread;
+	
 	private float startingAngle;
 	
 	public void init() 
@@ -78,6 +87,9 @@ public class JuniorTeleop implements ITeleop
 		leftJoystick = new Joystick(1);
 
 		gamepad = new Gamepad(2);
+		
+		solenoidOne = new DSolenoid(new DoubleSolenoid(0,1));
+		solenoidTwo = new DSolenoid(new DoubleSolenoid(0,1));
 
 		rightTalonOne = new CANTalon(0);
 		rightTalonTwo = new CANTalon(1);
@@ -122,6 +134,13 @@ public class JuniorTeleop implements ITeleop
 		
 		rightEncoder = new Encoder(rightTalonOne);
 		leftEncoder = new Encoder(leftTalonOne);
+		
+		
+		driveThread = new Thread(new DriveThread());
+		controlThread = new Thread(new ControlThread());
+		
+		controlThread.start();
+		driveThread.start();
 	}
 	
 	public void update()
@@ -144,107 +163,132 @@ public class JuniorTeleop implements ITeleop
 		{
 			drivetrain.setSpeed(0);
 		}
-		
-		//System.out.println("Motor Current: " + pdb.getCurrent(15));
-		
-		//System.out.println("Right Endocer: " + -rightEncoder.getCount());
-		//System.out.println("Left Endocer: " + leftEncoder.getCount());
-		
-		// System.out.println("compass Heading: " + compass.getHeading());
-		System.out.println("Compass Heading" + navX.getYaw());
-		
-		if(gamepad.getButtonValue(ButtonGamepad.ONE))
+	}
+	
+	public class DriveThread implements Runnable
+	{
+		public void run()
 		{
-//			pickupMotor.setSpeed(0.80);
-		}
-		else
-		{
-//			pickupMotor.stop();
+			
 		}
 		
-		if(gamepad.getButtonValue(ButtonGamepad.SEVEN))
+	}
+	
+	public class ControlThread implements Runnable
+	{
+		public void run()
 		{
-			leftTripleMotor.setMotorReveresed(false);
-			rightTripleMotor.setMotorReveresed(false);
-			System.out.println("Unreversing");
-			reverseJoystics = false;
-		}
-		
-		if(gamepad.getButtonValue(ButtonGamepad.EIGHT))
-		{
-			leftTripleMotor.setMotorReveresed(true);
-			rightTripleMotor.setMotorReveresed(true);
-			reverseJoystics = true;
-			System.out.println("Reversing");
-		}
-		
-		if (rightJoystick.getRawButton(1))
-		{
-			startingAngle = navX.getYaw();
-			while (rightJoystick.getRawButton(1)) {
-				if(navX.getYaw() < startingAngle - 1)
+			
+			//System.out.println("Motor Current: " + pdb.getCurrent(15));
+			
+			//System.out.println("Right Endocer: " + -rightEncoder.getCount());
+			//System.out.println("Left Endocer: " + leftEncoder.getCount());
+			
+			// System.out.println("compass Heading: " + compass.getHeading());
+			System.out.println("Compass Heading" + navX.getYaw());
+			
+			if(gamepad.getButtonValue(ButtonGamepad.ONE))
+			{
+//				pickupMotor.setSpeed(0.80);
+			}
+			else
+			{
+//				pickupMotor.stop();
+			}
+			
+			if(gamepad.getButtonValue(ButtonGamepad.SEVEN))
+			{
+				leftTripleMotor.setMotorReveresed(false);
+				rightTripleMotor.setMotorReveresed(false);
+				
+				System.out.println("Unreversing");
+				
+				reverseJoystics = false;
+			}
+			
+			if(gamepad.getButtonValue(ButtonGamepad.EIGHT))
+			{
+				leftTripleMotor.setMotorReveresed(true);
+				rightTripleMotor.setMotorReveresed(true);
+				
+				reverseJoystics = true;
+
+				System.out.println("Reversing");
+			}
+			
+			if (rightJoystick.getRawButton(1))
+			{
+				startingAngle = navX.getYaw();
+				
+				while (rightJoystick.getRawButton(1))
 				{
-					drivetrain.setSpeed(0.2, -0.2);
-				}
-				else if (navX.getYaw() > startingAngle + 1)
-				{
-					drivetrain.setSpeed(-0.2, 0.2);
+					if(navX.getYaw() < startingAngle - 1)
+					{
+						drivetrain.setSpeed(0.2, -0.2);
+					}
+					else if (navX.getYaw() > startingAngle + 1)
+					{
+						drivetrain.setSpeed(-0.2, 0.2);
+					}
 				}
 			}
-		}
 
-		
+			
 
-// 		if(gamepad.getButtonValue(ButtonGamepad.TWO))
-// 		{
-// 			shootMotor.setSpeed(-0.5);
-// 		}
-// 		else
-// 		{
-// 			shootMotor.stop();
-// 		}
-//		if (gamepad.getButtonValue(ButtonGamepad.TWO) && gamepad.getButtonValue(ButtonGamepad.THREE))
-//		{
-//			adjustShootServo.set(0.2);
-//		}
-//		else if (gamepad.getButtonValue(ButtonGamepad.TWO) && gamepad.getButtonValue(ButtonGamepad.FOUR))
-//		{
-//			adjustShootServo.set(0);
-//		}
-//		else
-//		{
-//			adjustShootServos.disengage();
-//		}
-// 		if(gamepad.getButtonValue(ButtonGamepad.THREE))
-// 		{
-// 			climbMotor.setSpeed(-0.5);
-// 		}
-// 		else if (gamepad.getButtonValue(ButtonGamepad.THREE) & climberLimitSwitch.isHit()) 
-// 		{
-// 			climbMotor.stop();
-// 		}
-// 		else
-// 		{
-// 			climbMotor.stop();
-// 		}
-		
-		
-		
-		
-		
-		
+//	 		if(gamepad.getButtonValue(ButtonGamepad.TWO))
+//	 		{
+//	 			shootMotor.setSpeed(-0.5);
+//	 		}
+//	 		else
+//	 		{
+//	 			shootMotor.stop();
+//	 		}
+//			if (gamepad.getButtonValue(ButtonGamepad.TWO) && gamepad.getButtonValue(ButtonGamepad.THREE))
+//			{
+//				adjustShootServo.set(0.2);
+//			}
+//			else if (gamepad.getButtonValue(ButtonGamepad.TWO) && gamepad.getButtonValue(ButtonGamepad.FOUR))
+//			{
+//				adjustShootServo.set(0);
+//			}
+//			else
+//			{
+//				adjustShootServos.disengage();
+//			}
+//	 		if(gamepad.getButtonValue(ButtonGamepad.THREE))
+//	 		{
+//	 			climbMotor.setSpeed(-0.5);
+//	 		}
+//	 		else if (gamepad.getButtonValue(ButtonGamepad.THREE) & climberLimitSwitch.isHit()) 
+//	 		{
+//	 			climbMotor.stop();
+//	 		}
+//	 		else
+//	 		{
+//	 			climbMotor.stop();
+//	 		}
+			
+//			if (gamepad.getButtonValue(ButtonGamepad.SEVEN) && gamepad.getButtonValue(ButtonGamepad.EIGHT))
+//			{
+//				dSol.set(DoubleSolenoid.Value.kForward);
+//			}
+			
+			
+			
+			
 
-// 		if(gamepad.getButtonValue(ButtonGamepad.FOUR))
-// 		{
-// 			hopperMotor.setSpeed(-0.5);
-// 		}
-//		else if(gamepad.getButtonValue(ButtonGamepad.FOUR) && gamepad.getButtonValue(ButtonGamepad.ONE))
-//		{
-//			hopperMotor.setSpeed(0.5);
-//		}
-//		else
-//		{
-//			hopperMotor.stop();
-//		}
+//	 		if(gamepad.getButtonValue(ButtonGamepad.FOUR))
+//	 		{
+//	 			hopperMotor.setSpeed(-0.5);
+//	 		}
+//			else if(gamepad.getButtonValue(ButtonGamepad.FOUR) && gamepad.getButtonValue(ButtonGamepad.ONE))
+//			{
+//				hopperMotor.setSpeed(0.5);
+//			}
+//			else
+//			{
+//				hopperMotor.stop();
+//			}
+		}		
 	}
 }
