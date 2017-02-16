@@ -145,33 +145,32 @@ public class JuniorTeleop implements ITeleop
 	
 	public void update()
 	{
-		/*if(reverseJoystics)
-		{
-			drivetrain.setSpeed(rightJoystick.getY(), leftJoystick.getY());
-		}
-		else
-		{
-			System.out.println("Driving");
-			drivetrain.setSpeed(leftJoystick.getY(), rightJoystick.getY());
-		}*/
 		
-		if (leftJoystick.getY() > 0.1 || rightJoystick.getY() > 0.1 || leftJoystick.getY() < -0.1 || rightJoystick.getY() < -0.1)
-		{
-			drivetrain.setSpeed(leftJoystick.getY(), rightJoystick.getY());
-		}
-		else
-		{
-			drivetrain.setSpeed(0);
-		}
 	}
 	
 	public class DriveThread implements Runnable
 	{
 		public void run()
 		{
+			/*if(reverseJoystics)
+			{
+				drivetrain.setSpeed(rightJoystick.getY(), leftJoystick.getY());
+			}
+			else
+			{
+				System.out.println("Driving");
+				drivetrain.setSpeed(leftJoystick.getY(), rightJoystick.getY());
+			}*/
 			
-		}
-		
+			if (leftJoystick.getY() > 0.1 || rightJoystick.getY() > 0.1 || leftJoystick.getY() < -0.1 || rightJoystick.getY() < -0.1)
+			{
+				drivetrain.setSpeed(leftJoystick.getY(), rightJoystick.getY());
+			}
+			else
+			{
+				drivetrain.setSpeed(0);
+			}
+		}	
 	}
 	
 	public class ControlThread implements Runnable
@@ -231,9 +230,7 @@ public class JuniorTeleop implements ITeleop
 						drivetrain.setSpeed(-0.2, 0.2);
 					}
 				}
-			}
-
-			
+			}		
 
 //	 		if(gamepad.getButtonValue(ButtonGamepad.TWO))
 //	 		{

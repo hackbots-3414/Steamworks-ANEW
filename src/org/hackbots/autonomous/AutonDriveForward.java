@@ -1,5 +1,17 @@
 package org.hackbots.autonomous;
 
-public class AutonDriveForward {
+import org.hackbots.teleop.JuniorTeleop;
+import org.hackbots.teleop.JuniorTeleop.DriveThread;
 
+public class AutonDriveForward 
+{
+	public AutonDriveForward()
+	{
+		
+	}
+	
+	public void doAuto()
+	{
+		
+	}
 }
