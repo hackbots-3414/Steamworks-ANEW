@@ -150,8 +150,6 @@ public class JuniorTeleop implements ITeleop
 	public void update()
 	{
 		
-<<<<<<< HEAD
-		
 	}
 	
 	public void stop()
@@ -160,15 +158,12 @@ public class JuniorTeleop implements ITeleop
 		{
 			isRunning = false;    
 		}
-=======
->>>>>>> 32057740febcf8313244316172df8bbc1daa3d87
 	}
 	
 	public class DriveThread implements Runnable
 	{
 		public void run()
 		{
-<<<<<<< HEAD
 			while(isRunning)
 			{
 				if (leftJoystick.getY() > 0.1 || rightJoystick.getY() > 0.1 || leftJoystick.getY() < -0.1 || rightJoystick.getY() < -0.1)
@@ -179,7 +174,7 @@ public class JuniorTeleop implements ITeleop
 				{
 					drivetrain.setSpeed(0);
 				}
-=======
+				
 			/*if(reverseJoystics)
 			{
 				drivetrain.setSpeed(rightJoystick.getY(), leftJoystick.getY());
@@ -197,11 +192,10 @@ public class JuniorTeleop implements ITeleop
 			else
 			{
 				drivetrain.setSpeed(0);
->>>>>>> 32057740febcf8313244316172df8bbc1daa3d87
 			}
 		}	
 	}
-	
+}
 	public class ControlThread implements Runnable
 	{
 		public void run()
@@ -261,13 +255,7 @@ public class JuniorTeleop implements ITeleop
 						}
 					}
 				}
-<<<<<<< HEAD
-
 				
-=======
-			}		
->>>>>>> 32057740febcf8313244316172df8bbc1daa3d87
-
 //		 		if(gamepad.getButtonValue(ButtonGamepad.TWO))
 //		 		{
 //		 			shootMotor.setSpeed(-0.5);
@@ -322,7 +310,7 @@ public class JuniorTeleop implements ITeleop
 //				{
 //					hopperMotor.stop();
 //				}
-			}
-		}		
+				}
+			}		
 	}
 }
