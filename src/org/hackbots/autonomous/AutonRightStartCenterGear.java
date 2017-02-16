@@ -1,5 +1,15 @@
 package org.hackbots.autonomous;
 
-public class AutonRightStartCenterGear {
+import org.usfirst.frc.team3414.robot.RobotStatus;
+
+public class AutonRightStartCenterGear 
+{
+	public void doAuto()
+	{
+		while (RobotStatus.isAuto())
+		{
+			
+		}
+	}
 
 }

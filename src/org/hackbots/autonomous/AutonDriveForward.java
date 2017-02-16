@@ -1,5 +1,15 @@
 package org.hackbots.autonomous;
 
-public class AutonDriveForward {
+import org.usfirst.frc.team3414.robot.RobotStatus;
+
+public class AutonDriveForward
+{
+	public void doAuto()
+	{
+		while (RobotStatus.isAuto())
+		{
+			
+		}
+	}
 
 }
