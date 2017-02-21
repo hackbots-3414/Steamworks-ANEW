@@ -1,80 +1,42 @@
 package org.hackbots.teleop;
 
-import org.hackbots.acutator.DSolenoid;
+import org.hackbots.acutator.ActuatorConfig;
 import org.hackbots.acutator.Drivetrain;
-import org.hackbots.acutator.Motor;
-import org.hackbots.acutator.Servo;
-//import org.hackbots.acutator.DoubleMotor;
-import org.hackbots.acutator.TripleMotor;
-import org.hackbots.sensors.Encoder;
 import org.hackbots.sensors.Gamepad;
 import org.hackbots.sensors.IGamepad;
-import org.hackbots.sensors.LimitSwitch;
 import org.hackbots.sensors.NavX;
 import org.hackbots.util.ButtonGamepad;
+import org.hackbots.util.Observer;
+import org.hackbots.util.Subject;
 
-import com.ctre.CANTalon;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class JuniorTeleop implements ITeleop
+public class JuniorTeleop implements ITeleop, Observer
 {
+	
+	
 	private Joystick rightJoystick;
 	private Joystick leftJoystick;
 
 	private IGamepad gamepad;
-	
-	private DSolenoid solenoidOne;
-	private DSolenoid solenoidTwo;
-
-	private CANTalon rightTalonOne;
-	private CANTalon leftTalonTwo;
-	private CANTalon rightTalonTwo;
-	private CANTalon leftTalonOne;
-	private CANTalon rightTalonThree;
-	private CANTalon leftTalonThree;
-	private CANTalon pickupTalon;
-	private CANTalon adjustShootTalon;
-	private CANTalon shootTalon;
-	private CANTalon climbTalon;
-	private CANTalon hopperTalon;
-
-	private Motor rightMotorOne;
-	private Motor leftMotorTwo;
-	private Motor rightMotorTwo;
-	private Motor leftMotorOne;
-	private Motor rightMotorThree;
-	private Motor leftMotorThree;
-	
-	private Motor pickupMotor;
-	private Motor shootMotor;
-	private Motor climbMotor;
-	private Motor hopperMotor;
-	
-	private Servo adjustShootServo;
-
-	private TripleMotor leftTripleMotor;
-	private TripleMotor rightTripleMotor;
-	
+		
 	private static final int CLIMBER_LIM_SWITCH_CHANNEL = 3;
 	private DigitalInput _climberLimitSwitch = new DigitalInput(CLIMBER_LIM_SWITCH_CHANNEL);
-	private LimitSwitch climberLimitSwitch = new LimitSwitch(_climberLimitSwitch);
-
-	private Drivetrain drivetrain;
+	//private LimitSwitch climberLimitSwitch = new LimitSwitch(_climberLimitSwitch);
 	
-	private NavX navX;
+	//private NavX navX;
 	
-	private boolean reverseJoystics = false;
+	//private boolean reverseJoystics = false;
 	
-	private PowerDistributionPanel pdb;
+	//private PowerDistributionPanel pdb;
 	
-	private Encoder rightEncoder;
-	private Encoder leftEncoder;
+	//private Encoder rightEncoder;
+	//private Encoder leftEncoder;
 	
 	private Thread driveThread;
 	private Thread controlThread;
@@ -83,6 +45,10 @@ public class JuniorTeleop implements ITeleop
 	
 	private boolean isRunning;
 	
+	int i = 0;
+	
+	private Drivetrain drivetrain = ActuatorConfig.getInstance().getDrivetrain();
+	
 	public void init() 
 	{
 		rightJoystick = new Joystick(0);
@@ -90,52 +56,13 @@ public class JuniorTeleop implements ITeleop
 
 		gamepad = new Gamepad(2);
 		
-		solenoidOne = new DSolenoid(new DoubleSolenoid(0,1));
-		solenoidTwo = new DSolenoid(new DoubleSolenoid(0,1));
-
-		rightTalonOne = new CANTalon(0);
-		rightTalonTwo = new CANTalon(1);
-		rightTalonThree = new CANTalon(2);
+		//navX = new NavX(new AHRS(SPI.Port.kMXP));
+		//navX.reset();
 		
-		leftTalonTwo = new CANTalon(3);	
-		leftTalonOne = new CANTalon(4);		
-		leftTalonThree = new CANTalon(5);
-		//pickupTalon = new CANTalon(6);
-		//shootTalon = new CANTalon(7);
-		//climbTalon = new CANTalon(8);
-		//adjustShootTalon = new CANTalon(9);
+		//pdb = new PowerDistributionPanel(8);
 		
-		rightMotorOne = new Motor(rightTalonOne);
-		rightMotorTwo = new Motor(rightTalonTwo);
-		rightMotorThree = new Motor(rightTalonThree);
-
-		leftMotorTwo = new Motor(leftTalonTwo);
-		leftMotorOne = new Motor(leftTalonOne);
-		leftMotorThree = new Motor(leftTalonThree);
-		
-		leftTripleMotor = new TripleMotor(leftMotorOne, leftMotorTwo, leftMotorThree);
-		rightTripleMotor = new TripleMotor(rightMotorOne, rightMotorTwo, rightMotorThree);
-		
-		leftTripleMotor.setMotorReveresed(true);
-		
-		//leftDoubleMotor.setMotorReveresed(true);
-		//rightDoubleMotor.setMotorReveresed(true);
-		
-		drivetrain = new Drivetrain(rightTripleMotor, leftTripleMotor);
-		
-		pickupMotor = new Motor(pickupTalon);
-		//shootMotor = new Motor(shootTalon);
-		//climbMotor = new Motor(climbTalon);
-		//hopperMotor = new Motor(hopperTalon);
-		//adjustShootServo = new Servo (adjustShootTalon);
-		
-		navX = new NavX(new AHRS(SPI.Port.kMXP));
-		navX.reset();
-		
-		pdb = new PowerDistributionPanel(8);
-		
-		rightEncoder = new Encoder(rightTalonOne);
-		leftEncoder = new Encoder(leftTalonOne);
+	//	rightEncoder = new Encoder(rightTalonOne);
+	//	leftEncoder = new Encoder(leftTalonOne);
 		
 		
 		driveThread = new Thread(new DriveThread());
@@ -166,14 +93,56 @@ public class JuniorTeleop implements ITeleop
 		{
 			while(isRunning)
 			{
+				//System.out.println("Drive Thread");
+
+			/*	System.out.println("Yaw: " + navX.getRawYaw());
+				System.out.println("Pitch: " + navX.getPitch());
+				System.out.println("Roll: " + navX.getRoll());*/
+				/*SmartDashboard.putNumber("Yaw: ", navX.getRawYaw());
+				SmartDashboard.putNumber("Pitch: ", navX.getPitch());
+				SmartDashboard.putNumber("Roll: ", navX.getRoll());*/
+				
+				//System.out.println("Left Joy: " + leftJoystick.getY());
+				//System.out.println("Right Joy: " + rightJoystick.getY());
+				//System.out.println("X Veocity: " + navX.getVelocityX());
+				//System.out.println("Y Veocity: " + navX.getVelocityY());
+				//System.out.println("Z Veocity: " + navX.getVelocityZ());
+				
 				if (leftJoystick.getY() > 0.1 || rightJoystick.getY() > 0.1 || leftJoystick.getY() < -0.1 || rightJoystick.getY() < -0.1)
 				{
-					drivetrain.setSpeed(leftJoystick.getY(), rightJoystick.getY());
+					drivetrain.setSpeed(-(leftJoystick.getY()), -(rightJoystick.getY()));
 				}
+				else if((leftJoystick.getY() > 0.1 && rightJoystick.getY() < -0.1) || (leftJoystick.getY() < -0.1 && rightJoystick.getY() > 0.1))
+				{
+					drivetrain.setSpeed(-(leftJoystick.getY() / 2), -(rightJoystick.getY() / 2));
+				}
+				
 				else
 				{
 					drivetrain.setSpeed(0);
 				}
+				//TODO: Change the drivetrain speed from 0.2 to +0.2 of the velocity so you can drive forward.
+				if (rightJoystick.getRawButton(1))
+				{
+					//startingAngle = Math.round(navX.getRawYaw());
+					
+					/*while (rightJoystick.getRawButton(1))
+					{
+						if(navX.getYaw() > startingAngle - 1)
+						{
+							drivetrain.setSpeed(0.2, -0.2);
+						}
+						else if (navX.getYaw() < startingAngle + 1)
+						{
+							drivetrain.setSpeed(-0.2, 0.2);
+						}
+					}*/
+				}
+//				if (rightJoystick.getRawButton(2))
+//				{
+//					drivetrain.setSpeed(-0.2, 0.2);
+//				}
+
 				
 			/*if(reverseJoystics)
 			{
@@ -185,14 +154,17 @@ public class JuniorTeleop implements ITeleop
 				drivetrain.setSpeed(leftJoystick.getY(), rightJoystick.getY());
 			}*/
 			
-			if (leftJoystick.getY() > 0.1 || rightJoystick.getY() > 0.1 || leftJoystick.getY() < -0.1 || rightJoystick.getY() < -0.1)
+			/*if (leftJoystick.getY() > 0.1 || rightJoystick.getY() > 0.1 || leftJoystick.getY() < -0.1 || rightJoystick.getY() < -0.1)
 			{
-				drivetrain.setSpeed(leftJoystick.getY(), rightJoystick.getY());
+				drivetrain.setSpeed(-leftJoystick.getY(), -rightJoystick.getY());
 			}
 			else
 			{
 				drivetrain.setSpeed(0);
-			}
+			}*/
+				
+				
+				
 		}	
 	}
 }
@@ -208,7 +180,7 @@ public class JuniorTeleop implements ITeleop
 				//System.out.println("Left Endocer: " + leftEncoder.getCount());
 				
 				// System.out.println("compass Heading: " + compass.getHeading());
-				System.out.println("Compass Heading" + navX.getYaw());
+				//System.out.println("Compass Heading" + navX.getYaw());
 				
 				if(gamepad.getButtonValue(ButtonGamepad.ONE))
 				{
@@ -219,43 +191,25 @@ public class JuniorTeleop implements ITeleop
 //					pickupMotor.stop();
 				}
 				
-				if(gamepad.getButtonValue(ButtonGamepad.SEVEN))
-				{
-					leftTripleMotor.setMotorReveresed(false);
-					rightTripleMotor.setMotorReveresed(false);
-					
-					System.out.println("Unreversing");
-					
-					reverseJoystics = false;
-				}
-				
-				if(gamepad.getButtonValue(ButtonGamepad.EIGHT))
-				{
-					leftTripleMotor.setMotorReveresed(true);
-					rightTripleMotor.setMotorReveresed(true);
-					
-					reverseJoystics = true;
-
-					System.out.println("Reversing");
-				}
-				
-				if (rightJoystick.getRawButton(1))
-				{
-					startingAngle = navX.getYaw();
-					
-					while (rightJoystick.getRawButton(1))
-					{
-						if(navX.getYaw() < startingAngle - 1)
-						{
-							drivetrain.setSpeed(0.2, -0.2);
-						}
-						else if (navX.getYaw() > startingAngle + 1)
-						{
-							drivetrain.setSpeed(-0.2, 0.2);
-						}
-					}
-				}
-				
+//				if(gamepad.getButtonValue(ButtonGamepad.SEVEN))
+//				{
+//					leftTripleMotor.setMotorReveresed(false);
+//					rightTripleMotor.setMotorReveresed(false);
+//					
+//					System.out.println("Unreversing");
+//					
+//					reverseJoystics = false;
+//				}
+//				
+//				if(gamepad.getButtonValue(ButtonGamepad.EIGHT))
+//				{
+//					leftTripleMotor.setMotorReveresed(true);
+//					rightTripleMotor.setMotorReveresed(true);
+//					
+//					reverseJoystics = true;
+//
+//					System.out.println("Reversing");
+//				}				
 //		 		if(gamepad.getButtonValue(ButtonGamepad.TWO))
 //		 		{
 //		 			shootMotor.setSpeed(-0.5);
@@ -312,5 +266,10 @@ public class JuniorTeleop implements ITeleop
 //				}
 				}
 			}		
+	}
+	public void update(Subject subject) 
+	{
+		
+		System.out.println("Subject done! " + i);	
 	}
 }

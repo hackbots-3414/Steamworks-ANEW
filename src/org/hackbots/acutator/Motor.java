@@ -43,6 +43,7 @@ public class Motor extends MotorBase
 
 	public void stop() 
 	{
+		direction = RotationalDirection.NONE;
 		setSpeed(0);		
 	}
 
