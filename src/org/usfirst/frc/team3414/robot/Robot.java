@@ -6,11 +6,9 @@ import org.hackbots.autonomous.AutonDoNothing;
 import org.hackbots.autonomous.AutonDriveForward;
 import org.hackbots.autonomous.IAuton;
 import org.hackbots.sensors.NavX;
+import org.hackbots.sensors.SensorConfig;
 import org.hackbots.teleop.JuniorTeleop;
 
-import com.kauailabs.navx.frc.AHRS;
-
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,11 +26,11 @@ public class Robot extends SampleRobot
 		RobotStatus.setIsRunning(true);
 		
 		ActuatorConfig.getInstance().init();
+		SensorConfig.getInstance().init();
 		
 		teleop = new JuniorTeleop();
 		
-		 navX = new NavX(new AHRS(SPI.Port.kMXP));
-		
+		navX = SensorConfig.getInstance().getNavX();
 		navX.registerObserver(teleop);
 		
 		choseAuto();

@@ -177,6 +177,7 @@ public class NavX implements Subject, Runnable
 				System.out.println("Pitch Changed....");
 			}
 			
+			System.out.println("Yaw: " + getYaw());
 			
 			if(lastRoll != currentRoll)
 			{

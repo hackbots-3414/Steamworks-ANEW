@@ -6,8 +6,8 @@ public class ActuatorConfig
 {
 	private static ActuatorConfig instance;
 	
-	private DSolenoid solenoidOne;
-	private DSolenoid solenoidTwo;
+	//private DSolenoid solenoidOne;
+	//private DSolenoid solenoidTwo;
 
 	private CANTalon rightTalonOne;
 	private CANTalon leftTalonTwo;
@@ -15,11 +15,7 @@ public class ActuatorConfig
 	private CANTalon leftTalonOne;
 	private CANTalon rightTalonThree;
 	private CANTalon leftTalonThree;
-	private CANTalon pickupTalon;
-	private CANTalon adjustShootTalon;
-	private CANTalon shootTalon;
-	private CANTalon climbTalon;
-	private CANTalon hopperTalon;
+	
 
 	private Motor rightMotorOne;
 	private Motor leftMotorTwo;
@@ -27,13 +23,6 @@ public class ActuatorConfig
 	private Motor leftMotorOne;
 	private Motor rightMotorThree;
 	private Motor leftMotorThree;
-	
-	private Motor pickupMotor;
-	private Motor shootMotor;
-	private Motor climbMotor;
-	private Motor hopperMotor;
-	
-	private Servo adjustShootServo;
 
 	private TripleMotor leftTripleMotor;
 	private TripleMotor rightTripleMotor;
@@ -65,11 +54,6 @@ public class ActuatorConfig
 		leftTalonTwo = new CANTalon(4);			
 		leftTalonThree = new CANTalon(3);
 		
-		//pickupTalon = new CANTalon(6);
-		//shootTalon = new CANTalon(7);
-		//climbTalon = new CANTalon(8);
-		//adjustShootTalon = new CANTalon(9);
-		
 		rightMotorOne = new Motor(rightTalonOne);
 		rightMotorTwo = new Motor(rightTalonTwo);
 		rightMotorThree = new Motor(rightTalonThree);
@@ -82,12 +66,6 @@ public class ActuatorConfig
 		rightTripleMotor = new TripleMotor(rightMotorOne, rightMotorTwo, rightMotorThree);
 		
 		drivetrain = new Drivetrain(rightTripleMotor, leftTripleMotor);
-		
-		pickupMotor = new Motor(pickupTalon);
-		//shootMotor = new Motor(shootTalon);
-		//climbMotor = new Motor(climbTalon);
-		//hopperMotor = new Motor(hopperTalon);
-		//adjustShootServo = new Servo (adjustShootTalon);
 	}
 	
 	public Drivetrain getDrivetrain()
