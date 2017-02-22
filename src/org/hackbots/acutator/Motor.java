@@ -28,14 +28,17 @@ public class Motor extends MotorBase
 		if(speed < 0)
 		{
 			direction = RotationalDirection.COUNTERCLOCKWISE;
+			setRunning(true);
 		}
 		else if(speed > 0)
 		{
 			direction = RotationalDirection.CLOCKWISE;
+			setRunning(true);
 		}
 		else
 		{
 			direction = RotationalDirection.NONE;
+			setRunning(false);
 		}
 		
 		talon.set(speed);
@@ -43,7 +46,6 @@ public class Motor extends MotorBase
 
 	public void stop() 
 	{
-		direction = RotationalDirection.NONE;
 		setSpeed(0);		
 	}
 

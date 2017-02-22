@@ -7,6 +7,8 @@ public abstract class MotorBase
 	protected boolean isReversed = false;//Is the motor reversed
 	protected RotationalDirection direction = RotationalDirection.NONE;//The direction the motor is spinning
 	
+	protected boolean isRunning = false;
+	
 	/**
 	 * Sets the speed of the motor
 	 * @param speed
@@ -40,6 +42,16 @@ public abstract class MotorBase
 	public boolean isReversed()
 	{
 		return isReversed;
+	}
+	
+	public boolean isRunning()
+	{
+		return isRunning;
+	}
+	
+	public void setRunning(boolean isRunning)
+	{
+		this.isRunning = isRunning;
 	}
 	
 	/**

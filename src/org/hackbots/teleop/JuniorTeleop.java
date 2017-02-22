@@ -11,6 +11,9 @@ import org.hackbots.util.ButtonGamepad;
 import org.hackbots.util.Observer;
 import org.hackbots.util.Subject;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class JuniorTeleop implements ITeleop, Observer
 {
 	private HBJoystick rightJoystick;
@@ -30,6 +33,11 @@ public class JuniorTeleop implements ITeleop, Observer
 	private NavX navX;
 	
 	private Drivetrain drivetrain = ActuatorConfig.getInstance().getDrivetrain();
+	
+	//private final double FRICTION_FACTOR_SHOP = 8;
+	private final double FRICTION_FACTOR_CAFETERIA = 14.37;
+	
+	private PowerDistributionPanel pdb = new PowerDistributionPanel(0);
 	
 	public void init() 
 	{
@@ -68,15 +76,17 @@ public class JuniorTeleop implements ITeleop, Observer
 		{
 			while(isRunning)
 			{
-				/*SmartDashboard.putNumber("Yaw: ", navX.getRawYaw());
+				SmartDashboard.putNumber("Yaw: ", navX.getYaw());
 				SmartDashboard.putNumber("Pitch: ", navX.getPitch());
-				SmartDashboard.putNumber("Roll: ", navX.getRoll());*/
+				SmartDashboard.putNumber("Roll: ", navX.getRoll());
+				SmartDashboard.putNumber("Shooter Current: ", pdb.getCurrent(6));
+				SmartDashboard.putNumber("Agitator Current: ", pdb.getCurrent(3));
 				
-				if (leftJoystick.getY() > 0.1 || rightJoystick.getY() > 0.1 || leftJoystick.getY() < -0.1 || rightJoystick.getY() < -0.1)
+				if (leftJoystick.getY() > 0.15 || rightJoystick.getY() > 0.15 || leftJoystick.getY() < -0.20 || rightJoystick.getY() < -0.1)
 				{
 					drivetrain.setSpeed((leftJoystick.getYAxis()), (rightJoystick.getYAxis()));
 				}
-				else if((leftJoystick.getY() > 0.1 && rightJoystick.getY() < -0.1) || (leftJoystick.getY() < -0.1 && rightJoystick.getY() > 0.1))
+				else if((leftJoystick.getY() > 0.15 && rightJoystick.getY() < -0.15) || (leftJoystick.getY() < -0.20 && rightJoystick.getY() > 0.1))
 				{
 					drivetrain.setSpeed((leftJoystick.getYAxis() / 2), (rightJoystick.getYAxis() / 2));
 				}
@@ -89,6 +99,35 @@ public class JuniorTeleop implements ITeleop, Observer
 				//TODO: Change the drivetrain speed from 0.2 to +0.2 of the velocity so you can drive forward.
 				if (rightJoystick.getRawButton(1))
 				{
+					double heading = Math.round(navX.getYaw()) + 90;
+					
+					
+					
+					if(heading > 360)
+					{
+						heading -= 360;
+						
+						while((navX.getYaw() + FRICTION_FACTOR_CAFETERIA - 2) > heading)
+						{
+							System.out.println("Turning to " + heading + "At: " + navX.getYaw());
+							drivetrain.setSpeed(0.3, -0.3);
+						}	
+					}
+					
+						while((navX.getYaw() + FRICTION_FACTOR_CAFETERIA) < heading)
+						{
+							System.out.println("Turning to " + heading + "At: " + navX.getYaw());
+							drivetrain.setSpeed(0.3, -0.3);
+						}	
+					
+					
+					System.out.println("Heading: " + heading);
+					
+					
+					
+					
+					
+					
 					//startingAngle = Math.round(navX.getRawYaw());
 					
 					/*while (rightJoystick.getRawButton(1))
@@ -103,6 +142,66 @@ public class JuniorTeleop implements ITeleop, Observer
 						}
 					}*/
 				}
+				
+				if(leftJoystick.getRawButton(1))
+				{
+					ActuatorConfig.getInstance().getAgitator().setSpeed(-0.20);
+				}
+				else if (leftJoystick.getRawButton(4))
+				{
+					ActuatorConfig.getInstance().getAgitator().setSpeed(0.4);
+				}
+				else
+				{
+					ActuatorConfig.getInstance().getAgitator().setSpeed(0);
+				}
+				
+				if(leftJoystick.getRawButton(2))
+				{
+					ActuatorConfig.getInstance().getClimberMotor().setSpeed(-1);
+				}
+				else
+				{
+					ActuatorConfig.getInstance().getClimberMotor().setSpeed(0);
+				}
+				
+				if(leftJoystick.getRawButton(3))
+				{
+					ActuatorConfig.getInstance().getShooter().setSpeed(0.9);
+				}
+				else
+				{
+					ActuatorConfig.getInstance().getShooter().setSpeed(0);
+				}
+				
+				if(leftJoystick.getRawButton(6))
+				{
+					ActuatorConfig.getInstance().getIntakeMotor().setSpeed(-1);
+				}
+				else
+				{
+					ActuatorConfig.getInstance().getIntakeMotor().setSpeed(0);
+				}
+				
+//				if(leftJoystick.getRawButton(5))
+//				{
+//					ActuatorConfig.getInstance().getShooter().setSpeed(0.9);
+//					
+//					if(ActuatorConfig.getInstance().getShooter().isRunning())
+//					{
+//						System.out.println("Shooter is Runnin");
+//
+//						ActuatorConfig.getInstance().getAgitator().setSpeed(-0.25);
+//					}
+//				}
+//				else
+//				{
+//					ActuatorConfig.getInstance().getShooter().setSpeed(0);
+//					ActuatorConfig.getInstance().getAgitator().setSpeed(0);
+//				}
+				
+				
+				
 //				if (rightJoystick.getRawButton(2))
 //				{
 //					drivetrain.setSpeed(-0.2, 0.2);
@@ -116,16 +215,36 @@ public class JuniorTeleop implements ITeleop, Observer
 		{
 			while(isRunning)
 			{				
-				if(gamepad.getButtonValue(ButtonGamepad.SEVEN))
+				if(gamepad.getButtonValue(ButtonGamepad.EIGHT))
 				{
 					leftJoystick.setReversed(true);
 					rightJoystick.setReversed(true);
 				}		
-				else if(gamepad.getButtonValue(ButtonGamepad.EIGHT))
+				else if(gamepad.getButtonValue(ButtonGamepad.SEVEN))
 				{
 					leftJoystick.setReversed(false);
 					rightJoystick.setReversed(false);
-				}				
+				}
+				
+				if(gamepad.getButtonValue(ButtonGamepad.ONE))
+				{
+					
+				}
+				
+				if(gamepad.getButtonValue(ButtonGamepad.TWO))
+				{
+					
+				}
+				
+				if(gamepad.getButtonValue(ButtonGamepad.THREE))
+				{
+					
+				}
+			
+				/*if(gamepad.getButtonValue(ButtonGamepad.FOUR))
+				{
+								
+				}*/
 			}
 		}		
 	}
