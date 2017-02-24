@@ -52,9 +52,7 @@ public class Robot extends SampleRobot
 		RobotStatus.setIsTeleop(true);
 		
 		System.out.println("Telop Running!");
-		teleop.init();
-		
-		teleop.update();		
+		teleop.init();		
 	}
 	
 	/**

@@ -57,11 +57,6 @@ public class JuniorTeleop implements ITeleop, Observer
 		isRunning = true;
 	}
 	
-	public void update()
-	{
-		
-	}
-	
 	public void stop()
 	{
 		if(isRunning)
@@ -143,20 +138,20 @@ public class JuniorTeleop implements ITeleop, Observer
 					}*/
 				}
 				
-				if(leftJoystick.getRawButton(1))
+				if(gamepad.getButtonValue(ButtonGamepad.ONE))
 				{
 					ActuatorConfig.getInstance().getAgitator().setSpeed(-0.20);
 				}
-				else if (leftJoystick.getRawButton(4))
+				/*else if(gamepad.getButtonValue(ButtonGamepad.))
 				{
 					ActuatorConfig.getInstance().getAgitator().setSpeed(0.4);
-				}
+				}*/
 				else
 				{
 					ActuatorConfig.getInstance().getAgitator().setSpeed(0);
 				}
 				
-				if(leftJoystick.getRawButton(2))
+				if(gamepad.getButtonValue(ButtonGamepad.SIX))
 				{
 					ActuatorConfig.getInstance().getClimberMotor().setSpeed(-1);
 				}
@@ -165,7 +160,7 @@ public class JuniorTeleop implements ITeleop, Observer
 					ActuatorConfig.getInstance().getClimberMotor().setSpeed(0);
 				}
 				
-				if(leftJoystick.getRawButton(3))
+				if(gamepad.getButtonValue(ButtonGamepad.THREE))
 				{
 					ActuatorConfig.getInstance().getShooter().setSpeed(0.9);
 				}
@@ -174,7 +169,7 @@ public class JuniorTeleop implements ITeleop, Observer
 					ActuatorConfig.getInstance().getShooter().setSpeed(0);
 				}
 				
-				if(leftJoystick.getRawButton(6))
+				if(gamepad.getButtonValue(ButtonGamepad.FIVE))
 				{
 					ActuatorConfig.getInstance().getIntakeMotor().setSpeed(-1);
 				}
@@ -183,7 +178,7 @@ public class JuniorTeleop implements ITeleop, Observer
 					ActuatorConfig.getInstance().getIntakeMotor().setSpeed(0);
 				}
 				
-//				if(leftJoystick.getRawButton(5))
+//				if(gamepad.getButtonValue(ButtonGamepad.ONE))
 //				{
 //					ActuatorConfig.getInstance().getShooter().setSpeed(0.9);
 //					
@@ -202,7 +197,7 @@ public class JuniorTeleop implements ITeleop, Observer
 				
 				
 				
-//				if (rightJoystick.getRawButton(2))
+//				if (gamepad.getButtonValue(ButtonGamepad.ONE))
 //				{
 //					drivetrain.setSpeed(-0.2, 0.2);
 //				}
@@ -226,21 +221,6 @@ public class JuniorTeleop implements ITeleop, Observer
 					rightJoystick.setReversed(false);
 				}
 				
-				if(gamepad.getButtonValue(ButtonGamepad.ONE))
-				{
-					
-				}
-				
-				if(gamepad.getButtonValue(ButtonGamepad.TWO))
-				{
-					
-				}
-				
-				if(gamepad.getButtonValue(ButtonGamepad.THREE))
-				{
-					
-				}
-			
 				/*if(gamepad.getButtonValue(ButtonGamepad.FOUR))
 				{
 								
