@@ -2,7 +2,7 @@ package org.hackbots.autonomous;
 
 import org.usfirst.frc.team3414.robot.RobotStatus;
 
-public class AutonDriveLeftAndForward
+public class AutonDriveLeftAndForward extends AutoBase
 {
 	public void doAuto()
 	{

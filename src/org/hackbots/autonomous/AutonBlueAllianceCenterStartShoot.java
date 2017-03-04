@@ -2,7 +2,7 @@ package org.hackbots.autonomous;
 
 import org.usfirst.frc.team3414.robot.RobotStatus;
 
-public class AutonBlueAllianceCenterStartShoot implements IAuton
+public class AutonBlueAllianceCenterStartShoot extends AutoBase
 {
 	public void doAuto()
 	{

@@ -4,7 +4,7 @@ package org.usfirst.frc.team3414.robot;
 import org.hackbots.acutator.ActuatorConfig;
 import org.hackbots.autonomous.AutonDoNothing;
 import org.hackbots.autonomous.AutonDriveForward;
-import org.hackbots.autonomous.IAuton;
+import org.hackbots.autonomous.AutoBase;
 import org.hackbots.sensors.NavX;
 import org.hackbots.sensors.SensorConfig;
 import org.hackbots.teleop.JuniorTeleop;
@@ -19,7 +19,7 @@ public class Robot extends SampleRobot
 	
 	private NavX navX = null;
 	
-	private SendableChooser<IAuton> autonChooser;
+	private SendableChooser<AutoBase> autonChooser;
 
 	public void robotInit() 
 	{
@@ -61,7 +61,7 @@ public class Robot extends SampleRobot
 	public void choseAuto()
 	{
 		
-		autonChooser = new SendableChooser<IAuton>();
+		autonChooser = new SendableChooser<AutoBase>();
 		autonChooser.addObject("Do Nothing", new AutonDoNothing());
 		autonChooser.addObject("Drive Forward", new AutonDriveForward());
 		

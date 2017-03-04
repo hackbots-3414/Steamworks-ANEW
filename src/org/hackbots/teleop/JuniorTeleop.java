@@ -71,11 +71,16 @@ public class JuniorTeleop implements ITeleop, Observer
 		{
 			while(isRunning)
 			{
-				SmartDashboard.putNumber("Yaw: ", navX.getYaw());
+				/*SmartDashboard.putNumber("Yaw: ", navX.getYaw());
 				SmartDashboard.putNumber("Pitch: ", navX.getPitch());
 				SmartDashboard.putNumber("Roll: ", navX.getRoll());
 				SmartDashboard.putNumber("Shooter Current: ", pdb.getCurrent(6));
-				SmartDashboard.putNumber("Agitator Current: ", pdb.getCurrent(3));
+				SmartDashboard.putNumber("Agitator Current: ", pdb.getCurrent(3));*/
+				SmartDashboard.putNumber("Left Encoder", ActuatorConfig.getInstance().getLeftEncoder().getEncPosition());
+				SmartDashboard.putNumber("Right Encoder", ActuatorConfig.getInstance().getRightEncoder().getEncPosition());
+
+				System.out.println("Left Encoder: " + ActuatorConfig.getInstance().getLeftEncoder().getEncPosition());
+				System.out.println("Right Encoder: " + ActuatorConfig.getInstance().getRightEncoder().getEncPosition());
 				
 				if (leftJoystick.getY() > 0.15 || rightJoystick.getY() > 0.15 || leftJoystick.getY() < -0.20 || rightJoystick.getY() < -0.1)
 				{
@@ -116,7 +121,7 @@ public class JuniorTeleop implements ITeleop, Observer
 						}	
 					
 					
-					System.out.println("Heading: " + heading);
+				//	System.out.println("Heading: " + heading);
 					
 					
 					
