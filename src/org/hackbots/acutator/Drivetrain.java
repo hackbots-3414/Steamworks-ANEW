@@ -54,4 +54,13 @@ public class Drivetrain implements IDriveTrain
 	{
 		
 	}
+	public void goForward(double speed, int distance)
+	{
+		
+	}
+	public void goBackward(double speed, int distance)
+	{
+		
+		
+	}
 }

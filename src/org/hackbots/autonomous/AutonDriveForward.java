@@ -15,11 +15,12 @@ public class AutonDriveForward extends AutoBase
 	{
 		if (RobotStatus.isAuto())
 		{
-			driveTrain.setSpeed(0.4);
-			
-			timer.delay(1.8);
-			
-			driveTrain.stop();
+//			driveTrain.setSpeed(0.4);
+//			
+			ActuatorConfig.getInstance().getDrivetrain().goForward(0.4, 0);
+//			
+//			
+//			driveTrain.stop();
 		}
 	}
 }

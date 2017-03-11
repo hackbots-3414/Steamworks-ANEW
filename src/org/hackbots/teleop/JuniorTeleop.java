@@ -9,6 +9,7 @@ import org.hackbots.sensors.NavX;
 import org.hackbots.sensors.SensorConfig;
 import org.hackbots.util.ButtonGamepad;
 import org.hackbots.util.Observer;
+import org.hackbots.util.RobotDimensions;
 import org.hackbots.util.Subject;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -76,12 +77,28 @@ public class JuniorTeleop implements ITeleop, Observer
 				SmartDashboard.putNumber("Roll: ", navX.getRoll());
 				SmartDashboard.putNumber("Shooter Current: ", pdb.getCurrent(6));
 				SmartDashboard.putNumber("Agitator Current: ", pdb.getCurrent(3));*/
-				SmartDashboard.putNumber("Left Encoder", ActuatorConfig.getInstance().getLeftEncoder().getEncPosition());
-				SmartDashboard.putNumber("Right Encoder", ActuatorConfig.getInstance().getRightEncoder().getEncPosition());
+				SmartDashboard.putNumber("Left Encoder", ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (1/415.18));//
+				SmartDashboard.putNumber("Right Encoder", ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (1/415.18));
 
-				System.out.println("Left Encoder: " + ActuatorConfig.getInstance().getLeftEncoder().getEncPosition());
-				System.out.println("Right Encoder: " + ActuatorConfig.getInstance().getRightEncoder().getEncPosition());
-				
+			//	System.out.println("Left Encoder: " + ActuatorConfig.getInstance().getLeftEncoder().getEncPosition());
+			//	System.out.println("Right Encoder: " + ActuatorConfig.getInstance().getRightEncoder().getEncPosition());
+
+//		        /* on button1 press enter closed-loop mode on target position */
+//		        if(rightJoystick.getRawButton(1)) 
+//		        {
+//		        	/* Position mode - button just pressed */
+//		        	targetPositionRotations = rightJoystick.getY() * 50.0; /* 50 Rotations in either direction */
+//		        	rightTalonTwo.changeControlMode(TalonControlMode.Position);
+//		        	rightTalonTwo.set(targetPositionRotations); /* 50 rotations in either direction */
+//		        }
+//		        /* on button2 just straight drive */
+//		        if(leftJoystick.getRawButton(2)) 
+//		        {
+//		        	/* Percent voltage mode */
+//		        	rightTalonTwo.changeControlMode(TalonControlMode.PercentVbus);
+//		        	rightTalonTwo.set(rightJoystick);
+//		        }
+//				
 				if (leftJoystick.getY() > 0.15 || rightJoystick.getY() > 0.15 || leftJoystick.getY() < -0.20 || rightJoystick.getY() < -0.1)
 				{
 					drivetrain.setSpeed((leftJoystick.getYAxis()), (rightJoystick.getYAxis()));
@@ -97,51 +114,54 @@ public class JuniorTeleop implements ITeleop, Observer
 				}
 				
 				//TODO: Change the drivetrain speed from 0.2 to +0.2 of the velocity so you can drive forward.
-				if (rightJoystick.getRawButton(1))
-				{
-					double heading = Math.round(navX.getYaw()) + 90;
-					
-					
-					
-					if(heading > 360)
-					{
-						heading -= 360;
-						
-						while((navX.getYaw() + FRICTION_FACTOR_CAFETERIA - 2) > heading)
-						{
-							System.out.println("Turning to " + heading + "At: " + navX.getYaw());
-							drivetrain.setSpeed(0.3, -0.3);
-						}	
-					}
-					
-						while((navX.getYaw() + FRICTION_FACTOR_CAFETERIA) < heading)
-						{
-							System.out.println("Turning to " + heading + "At: " + navX.getYaw());
-							drivetrain.setSpeed(0.3, -0.3);
-						}	
-					
-					
-				//	System.out.println("Heading: " + heading);
-					
-					
-					
-					
-					
-					
-					//startingAngle = Math.round(navX.getRawYaw());
-					
-					/*while (rightJoystick.getRawButton(1))
-					{
-						if(navX.getYaw() > startingAngle - 1)
-						{
-							drivetrain.setSpeed(0.2, -0.2);
-						}
-						else if (navX.getYaw() < startingAngle + 1)
-						{
-							drivetrain.setSpeed(-0.2, 0.2);
-						}
-					}*/
-				}
+//				if (rightJoystick.getRawButton(11))
+//				{
+////					System.out.println("SetcPointing");
+////					ActuatorConfig.getInstance().getPIDController().setSetpoint(200);
+////					
+//
+//
+//					/*double heading = Math.round(navX.getYaw()) + 90;		
+//					
+//					if(heading > 360)
+//					{
+//						heading -= 360;
+//						
+//						while((navX.getYaw() + FRICTION_FACTOR_CAFETERIA - 2) > heading)
+//						{
+//							System.out.println("Turning to " + heading + "At: " + navX.getYaw());
+//							drivetrain.setSpeed(0.3, -0.3);
+//						}	
+//					}
+//					
+//						while((navX.getYaw() + FRICTION_FACTOR_CAFETERIA) < heading)
+//						{
+//							System.out.println("Turning to " + heading + "At: " + navX.getYaw());
+//							drivetrain.setSpeed(0.3, -0.3);
+//						}	*/
+//					
+//					
+//				//	System.out.println("Heading: " + heading);
+//					
+//					
+//					
+//					
+//					
+//					
+//					//startingAngle = Math.round(navX.getRawYaw());
+//					
+//					/*while (rightJoystick.getRawButton(1))
+//					{
+//						if(navX.getYaw() > startingAngle - 1)
+//						{
+//							drivetrain.setSpeed(0.2, -0.2);
+//						}
+//						else if (navX.getYaw() < startingAngle + 1)
+//						{
+//							drivetrain.setSpeed(-0.2, 0.2);
+//						}
+//					}*/
+//				}
 				
 				if(gamepad.getButtonValue(ButtonGamepad.ONE))
 				{
