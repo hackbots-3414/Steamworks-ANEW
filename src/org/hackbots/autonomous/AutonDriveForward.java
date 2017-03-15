@@ -7,20 +7,25 @@ import org.hackbots.sensors.SensorConfig;
 import org.usfirst.frc.team3414.robot.RobotStatus;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutonDriveForward extends AutoBase
 {
 
 	public void doAuto()
 	{
-		if (RobotStatus.isAuto())
+		//ActuatorConfig.getInstance().getDrivetrain().setSpeed(0.2);
+		
+		if(RobotStatus.isAuto())
 		{
-//			driveTrain.setSpeed(0.4);
-//			
-			ActuatorConfig.getInstance().getDrivetrain().goForward(0.4, 0);
-//			
-//			
-//			driveTrain.stop();
+			System.out.println("Driving Forward Auton");
+			
+			SmartDashboard.putNumber("Left Encoder", ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.00013));//
+			SmartDashboard.putNumber("Right Encoder", ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.00013));
+
+			ActuatorConfig.getInstance().getDrivetrain().goForward(1, 1);
+			//ActuatorConfig.getInstance().getDrivetrain().setSpeed(1);
+			
 		}
 	}
 }

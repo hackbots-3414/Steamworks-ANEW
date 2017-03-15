@@ -20,7 +20,8 @@ public class ActuatorConfig
 	private CANTalon leftTalonThree;
 	
 	private CANTalon agitatorTalon;
-	private CANTalon climberTalon;
+	private CANTalon climberTalon1;
+	private CANTalon climberTalon2;
 	private CANTalon shooterTalon;
 	private CANTalon intakeTalon;
 
@@ -32,12 +33,15 @@ public class ActuatorConfig
 	private Motor leftMotorThree;
 	
 	private Motor agitatorMotor;
-	private Motor climberMotor;
+	private Motor climberMotor1;
+	private Motor climberMotor2;
 	private Motor shooterMotor;
 	private Motor intakeMotor;
 	
 	private TripleMotor leftTripleMotor;
 	private TripleMotor rightTripleMotor;
+	
+	private DoubleMotor climberMotors;
 	
 	private Drivetrain drivetrain;
 	
@@ -74,7 +78,8 @@ public class ActuatorConfig
 		
 		//Make the agitator (hopper) 1/2 power
 		agitatorTalon = new CANTalon (9);
-		climberTalon = new CANTalon (7);
+		climberTalon1 = new CANTalon (7);
+		climberTalon2 = new CANTalon (10);
 		shooterTalon = new CANTalon (6);
 		intakeTalon = new CANTalon (8);
 		
@@ -122,7 +127,8 @@ public class ActuatorConfig
 		leftMotorThree = new Motor(leftTalonThree);
 		
 		agitatorMotor = new Motor (agitatorTalon);
-		climberMotor = new Motor (climberTalon);
+		climberMotor1 = new Motor (climberTalon1);
+		climberMotor2 = new Motor (climberTalon2);
 		shooterMotor = new Motor (shooterTalon);
 		intakeMotor = new Motor (intakeTalon);
 		
@@ -142,6 +148,8 @@ public class ActuatorConfig
 		
 		drivetrain = new Drivetrain(rightTripleMotor, leftTripleMotor);
 		
+		climberMotors = new DoubleMotor(climberMotor1, climberMotor2);
+		
 	}
 	
 	public Drivetrain getDrivetrain()
@@ -159,9 +167,9 @@ public class ActuatorConfig
 		return shooterMotor;
 	}
 	
-	public Motor getClimberMotor()
+	public DoubleMotor getClimberMotor()
 	{
-		return climberMotor;
+		return climberMotors;
 	}
 	
 	public Motor getIntakeMotor()

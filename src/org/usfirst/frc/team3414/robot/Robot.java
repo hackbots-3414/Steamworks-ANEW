@@ -33,7 +33,7 @@ public class Robot extends SampleRobot
 		navX = SensorConfig.getInstance().getNavX();
 		navX.registerObserver(teleop);
 		
-		choseAuto();
+		chooseAuto();
 		
 		
 	}
@@ -58,7 +58,7 @@ public class Robot extends SampleRobot
 	/**
 	 * Chose's the autonomous mode
 	 */
-	public void choseAuto()
+	public void chooseAuto()
 	{
 		
 		autonChooser = new SendableChooser<AutoBase>();
@@ -79,4 +79,5 @@ public class Robot extends SampleRobot
 		
 		autonChooser.getSelected().doAuto();
 	}
+	
 }

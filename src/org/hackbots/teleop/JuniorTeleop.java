@@ -38,7 +38,7 @@ public class JuniorTeleop implements ITeleop, Observer
 	//private final double FRICTION_FACTOR_SHOP = 8;
 	private final double FRICTION_FACTOR_CAFETERIA = 14.37;
 	
-	private PowerDistributionPanel pdb = new PowerDistributionPanel(0);
+	private PowerDistributionPanel pdb = new PowerDistributionPanel(8);
 	
 	public void init() 
 	{
@@ -77,8 +77,8 @@ public class JuniorTeleop implements ITeleop, Observer
 				SmartDashboard.putNumber("Roll: ", navX.getRoll());
 				SmartDashboard.putNumber("Shooter Current: ", pdb.getCurrent(6));
 				SmartDashboard.putNumber("Agitator Current: ", pdb.getCurrent(3));*/
-				SmartDashboard.putNumber("Left Encoder", ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (1/415.18));//
-				SmartDashboard.putNumber("Right Encoder", ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (1/415.18));
+//				SmartDashboard.putNumber("Left Encoder", ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.00013));//
+//				SmartDashboard.putNumber("Right Encoder", ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.00013));
 
 			//	System.out.println("Left Encoder: " + ActuatorConfig.getInstance().getLeftEncoder().getEncPosition());
 			//	System.out.println("Right Encoder: " + ActuatorConfig.getInstance().getRightEncoder().getEncPosition());
@@ -98,6 +98,52 @@ public class JuniorTeleop implements ITeleop, Observer
 //		        	rightTalonTwo.changeControlMode(TalonControlMode.PercentVbus);
 //		        	rightTalonTwo.set(rightJoystick);
 //		        }
+				
+				/*if(leftJoystick.getRawButton(8))
+				{
+					drivetrain.setSpeed(0.5, 0.5);
+				}
+				else if(leftJoystick.getRawButton(7))
+				{
+					drivetrain.stop();
+				}*/
+				
+				/*if(rightJoystick.getRawButton(7))
+				{
+					ActuatorConfig.getInstance().getDrivetrain().getRightMotor().getMotorOne().setSpeed(1);
+				}
+				else if(rightJoystick.getRawButton(8))
+				{
+					ActuatorConfig.getInstance().getDrivetrain().getRightMotor().getMotorTwo().setSpeed(1);
+				}
+				else if(rightJoystick.getRawButton(9))
+				{
+					ActuatorConfig.getInstance().getDrivetrain().getRightMotor().getMotorThree().setSpeed(1);
+				}
+				else if(rightJoystick.getRawButton(10))
+				{
+					ActuatorConfig.getInstance().getDrivetrain().getLeftMotor().getMotorOne().setSpeed(1);
+				}
+				else if(rightJoystick.getRawButton(11))
+				{
+					ActuatorConfig.getInstance().getDrivetrain().getLeftMotor().getMotorTwo().setSpeed(1);
+				}
+				else if(rightJoystick.getRawButton(12))
+				{
+					ActuatorConfig.getInstance().getDrivetrain().getLeftMotor().getMotorThree().setSpeed(1);
+				}
+				else if(rightJoystick.getRawButton(1))
+				{
+					ActuatorConfig.getInstance().getDrivetrain().stop();
+					System.out.println("Stopping");
+				}*/
+				
+				SmartDashboard.putNumber("Motor 1A", pdb.getCurrent(3));
+				SmartDashboard.putNumber("Motor 2A", pdb.getCurrent(14));
+				SmartDashboard.putNumber("Motor 3A", pdb.getCurrent(1));
+				SmartDashboard.putNumber("Motor 1B", pdb.getCurrent(2));
+				SmartDashboard.putNumber("Motor 2B", pdb.getCurrent(15));
+				SmartDashboard.putNumber("Motor 3B", pdb.getCurrent(0));
 //				
 				if (leftJoystick.getY() > 0.15 || rightJoystick.getY() > 0.15 || leftJoystick.getY() < -0.20 || rightJoystick.getY() < -0.1)
 				{
