@@ -19,11 +19,9 @@ public class AutonDriveForward extends AutoBase
 		if(RobotStatus.isAuto())
 		{
 			System.out.println("Driving Forward Auton");
-			
-			SmartDashboard.putNumber("Left Encoder", ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.00013));//
-			SmartDashboard.putNumber("Right Encoder", ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.00013));
 
-			ActuatorConfig.getInstance().getDrivetrain().goForward(1, 1);
+			ActuatorConfig.getInstance().getDrivetrain().goForward(0.4,3);
+		//	ActuatorConfig.getInstance().getDrivetrain().goBackward(0.2,1);
 			//ActuatorConfig.getInstance().getDrivetrain().setSpeed(1);
 			
 		}

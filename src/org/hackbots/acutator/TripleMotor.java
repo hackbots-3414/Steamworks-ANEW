@@ -29,9 +29,9 @@ public class TripleMotor extends MotorBase
 	{
 		if(isSafeConfig())
 		{
-		  //motorOne.setSpeed(speed);
+		    motorOne.setSpeed(speed);
 			motorTwo.setSpeed(speed);
-			//motorThree.setSpeed(speed);
+			motorThree.setSpeed(speed);
 		}	
 	}
 	

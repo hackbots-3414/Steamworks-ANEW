@@ -6,7 +6,7 @@ public class AutonLeftStartCenterGear extends AutoBase
 {
 	public void doAuto()
 	{
-		while (RobotStatus.isAuto())
+		if (RobotStatus.isAuto())
 		{
 			
 		}

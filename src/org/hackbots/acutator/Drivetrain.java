@@ -56,16 +56,68 @@ public class Drivetrain implements IDriveTrain
 	{
 		
 	}
+	
 	public void goForward(double speed, int distance)
 	{
 		boolean isRightComplete = false;
 		boolean isLeftComplete = false;
 		
-		double rightEncoderValue = ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.00013);
-		double leftEncoderValue =  ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.00013);
+		double rightEncoderValue = ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.000122);
+		double leftEncoderValue =  ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.000122);
 		
 		double distanceRight  = distance + (-rightEncoderValue);
 		double distanceLeft = distance + (-leftEncoderValue);
+		
+		System.out.println("Right Encoeifarghagdf.gh.: " + rightEncoderValue);
+		System.out.println("Left Encoeifarghagdf.gh.: " +  (-leftEncoderValue));
+		
+		ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed * 0.85, speed);
+		
+		 SmartDashboard.putNumber("Right Distance To ", distanceRight);
+		 SmartDashboard.putNumber("Left Distance To ", distanceLeft);
+		
+		while(!isRightComplete && !isLeftComplete)
+		{
+			 rightEncoderValue = ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.000122);
+			 leftEncoderValue = ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.000122);
+			 
+			 
+			 SmartDashboard.putNumber("Left Enoder Value ", leftEncoderValue);
+			 SmartDashboard.putNumber("Right Encoder Value", rightEncoderValue);
+			
+			if(rightEncoderValue >= (distanceRight - 0.19))
+			{
+				isRightComplete = true;
+			//	ActuatorConfig.getInstance().getDrivetrain().getRightMotor().stop();
+				System.out.println("Right Stoped");
+			}
+			
+			if(leftEncoderValue >= (distanceLeft - 0.19))
+			{
+				isLeftComplete = true;
+			//	ActuatorConfig.getInstance().getDrivetrain().getLeftMotor().stop();
+				System.out.println("Left Stoped");
+			}
+		}	
+		ActuatorConfig.getInstance().getDrivetrain().stop();
+	}
+	
+	public void goBackward(double speed, int distance)
+	{
+		boolean isRightComplete = false;
+		boolean isLeftComplete = false;
+		
+		double rightEncoderValue = ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.000122);
+		double leftEncoderValue =  ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.000122);
+		
+		double distanceRight  = distance + (-rightEncoderValue);
+		double distanceLeft = distance + (-leftEncoderValue);
+		
+		System.out.println("Right Encoeifarghagdf.gh.: " + rightEncoderValue);
+		System.out.println("Left Encoeifarghagdf.gh.: " +  (-leftEncoderValue));
+		
+		speed = -speed;
+		distance = -distance;
 		
 		ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed);
 		
@@ -73,33 +125,28 @@ public class Drivetrain implements IDriveTrain
 		 SmartDashboard.putNumber("Left Distance To ", distanceLeft);
 		
 		while(!isRightComplete || !isLeftComplete)
+			
 		{
-			 rightEncoderValue = ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.00013);
-			 leftEncoderValue = ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.00013);
+			 rightEncoderValue = ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.000122);
+			 leftEncoderValue = ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.000122);
 			 
 			 
 			 SmartDashboard.putNumber("Left Enoder Value ", leftEncoderValue);
 			 SmartDashboard.putNumber("Right Encoder Value", rightEncoderValue);
 			
-			if(rightEncoderValue >= distanceRight)
+			if(rightEncoderValue <= (distanceRight - 0.19))
 			{
 				isRightComplete = true;
 				ActuatorConfig.getInstance().getDrivetrain().getRightMotor().stop();
 				System.out.println("Right Stoped");
 			}
 			
-			if(leftEncoderValue >= distanceLeft)
+			if(leftEncoderValue <= (distanceLeft - 0.19))
 			{
 				isLeftComplete = true;
 				ActuatorConfig.getInstance().getDrivetrain().getLeftMotor().stop();
 				System.out.println("Left Stoped");
 			}
 		}	
-	}
-	
-	public void goBackward(double speed, int distance)
-	{
-		
-		
 	}
 }

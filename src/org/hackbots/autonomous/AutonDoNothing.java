@@ -6,7 +6,7 @@ public class AutonDoNothing extends AutoBase
 {
 	public void doAuto()
 	{
-		while (RobotStatus.isAuto())
+		if (RobotStatus.isAuto())
 		{
 			System.out.println("I dont wanna! You told us to do nothing :3  - Kayleigh, Hannah, Tyler");
 

@@ -77,8 +77,8 @@ public class JuniorTeleop implements ITeleop, Observer
 				SmartDashboard.putNumber("Roll: ", navX.getRoll());
 				SmartDashboard.putNumber("Shooter Current: ", pdb.getCurrent(6));
 				SmartDashboard.putNumber("Agitator Current: ", pdb.getCurrent(3));*/
-//				SmartDashboard.putNumber("Left Encoder", ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.00013));//
-//				SmartDashboard.putNumber("Right Encoder", ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.00013));
+			SmartDashboard.putNumber("Left Encoder - Teleop", ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.000122));//
+				SmartDashboard.putNumber("Right Encoder - Teleop", ActuatorConfig.getInstance().getRightEncoder().getEncPosition()* (0.000122));
 
 			//	System.out.println("Left Encoder: " + ActuatorConfig.getInstance().getLeftEncoder().getEncPosition());
 			//	System.out.println("Right Encoder: " + ActuatorConfig.getInstance().getRightEncoder().getEncPosition());
@@ -136,7 +136,7 @@ public class JuniorTeleop implements ITeleop, Observer
 				{
 					ActuatorConfig.getInstance().getDrivetrain().stop();
 					System.out.println("Stopping");
-				}*/
+				}
 				
 				SmartDashboard.putNumber("Motor 1A", pdb.getCurrent(3));
 				SmartDashboard.putNumber("Motor 2A", pdb.getCurrent(14));
@@ -144,7 +144,7 @@ public class JuniorTeleop implements ITeleop, Observer
 				SmartDashboard.putNumber("Motor 1B", pdb.getCurrent(2));
 				SmartDashboard.putNumber("Motor 2B", pdb.getCurrent(15));
 				SmartDashboard.putNumber("Motor 3B", pdb.getCurrent(0));
-//				
+//	*/			
 				if (leftJoystick.getY() > 0.15 || rightJoystick.getY() > 0.15 || leftJoystick.getY() < -0.20 || rightJoystick.getY() < -0.1)
 				{
 					drivetrain.setSpeed((leftJoystick.getYAxis()), (rightJoystick.getYAxis()));
