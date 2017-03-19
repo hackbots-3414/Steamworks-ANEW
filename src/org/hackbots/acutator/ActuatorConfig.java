@@ -132,6 +132,7 @@ public class ActuatorConfig
 		shooterMotor = new Motor (shooterTalon);
 		intakeMotor = new Motor (intakeTalon);
 		
+		
 		leftTalonThree.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		leftTalonThree.configEncoderCodesPerRev(2048);
 		leftTalonThree.setPosition(0);
@@ -186,5 +187,60 @@ public class ActuatorConfig
 	{
 		return leftTalonThree;
 	}
-
+	
+	public void motorTest()
+	{
+		//Motor test
+		rightMotorOne.setSpeed(1);
+		rightMotorTwo.setSpeed(1);
+		rightMotorThree.setSpeed(1);
+		for (int i=0; i<10000; i++) {
+			// Crude wait
+			System.out.println(i);
+		}
+		rightMotorOne.setSpeed(0);
+		rightMotorTwo.setSpeed(0);
+		rightMotorThree.setSpeed(0);
+		
+		leftMotorOne.setSpeed(1);
+		leftMotorTwo.setSpeed(1);
+		leftMotorThree.setSpeed(1);
+		for (int i=0; i<10000; i++) { 
+			// Crude wait
+			System.out.println(i);
+		}
+		leftMotorOne.setSpeed(0);
+		leftMotorTwo.setSpeed(0);
+		leftMotorThree.setSpeed(0);
+		
+		
+//		rightMotorTwo.setSpeed(1);
+//		for (int i=0; i<10000; i++) {
+//			// Crude wait
+//			System.out.println(i);
+//		}
+//		rightMotorTwo.setSpeed(0);
+//		
+//		leftMotorTwo.setSpeed(1);
+//		for (int i=0; i<10000; i++) {
+//			// Crude wait
+//			System.out.println(i);
+//		}
+//		leftMotorTwo.setSpeed(0);
+//
+//		rightMotorThree.setSpeed(1);
+//		for (int i=0; i<10000; i++) {
+//		// Crude wait
+//		System.out.println(i);
+//		}
+//		rightMotorThree.setSpeed(0);
+//
+//		leftMotorThree.setSpeed(1);
+//		for (int i=0; i<10000; i++) {
+//			// Crude wait
+//			System.out.println(i);
+//		}
+//		leftMotorThree.setSpeed(0);
+//		
+	}
 }

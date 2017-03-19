@@ -19,11 +19,8 @@ public class AutonDriveForward extends AutoBase
 		if(RobotStatus.isAuto())
 		{
 			System.out.println("Driving Forward Auton");
-
-			ActuatorConfig.getInstance().getDrivetrain().goForward(0.4,3);
-		//	ActuatorConfig.getInstance().getDrivetrain().goBackward(0.2,1);
-			//ActuatorConfig.getInstance().getDrivetrain().setSpeed(1);
-			
+			ActuatorConfig.getInstance().getDrivetrain().goForward(3);
+			//ActuatorConfig.getInstance().getDrivetrain().turnLeft(0.5, 90);
 		}
 	}
 }

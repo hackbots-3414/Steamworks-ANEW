@@ -16,7 +16,14 @@ public class AutonCenterStartLeftGear extends AutoBase
 	{
 		if (RobotStatus.isAuto())
 		{
-			
+			System.out.println("Left Gear Delivery (Center Start)");
+			ActuatorConfig.getInstance().getDrivetrain().goForward(2);
+			ActuatorConfig.getInstance().getDrivetrain().turnLeft(0.5, 90);
+			ActuatorConfig.getInstance().getDrivetrain().goForward(4);
+			ActuatorConfig.getInstance().getDrivetrain().turnRight(0.5, 90);
+			ActuatorConfig.getInstance().getDrivetrain().goForward(8);
+			ActuatorConfig.getInstance().getDrivetrain().turnRight(0.5, 120);
+			ActuatorConfig.getInstance().getDrivetrain().goForward(2);
 		}
 	}
 
