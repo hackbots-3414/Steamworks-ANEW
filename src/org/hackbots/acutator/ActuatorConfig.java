@@ -4,6 +4,7 @@ import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ActuatorConfig 
 {
@@ -191,27 +192,30 @@ public class ActuatorConfig
 	public void motorTest()
 	{
 		//Motor test
-		rightMotorOne.setSpeed(1);
-		rightMotorTwo.setSpeed(1);
-		rightMotorThree.setSpeed(1);
-		for (int i=0; i<10000; i++) {
+		SmartDashboard.putNumber("Left Enoder Value ", ActuatorConfig.getInstance().getLeftEncoder().getEncPosition());
+		SmartDashboard.putNumber("Right Encoder Value", ActuatorConfig.getInstance().getRightEncoder().getEncPosition());
+		rightMotorOne.setSpeed(.2);
+		leftMotorOne.setSpeed(.2);
+		rightMotorTwo.setSpeed(.2);
+		leftMotorTwo.setSpeed(.2);
+		rightMotorThree.setSpeed(.2);
+		leftMotorThree.setSpeed(.2);
+		for (int i=0; i<15000; i++) {
 			// Crude wait
 			System.out.println(i);
 		}
 		rightMotorOne.setSpeed(0);
-		rightMotorTwo.setSpeed(0);
-		rightMotorThree.setSpeed(0);
-		
-		leftMotorOne.setSpeed(1);
-		leftMotorTwo.setSpeed(1);
-		leftMotorThree.setSpeed(1);
-		for (int i=0; i<10000; i++) { 
-			// Crude wait
-			System.out.println(i);
-		}
 		leftMotorOne.setSpeed(0);
 		leftMotorTwo.setSpeed(0);
+		rightMotorTwo.setSpeed(0);
+		rightMotorThree.setSpeed(0);
 		leftMotorThree.setSpeed(0);
+		SmartDashboard.putNumber("Left Enoder Value ", (ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * -1));
+		SmartDashboard.putNumber("Right Encoder Value", ActuatorConfig.getInstance().getRightEncoder().getEncPosition());
+//		for (int i=0; i<10000; i++) { 
+//			// Crude wait
+//			System.out.println(i);
+//		}
 		
 		
 //		rightMotorTwo.setSpeed(1);
