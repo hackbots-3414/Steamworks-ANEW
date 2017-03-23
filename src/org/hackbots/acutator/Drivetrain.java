@@ -1,7 +1,8 @@
 package org.hackbots.acutator;
 
-import org.hackbots.sensors.SensorConfig;
 import org.hackbots.sensors.NavX;
+import org.hackbots.sensors.SensorConfig;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drivetrain implements IDriveTrain
@@ -44,14 +45,38 @@ public class Drivetrain implements IDriveTrain
 		return leftMotor;
 	}
 
-	public void turn(double speed, double angle) 
+	/*private void turn(double speed, double angle, RotationalDirection direction) 
 	{
+		NavX navX = SensorConfig.getInstance().getNavX();
+		double currentYaw = navX.getYaw();
+		double endAngle = 0;
 		
-	}
 
+		if(endAngle > 360)
+		{
+			endAngle = 360 - endAngle;
+		}
+		
+		if(direction == RotationalDirection.CLOCKWISE)
+		{
+			endAngle = currentYaw + angle;
+			
+			ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, -speed);
+		}
+		else if(direction == RotationalDirection.COUNTERCLOCKWISE)
+		{
+			endAngle = currentYaw - angle;
+			
+			ActuatorConfig.getInstance().getDrivetrain().setSpeed(-speed, speed);
+		}
+		
+		
+	}*/
 
 	public void turnRight(double speed, double angle)
 	{
+		//turn(speed, angle, RotationalDirection.CLOCKWISE);
+		
 		NavX navX = SensorConfig.getInstance().getNavX();
 		
 		double currentYaw = navX.getYaw();
@@ -59,38 +84,46 @@ public class Drivetrain implements IDriveTrain
 		
 		ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, -speed);
 		
-	/*	if(endAngle > 360)
+		if(endAngle > 360)
 		{
-			
-		}*/
-		System.out.println("Curent: " + navX.getYaw());
-		System.out.println("End: " + endAngle);
-		
-		while(navX.getYaw() < endAngle){}
+			endAngle = 360 - endAngle;
+		}
+
+		while(navX.getYaw() < endAngle)
+		{
+			System.out.println("Curent: " + navX.getYaw());
+			System.out.println("End: " + endAngle);
+		}
 		
 		ActuatorConfig.getInstance().getDrivetrain().stop();
 	}
 	
 	public void turnLeft(double speed, double angle)
-	{	
-		NavX navX = SensorConfig.getInstance().getNavX();
+	{
+		//turn(speed, angle, RotationalDirection.COUNTERCLOCKWISE);
 		
+		NavX navX = SensorConfig.getInstance().getNavX();
+	
 		double currentYaw = navX.getYaw();
-		double endAngle = currentYaw - angle;
+		double endAngle = Math.abs(currentYaw - angle);
 		
 		ActuatorConfig.getInstance().getDrivetrain().setSpeed(-speed, speed);
 		
-	/*	if(endAngle > 360)
+		if(endAngle > 360)
 		{
-			
-		}*/
-		
-		while(navX.getYaw() > endAngle){}
+			endAngle = 360 - endAngle;
+		}
+	
+		while(navX.getYaw() > endAngle)
+		{
+			System.out.println("Curent: " + navX.getYaw());
+			System.out.println("End: " + endAngle);
+		}
 		
 		ActuatorConfig.getInstance().getDrivetrain().stop();
 	}
 	
-	private void move(int distance, boolean isReversed)
+	private void move(double distance, double startSpeed, boolean isReversed)
 	{
 		double rightEncoderValue = ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.000122);
 		double leftEncoderValue =  ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.000122);
@@ -110,8 +143,7 @@ public class Drivetrain implements IDriveTrain
 			 {
 				 speed = Math.log(-((leftEncoderValue + rightEncoderValue) / 2) + (distance  + 1));
 			 }
-			
-			 
+					 
 			 if(speed < 0.29)
 			 {
 				 ActuatorConfig.getInstance().getDrivetrain().stop();
@@ -119,7 +151,7 @@ public class Drivetrain implements IDriveTrain
 			 }
 			 else
 			 {
-				 speed = speed * 0.35;//0.25
+				 speed = speed * startSpeed;//0.25
 			 }
 				
 			if(isReversed)
@@ -131,14 +163,18 @@ public class Drivetrain implements IDriveTrain
 		}	
 	}
 	
-	public void goForward(int distance)
+	/**
+	 * Go forward number of rotations (1 Rot ~ 4pi ~ 1ft)
+	 * @param distance
+	 */
+	public void goForward(double distance, double speed)
 	{	
-		move(distance, false);	
+		move(distance, speed, false);	
 	}
 	
-	public void goBackward(int distance)
+	public void goBackward(int distance, double speed)
 	{
-		move(distance, true);
+		move(distance, speed, true);
 	}
 	
 	public void goForwardGyro(double speed, int distance)

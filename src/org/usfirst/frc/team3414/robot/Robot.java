@@ -2,6 +2,12 @@
 package org.usfirst.frc.team3414.robot;
 
 import org.hackbots.acutator.ActuatorConfig;
+import org.hackbots.autonomous.AutoBase;
+import org.hackbots.autonomous.AutonBlueAllianceCenterStartShoot;
+import org.hackbots.autonomous.AutonBlueAllianceLeftStartShoot;
+import org.hackbots.autonomous.AutonCenterStartCenterGear;
+import org.hackbots.autonomous.AutonCenterStartLeftGear;
+import org.hackbots.autonomous.AutonCenterStartRightGear;
 import org.hackbots.autonomous.AutonDoNothing;
 import org.hackbots.autonomous.AutonDriveForward;
 import org.hackbots.autonomous.AutonDriveLeftAndForward;
@@ -12,25 +18,16 @@ import org.hackbots.autonomous.AutonRedAllianceCenterStartShoot;
 import org.hackbots.autonomous.AutonRedAllianceRightStartShoot;
 import org.hackbots.autonomous.AutonRightStartCenterGear;
 import org.hackbots.autonomous.AutonRightStartRightGear;
-import org.hackbots.autonomous.AutoBase;
-import org.hackbots.autonomous.AutonBlueAllianceCenterStartShoot;
-import org.hackbots.autonomous.AutonBlueAllianceLeftStartShoot;
-import org.hackbots.autonomous.AutonCenterStartCenterGear;
-import org.hackbots.autonomous.AutonCenterStartLeftGear;
-import org.hackbots.autonomous.AutonCenterStartRightGear;
-import org.hackbots.sensors.NavX;
 import org.hackbots.sensors.SensorConfig;
 import org.hackbots.teleop.JuniorTeleop;
 
-import edu.wpi.first.wpilibj.SampleRobot;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Robot extends SampleRobot 
+public class Robot 
 {
 	private JuniorTeleop teleop;
-	
-	private NavX navX = null;
 	
 	private SendableChooser<AutoBase> autonChooser;
 
@@ -38,17 +35,15 @@ public class Robot extends SampleRobot
 	{
 		RobotStatus.setIsRunning(true);
 		
+		CameraServer.getInstance().startAutomaticCapture();
+		//camera.setResolution(1280, 720);
+		
 		ActuatorConfig.getInstance().init();
 		SensorConfig.getInstance().init();
 		
 		teleop = new JuniorTeleop();
 		
-		navX = SensorConfig.getInstance().getNavX();
-		navX.registerObserver(teleop);
-		
-		chooseAuto();
-		
-		
+		chooseAuto();	
 	}
 
 	public void disabled()
@@ -56,14 +51,12 @@ public class Robot extends SampleRobot
 		System.out.println("Disabled");
 		// Mentor Francis added the next two lines to reset the encoders each time. This allows repeated testing of Auton without redeploying code
 		ActuatorConfig.getInstance().getRightEncoder().setEncPosition(0);
-		ActuatorConfig.getInstance().getLeftEncoder().setEncPosition(0);
-		//	navX.resetDisplacment();
+		
 		teleop.stop();
 	}
 
 	public void operatorControl() 
 	{
-
 		RobotStatus.setIsRunning(true);
 		RobotStatus.setIsAuto(false);
 		RobotStatus.setIsTeleop(true);

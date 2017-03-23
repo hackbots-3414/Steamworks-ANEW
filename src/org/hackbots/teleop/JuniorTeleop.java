@@ -5,17 +5,12 @@ import org.hackbots.acutator.Drivetrain;
 import org.hackbots.sensors.Gamepad;
 import org.hackbots.sensors.HBJoystick;
 import org.hackbots.sensors.IGamepad;
-import org.hackbots.sensors.NavX;
-import org.hackbots.sensors.SensorConfig;
 import org.hackbots.util.ButtonGamepad;
-import org.hackbots.util.Observer;
-import org.hackbots.util.RobotDimensions;
-import org.hackbots.util.Subject;
 
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class JuniorTeleop implements ITeleop, Observer
+public class JuniorTeleop implements ITeleop
 {
 	private HBJoystick rightJoystick;
 	private HBJoystick leftJoystick;
@@ -25,20 +20,11 @@ public class JuniorTeleop implements ITeleop, Observer
 	private Thread driveThread;
 	private Thread controlThread;
 	
-	private float startingAngle;
-	
 	private boolean isRunning;
-	
-	int i = 0;
-	
-	private NavX navX;
 	
 	private Drivetrain drivetrain = ActuatorConfig.getInstance().getDrivetrain();
 	
-	//private final double FRICTION_FACTOR_SHOP = 8;
-	private final double FRICTION_FACTOR_CAFETERIA = 14.37;
-	
-	private PowerDistributionPanel pdb = new PowerDistributionPanel(8);
+	//private PowerDistributionPanel pdb = new PowerDistributionPanel(8);
 	
 	public void init() 
 	{
@@ -46,8 +32,6 @@ public class JuniorTeleop implements ITeleop, Observer
 		leftJoystick = new HBJoystick(1);
 
 		gamepad = new Gamepad(2);
-		
-		navX = SensorConfig.getInstance().getNavX();
 		
 		driveThread = new Thread(new DriveThread());
 		controlThread = new Thread(new ControlThread());
@@ -72,86 +56,26 @@ public class JuniorTeleop implements ITeleop, Observer
 		{
 			while(isRunning)
 			{
-				/*SmartDashboard.putNumber("Yaw: ", navX.getYaw());
-				SmartDashboard.putNumber("Pitch: ", navX.getPitch());
-				SmartDashboard.putNumber("Roll: ", navX.getRoll());
-				SmartDashboard.putNumber("Shooter Current: ", pdb.getCurrent(6));
-				SmartDashboard.putNumber("Agitator Current: ", pdb.getCurrent(3));*/
-			SmartDashboard.putNumber("Left Encoder - Teleop", ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.000122));//
+				SmartDashboard.putNumber("Left Encoder - Teleop", ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.000122));//
 				SmartDashboard.putNumber("Right Encoder - Teleop", ActuatorConfig.getInstance().getRightEncoder().getEncPosition()* (0.000122));
-
-			//	System.out.println("Left Encoder: " + ActuatorConfig.getInstance().getLeftEncoder().getEncPosition());
-			//	System.out.println("Right Encoder: " + ActuatorConfig.getInstance().getRightEncoder().getEncPosition());
-
-//		        /* on button1 press enter closed-loop mode on target position */
-//		        if(rightJoystick.getRawButton(1)) 
-//		        {
-//		        	/* Position mode - button just pressed */
-//		        	targetPositionRotations = rightJoystick.getY() * 50.0; /* 50 Rotations in either direction */
-//		        	rightTalonTwo.changeControlMode(TalonControlMode.Position);
-//		        	rightTalonTwo.set(targetPositionRotations); /* 50 rotations in either direction */
-//		        }
-//		        /* on button2 just straight drive */
-//		        if(leftJoystick.getRawButton(2)) 
-//		        {
-//		        	/* Percent voltage mode */
-//		        	rightTalonTwo.changeControlMode(TalonControlMode.PercentVbus);
-//		        	rightTalonTwo.set(rightJoystick);
-//		        }
-				
-				/*if(leftJoystick.getRawButton(8))
-				{
-					drivetrain.setSpeed(0.5, 0.5);
-				}
-				else if(leftJoystick.getRawButton(7))
-				{
-					drivetrain.stop();
-				}*/
-				
-				/*if(rightJoystick.getRawButton(7))
-				{
-					ActuatorConfig.getInstance().getDrivetrain().getRightMotor().getMotorOne().setSpeed(1);
-				}
-				else if(rightJoystick.getRawButton(8))
-				{
-					ActuatorConfig.getInstance().getDrivetrain().getRightMotor().getMotorTwo().setSpeed(1);
-				}
-				else if(rightJoystick.getRawButton(9))
-				{
-					ActuatorConfig.getInstance().getDrivetrain().getRightMotor().getMotorThree().setSpeed(1);
-				}
-				else if(rightJoystick.getRawButton(10))
-				{
-					ActuatorConfig.getInstance().getDrivetrain().getLeftMotor().getMotorOne().setSpeed(1);
-				}
-				else if(rightJoystick.getRawButton(11))
-				{
-					ActuatorConfig.getInstance().getDrivetrain().getLeftMotor().getMotorTwo().setSpeed(1);
-				}
-				else if(rightJoystick.getRawButton(12))
-				{
-					ActuatorConfig.getInstance().getDrivetrain().getLeftMotor().getMotorThree().setSpeed(1);
-				}
-				else if(rightJoystick.getRawButton(1))
-				{
-					ActuatorConfig.getInstance().getDrivetrain().stop();
-					System.out.println("Stopping");
-				}
-				
-				SmartDashboard.putNumber("Motor 1A", pdb.getCurrent(3));
-				SmartDashboard.putNumber("Motor 2A", pdb.getCurrent(14));
-				SmartDashboard.putNumber("Motor 3A", pdb.getCurrent(1));
-				SmartDashboard.putNumber("Motor 1B", pdb.getCurrent(2));
-				SmartDashboard.putNumber("Motor 2B", pdb.getCurrent(15));
-				SmartDashboard.putNumber("Motor 3B", pdb.getCurrent(0));
-//	*/			
+	
 				if (leftJoystick.getY() > 0.15 || rightJoystick.getY() > 0.15 || leftJoystick.getY() < -0.20 || rightJoystick.getY() < -0.1)
 				{
-					drivetrain.setSpeed((leftJoystick.getYAxis()), (rightJoystick.getYAxis()));
+					double speed = (leftJoystick.getY() + rightJoystick.getYAxis()) / 2;
+					
+					drivetrain.setSpeed(speed, speed);//Add Gyro 
 				}
 				else if((leftJoystick.getY() > 0.15 && rightJoystick.getY() < -0.15) || (leftJoystick.getY() < -0.20 && rightJoystick.getY() > 0.1))
 				{
-					drivetrain.setSpeed((leftJoystick.getYAxis() / 2), (rightJoystick.getYAxis() / 2));
+					if(rightJoystick.isReversed() && leftJoystick.isReversed())
+					{
+						drivetrain.setSpeed((leftJoystick.getYAxis() / 2), (rightJoystick.getYAxis() / 2));
+					}
+					
+					else
+					{
+						drivetrain.setSpeed((leftJoystick.getYAxis() / 2), (rightJoystick.getYAxis() / 2));
+					}
 				}
 				
 				else
@@ -213,10 +137,6 @@ public class JuniorTeleop implements ITeleop, Observer
 				{
 					ActuatorConfig.getInstance().getAgitator().setSpeed(-0.20);
 				}
-				/*else if(gamepad.getButtonValue(ButtonGamepad.))
-				{
-					ActuatorConfig.getInstance().getAgitator().setSpeed(0.4);
-				}*/
 				else
 				{
 					ActuatorConfig.getInstance().getAgitator().setSpeed(0);
@@ -249,6 +169,36 @@ public class JuniorTeleop implements ITeleop, Observer
 					ActuatorConfig.getInstance().getIntakeMotor().setSpeed(0);
 				}
 				
+				if(leftJoystick.getRawButton(1))
+				{
+					ActuatorConfig.getInstance().getGearManipulator().set(Value.kForward);
+				}
+				else
+				{
+					ActuatorConfig.getInstance().getGearManipulator().set(Value.kReverse);
+				}
+				
+				if(rightJoystick.getRawButton(1))
+				{
+					ActuatorConfig.getInstance().getGearTopSolenoid().set(Value.kForward);
+				}
+				else if(rightJoystick.getRawButton(2))
+				{
+					ActuatorConfig.getInstance().getGearManipulator().set(Value.kReverse);
+				}
+				
+				if(rightJoystick.getRawButton(8) || leftJoystick.getRawButton(8))
+				{
+					leftJoystick.setReversed(true);
+					rightJoystick.setReversed(true);
+					System.out.println("Reversing...");
+				}		
+				else if(rightJoystick.getRawButton(7) || leftJoystick.getRawButton(7))
+				{
+					leftJoystick.setReversed(false);
+					rightJoystick.setReversed(false);
+				}
+				
 //				if(gamepad.getButtonValue(ButtonGamepad.ONE))
 //				{
 //					ActuatorConfig.getInstance().getShooter().setSpeed(0.9);
@@ -263,10 +213,8 @@ public class JuniorTeleop implements ITeleop, Observer
 //				else
 //				{
 //					ActuatorConfig.getInstance().getShooter().setSpeed(0);
-//					ActuatorConfig.getInstance().getAgitator().setSpeed(0);
-//				}
-				
-				
+//	 					ActuatorConfig.getInstance().getAgitator().setSpeed(0);
+//				}	
 				
 //				if (gamepad.getButtonValue(ButtonGamepad.ONE))
 //				{
@@ -285,23 +233,14 @@ public class JuniorTeleop implements ITeleop, Observer
 				{
 					leftJoystick.setReversed(true);
 					rightJoystick.setReversed(true);
+					System.out.println("Reversing...");
 				}		
 				else if(gamepad.getButtonValue(ButtonGamepad.SEVEN))
 				{
 					leftJoystick.setReversed(false);
 					rightJoystick.setReversed(false);
 				}
-				
-				/*if(gamepad.getButtonValue(ButtonGamepad.FOUR))
-				{
-								
-				}*/
 			}
 		}		
-	}
-	
-	public void update(Subject subject) 
-	{
-		System.out.println("Subject done! " + i);	
 	}
 }

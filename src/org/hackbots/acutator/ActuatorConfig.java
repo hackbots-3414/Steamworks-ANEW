@@ -3,15 +3,12 @@ package org.hackbots.acutator;
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class ActuatorConfig 
 {
 	private static ActuatorConfig instance;
-	
-	//private DSolenoid solenoidOne;
-	//private DSolenoid solenoidTwo;
 
 	private CANTalon rightTalonOne;
 	private CANTalon leftTalonTwo;
@@ -34,8 +31,8 @@ public class ActuatorConfig
 	private Motor leftMotorThree;
 	
 	private Motor agitatorMotor;
-	private Motor climberMotor1;
-	private Motor climberMotor2;
+	private Motor climberMotorOne;
+	private Motor climberMotorTwo;
 	private Motor shooterMotor;
 	private Motor intakeMotor;
 	
@@ -46,11 +43,8 @@ public class ActuatorConfig
 	
 	private Drivetrain drivetrain;
 	
-//	private PIDController pid;
-	
-	// Drive encoders
-	//private QuadEncoder leftDriveEncoder;
-	//private QuadEncoder rightDriveEncoder;
+	private DoubleSolenoid gearManipulator;
+	private DoubleSolenoid topSolenoid;
 
 	private ActuatorConfig(){}
 	
@@ -66,9 +60,13 @@ public class ActuatorConfig
 	
 	public void init()
 	{
-		//solenoidOne = new DSolenoid(new DoubleSolenoid(0,1));
-		//solenoidTwo = new DSolenoid(new DoubleSolenoid(0,1));
 
+		gearManipulator = new DoubleSolenoid (2,0);//not finalized number
+		
+		topSolenoid = new DoubleSolenoid(3,1);
+		System.out.println("Open!");
+		topSolenoid.set(Value.kForward);
+		
 		rightTalonOne = new CANTalon(0);
 		rightTalonTwo = new CANTalon(1);
 		rightTalonThree = new CANTalon(2);
@@ -84,41 +82,6 @@ public class ActuatorConfig
 		shooterTalon = new CANTalon (6);
 		intakeTalon = new CANTalon (8);
 		
-//		rightTalonTwo.setP(.001);
-//		rightTalonTwo.setI(.01);
-//		rightTalonTwo.setD(.1);
-//		
-//		leftTalonThree.setP(.001);
-//		leftTalonThree.setI(.01);
-//		leftTalonThree.setD(.1);
-//		
-//		pid = new PIDController(0, 0, 0, rightTalonTwo, rightTalonTwo);
-//		pid = new PIDController(0, 0, 0, leftTalonThree, leftTalonThree);
-		
-		
-//		/* lets grab the 360 degree position of the MagEncoder's absolute position */
-//		int rightAbsolutePosition = rightTalonTwo.getPulseWidthPosition() & 0xFFF;
-//		int leftAbsolutePon][ sition = leftTalonThree.getPulseWidthPosition() & 0xFFF;
-//		/* mask out the bottom12 bits, we don't care about the wrap arounds */
-//        /* use the low level API to set the quad encoder signal */
-//        rightTalonTwo.setEncPosition(rightAbsolutePosition);
-//        leftTalonThree.setEncPosition(leftAbsolutePosition); 
-//        
-//        /* choose the sensor and sensor direction */
-//        rightTalonTwo.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-//        leftTalonThree.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-//        rightTalonTwo.reverseSensor(false);
-//        leftTalonThree.reverseSensor(false);
-//        
-//        rightTalonTwo.setAllowableClosedLoopErr(0);
-//        leftTalonThree.setAllowableClosedLoopErr(0);
-		
-		/*leftDriveEncoder = new QuadEncoder(0,1);
-		rightDriveEncoder = new QuadEncoder(0,1);
-		
-		leftDriveEncoder.enable();
-		rightDriveEncoder.enable();*/
-		
 		rightMotorOne = new Motor(rightTalonOne);
 		rightMotorTwo = new Motor(rightTalonTwo);
 		rightMotorThree = new Motor(rightTalonThree);
@@ -128,8 +91,8 @@ public class ActuatorConfig
 		leftMotorThree = new Motor(leftTalonThree);
 		
 		agitatorMotor = new Motor (agitatorTalon);
-		climberMotor1 = new Motor (climberTalon1);
-		climberMotor2 = new Motor (climberTalon2);
+		climberMotorOne = new Motor (climberTalon1);
+		climberMotorTwo = new Motor (climberTalon2);
 		shooterMotor = new Motor (shooterTalon);
 		intakeMotor = new Motor (intakeTalon);
 		
@@ -150,8 +113,7 @@ public class ActuatorConfig
 		
 		drivetrain = new Drivetrain(rightTripleMotor, leftTripleMotor);
 		
-		climberMotors = new DoubleMotor(climberMotor1, climberMotor2);
-		
+		climberMotors = new DoubleMotor(climberMotorOne, climberMotorTwo);		
 	}
 	
 	public Drivetrain getDrivetrain()
@@ -188,63 +150,13 @@ public class ActuatorConfig
 	{
 		return leftTalonThree;
 	}
-	
-	public void motorTest()
+	public DoubleSolenoid getGearManipulator()
 	{
-		//Motor test
-		SmartDashboard.putNumber("Left Enoder Value ", ActuatorConfig.getInstance().getLeftEncoder().getEncPosition());
-		SmartDashboard.putNumber("Right Encoder Value", ActuatorConfig.getInstance().getRightEncoder().getEncPosition());
-		rightMotorOne.setSpeed(.2);
-		leftMotorOne.setSpeed(.2);
-		rightMotorTwo.setSpeed(.2);
-		leftMotorTwo.setSpeed(.2);
-		rightMotorThree.setSpeed(.2);
-		leftMotorThree.setSpeed(.2);
-		for (int i=0; i<15000; i++) {
-			// Crude wait
-			System.out.println(i);
-		}
-		rightMotorOne.setSpeed(0);
-		leftMotorOne.setSpeed(0);
-		leftMotorTwo.setSpeed(0);
-		rightMotorTwo.setSpeed(0);
-		rightMotorThree.setSpeed(0);
-		leftMotorThree.setSpeed(0);
-		SmartDashboard.putNumber("Left Enoder Value ", (ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * -1));
-		SmartDashboard.putNumber("Right Encoder Value", ActuatorConfig.getInstance().getRightEncoder().getEncPosition());
-//		for (int i=0; i<10000; i++) { 
-//			// Crude wait
-//			System.out.println(i);
-//		}
-		
-		
-//		rightMotorTwo.setSpeed(1);
-//		for (int i=0; i<10000; i++) {
-//			// Crude wait
-//			System.out.println(i);
-//		}
-//		rightMotorTwo.setSpeed(0);
-//		
-//		leftMotorTwo.setSpeed(1);
-//		for (int i=0; i<10000; i++) {
-//			// Crude wait
-//			System.out.println(i);
-//		}
-//		leftMotorTwo.setSpeed(0);
-//
-//		rightMotorThree.setSpeed(1);
-//		for (int i=0; i<10000; i++) {
-//		// Crude wait
-//		System.out.println(i);
-//		}
-//		rightMotorThree.setSpeed(0);
-//
-//		leftMotorThree.setSpeed(1);
-//		for (int i=0; i<10000; i++) {
-//			// Crude wait
-//			System.out.println(i);
-//		}
-//		leftMotorThree.setSpeed(0);
-//		
+		return gearManipulator;
+	}
+	
+	public DoubleSolenoid getGearTopSolenoid()
+	{
+		return topSolenoid;
 	}
 }
