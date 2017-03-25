@@ -60,12 +60,11 @@ public class ActuatorConfig
 	
 	public void init()
 	{
-
 		gearManipulator = new DoubleSolenoid (2,0);//not finalized number
 		
-		topSolenoid = new DoubleSolenoid(3,1);
+		topSolenoid = new DoubleSolenoid(1,3);
 		System.out.println("Open!");
-		topSolenoid.set(Value.kForward);
+		//topSolenoid.set(Value.kForward);
 		
 		rightTalonOne = new CANTalon(0);
 		rightTalonTwo = new CANTalon(1);
@@ -96,6 +95,13 @@ public class ActuatorConfig
 		shooterMotor = new Motor (shooterTalon);
 		intakeMotor = new Motor (intakeTalon);
 		
+		rightMotorOne.setCurrentLimit(20);
+		rightMotorTwo.setCurrentLimit(20);
+		rightMotorThree.setCurrentLimit(20);
+		
+		leftMotorTwo.setCurrentLimit(20);
+		leftMotorOne.setCurrentLimit(20);
+		leftMotorThree.setCurrentLimit(20);
 		
 		leftTalonThree.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		leftTalonThree.configEncoderCodesPerRev(2048);
@@ -109,7 +115,8 @@ public class ActuatorConfig
 		leftTripleMotor = new TripleMotor(leftMotorOne, leftMotorTwo, leftMotorThree);
 		rightTripleMotor = new TripleMotor(rightMotorOne, rightMotorTwo, rightMotorThree);
 		
-		rightTripleMotor.setMotorReveresed(true);
+		//rightTripleMotor.setMotorReveresed(true);
+		leftTripleMotor.setMotorReveresed(true);
 		
 		drivetrain = new Drivetrain(rightTripleMotor, leftTripleMotor);
 		

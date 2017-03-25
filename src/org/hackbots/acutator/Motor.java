@@ -63,4 +63,9 @@ public class Motor extends MotorBase
 	{
 		this.isReversed = reverse;
 	}
+	
+	public void setCurrentLimit(int amps)
+	{
+		talon.setCurrentLimit(amps);
+	}
 }

@@ -56,14 +56,19 @@ public class JuniorTeleop implements ITeleop
 		{
 			while(isRunning)
 			{
-				SmartDashboard.putNumber("Left Encoder - Teleop", ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.000122));//
-				SmartDashboard.putNumber("Right Encoder - Teleop", ActuatorConfig.getInstance().getRightEncoder().getEncPosition()* (0.000122));
+				SmartDashboard.putNumber("Left Encoder - Teleop", ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (0.000122));//
+				SmartDashboard.putNumber("Right Encoder - Teleop", ActuatorConfig.getInstance().getRightEncoder().getEncPosition()* (-0.000122));
 	
+//				SmartDashboard.putBoolean("Joys Reveresed: ", leftJoystick.isReversed());
+//				drivetrain.setSpeed((leftJoystick.getYAxis()), (rightJoystick.getYAxis()));
+				
+				ActuatorConfig.getInstance().getDrivetrain().makeHeadingGreatAgain();
+				
 				if (leftJoystick.getY() > 0.15 || rightJoystick.getY() > 0.15 || leftJoystick.getY() < -0.20 || rightJoystick.getY() < -0.1)
 				{
-					double speed = (leftJoystick.getY() + rightJoystick.getYAxis()) / 2;
-					
-					drivetrain.setSpeed(speed, speed);//Add Gyro 
+					//double speed = (leftJoystick.getY() + rightJoystick.getYAxis()) / 2;
+					System.out.println("Mofin");
+					drivetrain.setSpeed(leftJoystick.getYAxis() / 2, rightJoystick.getYAxis() / 2);//Add Gyro 
 				}
 				else if((leftJoystick.getY() > 0.15 && rightJoystick.getY() < -0.15) || (leftJoystick.getY() < -0.20 && rightJoystick.getY() > 0.1))
 				{
@@ -82,7 +87,8 @@ public class JuniorTeleop implements ITeleop
 				{
 					drivetrain.setSpeed(0);
 				}
-				
+
+//				
 				//TODO: Change the drivetrain speed from 0.2 to +0.2 of the velocity so you can drive forward.
 //				if (rightJoystick.getRawButton(11))
 //				{
@@ -116,11 +122,11 @@ public class JuniorTeleop implements ITeleop
 //					
 //					
 //					
+//				
 //					
-//					
-//					//startingAngle = Math.round(navX.getRawYaw());
-//					
-//					/*while (rightJoystick.getRawButton(1))
+					//startingAngle = Math.round(navX.getRawYaw());
+					
+//					while (rightJoystick.getRawButton(1))//change the button
 //					{
 //						if(navX.getYaw() > startingAngle - 1)
 //						{
@@ -130,9 +136,9 @@ public class JuniorTeleop implements ITeleop
 //						{
 //							drivetrain.setSpeed(-0.2, 0.2);
 //						}
-//					}*/
-//				}
-				
+//					}
+
+					
 				if(gamepad.getButtonValue(ButtonGamepad.ONE))
 				{
 					ActuatorConfig.getInstance().getAgitator().setSpeed(-0.20);
@@ -142,7 +148,7 @@ public class JuniorTeleop implements ITeleop
 					ActuatorConfig.getInstance().getAgitator().setSpeed(0);
 				}
 				
-				if(gamepad.getButtonValue(ButtonGamepad.SIX))
+				if(gamepad.getButtonValue(ButtonGamepad.TWO))
 				{
 					ActuatorConfig.getInstance().getClimberMotor().setSpeed(-1);
 				}
@@ -160,7 +166,7 @@ public class JuniorTeleop implements ITeleop
 					ActuatorConfig.getInstance().getShooter().setSpeed(0);
 				}
 				
-				if(gamepad.getButtonValue(ButtonGamepad.FIVE))
+				if(gamepad.getButtonValue(ButtonGamepad.FOUR))
 				{
 					ActuatorConfig.getInstance().getIntakeMotor().setSpeed(-1);
 				}
@@ -169,34 +175,35 @@ public class JuniorTeleop implements ITeleop
 					ActuatorConfig.getInstance().getIntakeMotor().setSpeed(0);
 				}
 				
-				if(leftJoystick.getRawButton(1))
+				if(gamepad.getButtonValue(ButtonGamepad.EIGHT))
 				{
 					ActuatorConfig.getInstance().getGearManipulator().set(Value.kForward);
 				}
-				else
+				else if (gamepad.getButtonValue(ButtonGamepad.SEVEN))
 				{
 					ActuatorConfig.getInstance().getGearManipulator().set(Value.kReverse);
 				}
 				
-				if(rightJoystick.getRawButton(1))
+				if(gamepad.getButtonValue(ButtonGamepad.SIX))
 				{
 					ActuatorConfig.getInstance().getGearTopSolenoid().set(Value.kForward);
 				}
-				else if(rightJoystick.getRawButton(2))
+				else if(gamepad.getButtonValue(ButtonGamepad.FIVE))
 				{
-					ActuatorConfig.getInstance().getGearManipulator().set(Value.kReverse);
+					ActuatorConfig.getInstance().getGearTopSolenoid().set(Value.kReverse);
 				}
 				
-				if(rightJoystick.getRawButton(8) || leftJoystick.getRawButton(8))
+				if(rightJoystick.getRawButton(1) || leftJoystick.getRawButton(1))
 				{
 					leftJoystick.setReversed(true);
 					rightJoystick.setReversed(true);
 					System.out.println("Reversing...");
 				}		
-				else if(rightJoystick.getRawButton(7) || leftJoystick.getRawButton(7))
+				else if(rightJoystick.getRawButton(2) || leftJoystick.getRawButton(2))
 				{
 					leftJoystick.setReversed(false);
 					rightJoystick.setReversed(false);
+					System.out.println("Not reversing...");
 				}
 				
 //				if(gamepad.getButtonValue(ButtonGamepad.ONE))

@@ -22,10 +22,11 @@ import org.hackbots.sensors.SensorConfig;
 import org.hackbots.teleop.JuniorTeleop;
 
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Robot 
+public class Robot extends SampleRobot
 {
 	private JuniorTeleop teleop;
 	
@@ -35,7 +36,7 @@ public class Robot
 	{
 		RobotStatus.setIsRunning(true);
 		
-		CameraServer.getInstance().startAutomaticCapture();
+		CameraServer.getInstance().addAxisCamera("169.254.224.101");
 		//camera.setResolution(1280, 720);
 		
 		ActuatorConfig.getInstance().init();
@@ -51,11 +52,11 @@ public class Robot
 		System.out.println("Disabled");
 		// Mentor Francis added the next two lines to reset the encoders each time. This allows repeated testing of Auton without redeploying code
 		ActuatorConfig.getInstance().getRightEncoder().setEncPosition(0);
-		
+		ActuatorConfig.getInstance().getLeftEncoder().setEncPosition(0);
 		teleop.stop();
 	}
 
-	public void operatorControl() 
+	public void operatorControl()
 	{
 		RobotStatus.setIsRunning(true);
 		RobotStatus.setIsAuto(false);

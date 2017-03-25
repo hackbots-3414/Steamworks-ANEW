@@ -57,17 +57,19 @@ public class TripleMotor extends MotorBase
 	{
 		if(motorOne.isReversed() && motorOne.isReversed() && motorThree.isReversed())
 		{
-			return isSafeConfig = true;
+			isSafeConfig = true;
 		}	
 		else if(!motorOne.isReversed() && !motorOne.isReversed() && !motorThree.isReversed())
 		{
-			return isSafeConfig = true;
+			isSafeConfig = true;
 		}
 		else
 		{
-			System.err.println("Double Motor Configuration is unsafe: Locking");
-			return isSafeConfig = false;
+			System.err.println("Triple Motor Configuration is unsafe: Locking");
+			isSafeConfig = false;
 		}
+		
+		return isSafeConfig;
 	}
 	
 	public void setMotorReveresed(boolean reverse)

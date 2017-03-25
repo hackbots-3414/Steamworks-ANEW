@@ -49,20 +49,21 @@ public class DoubleMotor extends MotorBase
 	 */
 	private boolean isSafeConfig()
 	{
-		if(motorOne.isReversed && (motorTwo.isReversed == false))
+		if(motorOne.isReversed && motorTwo.isReversed)
 		{
-			System.err.println("Double Motor Configuration is unsafe: Locking");
-			return isSafeConfig = false;
+			isSafeConfig = true;
 		}	
-		else if((motorOne.isReversed == false) && motorTwo.isReversed)
+		else if(!motorOne.isReversed && !motorTwo.isReversed)
 		{
-			System.err.println("Double Motor Configuration is unsafe: Locking");
-			return isSafeConfig = false;
+			isSafeConfig = true;
 		}
 		else
 		{
-			return isSafeConfig = true;
+			isSafeConfig = false;
+			System.err.println("Double Motor Configuration is unsafe: Locking");
 		}
+		
+		return isSafeConfig;
 	}
 	
 	public void setMotorReveresed(boolean reverse)

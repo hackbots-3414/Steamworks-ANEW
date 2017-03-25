@@ -10,12 +10,13 @@ public class Drivetrain implements IDriveTrain
 	private TripleMotor rightMotor;
 	private TripleMotor leftMotor;
 	
+	double currentHeading;
+	
 	public Drivetrain(TripleMotor rightMotor, TripleMotor leftMotor)
 	{
 		this.rightMotor = rightMotor;
 		this.leftMotor = leftMotor;
 	}
-	
 
 	public void setSpeed(double speed) 
 	{	
@@ -125,33 +126,35 @@ public class Drivetrain implements IDriveTrain
 	
 	private void move(double distance, double startSpeed, boolean isReversed)
 	{
-		double rightEncoderValue = ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.000122);
-		double leftEncoderValue =  ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.000122);
+		double rightEncoderValue = Math.abs(ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.000122));
+		double leftEncoderValue =  Math.abs(ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.000122));
 		
 		double speed = 0;
 		
 		while(true)
 		{		
-			 rightEncoderValue = ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.000122);
-			 leftEncoderValue = ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.000122);
+			 rightEncoderValue = Math.abs(ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.000122));
+			 leftEncoderValue = Math.abs(ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.000122));
+			 
+			 currentHeading =  SensorConfig.getInstance().getNavX().getRawYaw();
 			 
 			 if(isReversed)
 			 {
-				 speed = Math.log(((leftEncoderValue + rightEncoderValue) / 2) + (distance  + 1));
+				 speed = Math.log(((leftEncoderValue + rightEncoderValue) / 2) + (distance));
 			 }
 			 else
 			 {
-				 speed = Math.log(-((leftEncoderValue + rightEncoderValue) / 2) + (distance  + 1));
+				 speed = Math.log(-((leftEncoderValue + rightEncoderValue) / 2) + (distance));//distance + 1
 			 }
 					 
-			 if(speed < 0.29)
+			 if(speed < 0.10)
 			 {
 				 ActuatorConfig.getInstance().getDrivetrain().stop();
 				 break;
 			 }
-			 else
+			 else if(speed > 0.25)
 			 {
-				 speed = speed * startSpeed;//0.25
+				 speed = 0.25;
 			 }
 				
 			if(isReversed)
@@ -159,8 +162,32 @@ public class Drivetrain implements IDriveTrain
 				speed = speed * -1;
 			}
 			
+			 makeHeadingGreatAgain();
 			 ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, speed);
 		}	
+	}
+	
+	public void makeHeadingGreatAgain()
+	{
+		NavX navX = SensorConfig.getInstance().getNavX();
+		double heading =  navX.getRawYaw();
+		 
+		if(heading > (currentHeading))
+		{
+			System.out.println("Verring Right: " + heading + "Should be: " + currentHeading);
+			//ActuatorConfig.getInstance().getDrivetrain().setSpeed(0.2, -0.2);
+			
+		}
+		else if(heading < (currentHeading))
+		{
+			System.out.println("Verring Left " + heading + "Should be: " + currentHeading);
+			//ActuatorConfig.getInstance().getDrivetrain().setSpeed(-0.2, 0.2);
+		}
+		else
+		{
+			System.out.println("Good " + heading + "Should be: " + currentHeading);
+		}
+		
 	}
 	
 	/**
@@ -193,9 +220,6 @@ public class Drivetrain implements IDriveTrain
 		float currentYaw;
 		float startYaw = navx.getYaw();
 		SmartDashboard.putNumber("Start Yaw ", startYaw);
-		
-		System.out.println("Right Encoeifarghagdf.gh.: " + rightEncoderValue);
-		System.out.println("Left Encoeifarghagdf.gh.: " +  (-leftEncoderValue));
 		
 		ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, speed);
 		

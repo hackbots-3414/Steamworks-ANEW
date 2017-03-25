@@ -8,12 +8,17 @@ public class AutonDriveForward extends AutoBase
 
 	public void doAuto()
 	{
+		ActuatorConfig.getInstance().getDrivetrain().getRightMotor().setMotorReveresed(false);
+		ActuatorConfig.getInstance().getDrivetrain().getLeftMotor().setMotorReveresed(true);
+		
 		if(RobotStatus.isAuto())
 		{
 			System.out.println("Driving Forward Auton");  
-			ActuatorConfig.getInstance().getDrivetrain().goForward(3, 0.35);
-			//ActuatorConfig.getInstance().getDrivetrain().turnLeft(0.5, 90);
+			ActuatorConfig.getInstance().getDrivetrain().goForward(8, 0.35);
 		}
+		
+		ActuatorConfig.getInstance().getDrivetrain().getRightMotor().setMotorReveresed(true);
+		ActuatorConfig.getInstance().getDrivetrain().getLeftMotor().setMotorReveresed(false);
 	}
 }
 
