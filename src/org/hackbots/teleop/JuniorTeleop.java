@@ -193,13 +193,13 @@ public class JuniorTeleop implements ITeleop
 					ActuatorConfig.getInstance().getGearTopSolenoid().set(Value.kReverse);
 				}
 				
-				if(rightJoystick.getRawButton(1) || leftJoystick.getRawButton(1))
+				if(rightJoystick.getRawButton(2) || leftJoystick.getRawButton(2))
 				{
 					leftJoystick.setReversed(true);
 					rightJoystick.setReversed(true);
 					System.out.println("Reversing...");
 				}		
-				else if(rightJoystick.getRawButton(2) || leftJoystick.getRawButton(2))
+				else if(rightJoystick.getRawButton(1) || leftJoystick.getRawButton(1))
 				{
 					leftJoystick.setReversed(false);
 					rightJoystick.setReversed(false);

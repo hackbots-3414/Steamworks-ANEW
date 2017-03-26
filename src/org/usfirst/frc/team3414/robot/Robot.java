@@ -18,6 +18,7 @@ import org.hackbots.autonomous.AutonRedAllianceCenterStartShoot;
 import org.hackbots.autonomous.AutonRedAllianceRightStartShoot;
 import org.hackbots.autonomous.AutonRightStartCenterGear;
 import org.hackbots.autonomous.AutonRightStartRightGear;
+import org.hackbots.sensors.HBJoystick;
 import org.hackbots.sensors.SensorConfig;
 import org.hackbots.teleop.JuniorTeleop;
 
@@ -90,10 +91,13 @@ public class Robot extends SampleRobot
 		
 				
 		SmartDashboard.putData("Auton", autonChooser);
+		
+	//	SmartDashboard.putBoolean("Kill Switch", RobotStatus.isAuto());
 	}
 	
 	public void autonomous()
 	{			
+
 		RobotStatus.setIsRunning(true);
 		RobotStatus.setIsAuto(true);
 		RobotStatus.setIsTeleop(false);

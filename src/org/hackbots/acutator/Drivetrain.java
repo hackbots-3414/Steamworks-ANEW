@@ -1,7 +1,9 @@
 package org.hackbots.acutator;
 
+import org.hackbots.sensors.HBJoystick;
 import org.hackbots.sensors.NavX;
 import org.hackbots.sensors.SensorConfig;
+import org.usfirst.frc.team3414.robot.RobotStatus;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -11,6 +13,9 @@ public class Drivetrain implements IDriveTrain
 	private TripleMotor leftMotor;
 	
 	double currentHeading;
+	
+	private HBJoystick rightJoystick;
+	private HBJoystick leftJoystick;
 	
 	public Drivetrain(TripleMotor rightMotor, TripleMotor leftMotor)
 	{
@@ -76,51 +81,75 @@ public class Drivetrain implements IDriveTrain
 
 	public void turnRight(double speed, double angle)
 	{
-		//turn(speed, angle, RotationalDirection.CLOCKWISE);
+		rightJoystick = new HBJoystick(0);
+		leftJoystick = new HBJoystick(1);
 		
 		NavX navX = SensorConfig.getInstance().getNavX();
 		
-		double currentYaw = navX.getYaw();
-		double endAngle = currentYaw + angle;
+		float currentYaw = navX.getYaw();
+		float endAngle = currentYaw + (float)angle;
 		
-		ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, -speed);
+		ActuatorConfig.getInstance().getDrivetrain().setSpeed(-speed, speed);
 		
-		if(endAngle > 360)
-		{
-			endAngle = 360 - endAngle;
+		if(endAngle > 360) {
+			endAngle = endAngle - 360;
+			while(currentYaw < endAngle || (currentYaw + angle) > 360 )
+			{
+				currentYaw = navX.getYaw();
+				if(rightJoystick.getRawButton(1) || leftJoystick.getRawButton(1))
+				{
+					System.out.println("Kill Switch");
+					break;
+			  	}
+			}
+		} else {
+			while(currentYaw < endAngle)
+			{
+				currentYaw = navX.getYaw();
+				if(rightJoystick.getRawButton(1) || leftJoystick.getRawButton(1))
+				{
+					System.out.println("Kill Switch");
+					break;
+			  	}
+			}
 		}
-
-		while(navX.getYaw() < endAngle)
-		{
-			System.out.println("Curent: " + navX.getYaw());
-			System.out.println("End: " + endAngle);
-		}
-		
 		ActuatorConfig.getInstance().getDrivetrain().stop();
 	}
 	
 	public void turnLeft(double speed, double angle)
 	{
-		//turn(speed, angle, RotationalDirection.COUNTERCLOCKWISE);
+		rightJoystick = new HBJoystick(0);
+		leftJoystick = new HBJoystick(1);
 		
 		NavX navX = SensorConfig.getInstance().getNavX();
-	
-		double currentYaw = navX.getYaw();
-		double endAngle = Math.abs(currentYaw - angle);
 		
-		ActuatorConfig.getInstance().getDrivetrain().setSpeed(-speed, speed);
+		float currentYaw = navX.getYaw();
+		float endAngle = currentYaw + (float)angle;
 		
-		if(endAngle > 360)
-		{
-			endAngle = 360 - endAngle;
+		ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, -speed);
+		
+		if(endAngle > 360) {
+			endAngle = endAngle - 360;
+			while(currentYaw < endAngle || (currentYaw + angle) > 360 )
+			{
+				currentYaw = navX.getYaw();
+				if(rightJoystick.getRawButton(1) || leftJoystick.getRawButton(1))
+				{
+					System.out.println("Kill Switch");
+					break;
+			  	}
+			}
+		} else {
+			while(currentYaw < endAngle)
+			{
+				currentYaw = navX.getYaw();
+				if(rightJoystick.getRawButton(1) || leftJoystick.getRawButton(1))
+				{
+					System.out.println("Kill Switch");
+					break;
+			  	}
+			}
 		}
-	
-		while(navX.getYaw() > endAngle)
-		{
-			System.out.println("Curent: " + navX.getYaw());
-			System.out.println("End: " + endAngle);
-		}
-		
 		ActuatorConfig.getInstance().getDrivetrain().stop();
 	}
 	
@@ -204,57 +233,110 @@ public class Drivetrain implements IDriveTrain
 		move(distance, speed, true);
 	}
 	
-	public void goForwardGyro(double speed, int distance)
+	public void moveGyro(double distance, double speed, boolean isReversed)
 	{
-		boolean isRightComplete = false;
-		boolean isLeftComplete = false;
-		
-		double rightEncoderValue = ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.000122);
-		double leftEncoderValue =  ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.000122);
-
-		double distanceRight  = distance + (-rightEncoderValue);
-		double distanceLeft = distance + (-leftEncoderValue);
+		rightJoystick = new HBJoystick(0);
+		leftJoystick = new HBJoystick(1);
 		
 		NavX navx = SensorConfig.getInstance().getNavX();
 		
-		float currentYaw;
-		float startYaw = navx.getYaw();
-		SmartDashboard.putNumber("Start Yaw ", startYaw);
+		boolean isRightComplete = false;
+		boolean isLeftComplete = false;
+		
+		double rightEncoderValue = ActuatorConfig.getInstance().getRightEncoder().getEncPosition() * (-0.000122);
+		double leftEncoderValue =  ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (0.000122);
+		if(isReversed)
+		{
+			speed = speed * -1;
+			distance = distance * -1;
+		}
+		double distanceRight  = distance + (-rightEncoderValue);
+		double distanceLeft = distance + (-leftEncoderValue);
+		
+		double currentYaw;
+		double startYaw = navx.getRawYaw();
+		SmartDashboard.putNumber("Start Yaw: ", startYaw);
 		
 		ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, speed);
+		SmartDashboard.putNumber("Right Distance To ", distanceRight);
+		SmartDashboard.putNumber("Left Distance To ", distanceLeft);
+		SmartDashboard.putNumber("Start Left Enoder Value ", leftEncoderValue);
+		SmartDashboard.putNumber("Start Right Encoder Value", rightEncoderValue);
 		
-		 SmartDashboard.putNumber("Right Distance To ", distanceRight);
-		 SmartDashboard.putNumber("Left Distance To ", distanceLeft);
+
 		
 		while(!isRightComplete && !isLeftComplete)
 		{
-			 rightEncoderValue = ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.000122);
-			 leftEncoderValue = ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.000122);
-			 
+			 rightEncoderValue = ActuatorConfig.getInstance().getRightEncoder().getEncPosition() * (-0.000122);
+			 leftEncoderValue = ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (0.000122);
 			 
 			 SmartDashboard.putNumber("Left Enoder Value ", leftEncoderValue);
 			 SmartDashboard.putNumber("Right Encoder Value", rightEncoderValue);
-			
-			if(rightEncoderValue >= (distanceRight - 0.19))
+			 
+			 // This Kill Switch will only work once Teleop begins and Joysticks start working
+			 // This is a safety in case loop cannot complete for some reason while running Auton.
+			 // To test: Run Auton and hit disable before loop completes. Then start teleop and press kill switch buttons 
+			if(rightJoystick.getRawButton(1) || leftJoystick.getRawButton(1))
 			{
-				//isRightComplete = true;
-			//	ActuatorConfig.getInstance().getDrivetrain().getRightMotor().stop();
-				System.out.println("Right Stoped");
-			}
-			
-			if(leftEncoderValue >= (distanceLeft - 0.19))
+				System.out.println("Kill Switch");
+				break;
+		  	}
+			if(isReversed)
 			{
-				////isLeftComplete = true;
-			//	ActuatorConfig.getInstance().getDrivetrain().getLeftMotor().stop();
-				System.out.println("Left Stoped");
+				if(leftEncoderValue <= distanceLeft)
+				{
+					isLeftComplete = true;
+				//	ActuatorConfig.getInstance().getDrivetrain().getLeftMotor().stop();
+					System.out.println("Left Finished First");
+				}
+				currentYaw = navx.getRawYaw();
+				SmartDashboard.putNumber("Current Yaw ", currentYaw);
+				if (currentYaw > (startYaw + 1)) 
+				{
+					// Veering left, so slow down right
+					System.out.println("Veering left");
+					ActuatorConfig.getInstance().getDrivetrain().setSpeed((speed + .12), speed);	
+				}
+				else if (currentYaw < (startYaw + 1)) 
+				{	
+					// Veering right, so slow down left
+					System.out.println("Veering right");
+					ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, (speed + .12));
+				}
 			}
-			currentYaw = navx.getYaw();
-			SmartDashboard.putNumber("Current Yaw ", currentYaw);
-			if (currentYaw > (startYaw + 1))
-				ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, (speed - 1));
-			else if (currentYaw < (startYaw + 1))
-				ActuatorConfig.getInstance().getDrivetrain().setSpeed((speed-1), speed);
+			else
+			{
+				if(leftEncoderValue >= distanceLeft)
+				{
+					isLeftComplete = true;
+				//	ActuatorConfig.getInstance().getDrivetrain().getLeftMotor().stop();
+					System.out.println("Left Finished First");
+				}
+				currentYaw = navx.getRawYaw();
+				SmartDashboard.putNumber("Current Yaw ", currentYaw);
+				if (currentYaw > (startYaw + 1)) 
+				{
+					// Veering left, so slow down right
+					System.out.println("Veering left");
+					ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, (speed - .12));	
+				}
+				else if (currentYaw < (startYaw + 1)) 
+				{	
+					// Veering right, so slow down left
+					System.out.println("Veering right");
+					ActuatorConfig.getInstance().getDrivetrain().setSpeed((speed - .12),speed );
+				}
+			}
 		}	
 		ActuatorConfig.getInstance().getDrivetrain().stop();
+	}
+	public void goForwardGyro(int distance, double speed)
+	{
+		moveGyro(distance, speed, false);
+	}
+	
+	public void goBackwardsGyro(int distance, double speed)
+	{
+		moveGyro(distance, speed, true);
 	}
 }
