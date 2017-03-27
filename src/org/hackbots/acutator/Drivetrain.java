@@ -124,15 +124,17 @@ public class Drivetrain implements IDriveTrain
 		NavX navX = SensorConfig.getInstance().getNavX();
 		
 		float currentYaw = navX.getYaw();
-		float endAngle = currentYaw + (float)angle;
-		
+		float endAngle = currentYaw - (float)angle;
+		System.out.println("Start Angle: " + currentYaw);
+		System.out.println("End Angle: " + endAngle);
 		ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, -speed);
-		
-		if(endAngle > 360) {
-			endAngle = endAngle - 360;
-			while(currentYaw < endAngle || (currentYaw + angle) > 360 )
+		if(endAngle < 0) {
+			endAngle = 360 + endAngle;
+			System.out.println("Adjusted End Angle: " + endAngle);
+			while((currentYaw + angle) <= 360 || (currentYaw - endAngle) > 0 )
 			{
 				currentYaw = navX.getYaw();
+				System.out.println("Current Angle: " + currentYaw);
 				if(rightJoystick.getRawButton(1) || leftJoystick.getRawButton(1))
 				{
 					System.out.println("Kill Switch");
@@ -140,7 +142,7 @@ public class Drivetrain implements IDriveTrain
 			  	}
 			}
 		} else {
-			while(currentYaw < endAngle)
+			while(currentYaw > endAngle)
 			{
 				currentYaw = navX.getYaw();
 				if(rightJoystick.getRawButton(1) || leftJoystick.getRawButton(1))
@@ -242,28 +244,27 @@ public class Drivetrain implements IDriveTrain
 		
 		boolean isRightComplete = false;
 		boolean isLeftComplete = false;
-		
+		double distanceRight;
+		double distanceLeft;	
 		double rightEncoderValue = ActuatorConfig.getInstance().getRightEncoder().getEncPosition() * (-0.000122);
 		double leftEncoderValue =  ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (0.000122);
-		if(isReversed)
-		{
+		if(isReversed) {
 			speed = speed * -1;
-			distance = distance * -1;
+			distanceRight  = rightEncoderValue - distance;
+			distanceLeft = leftEncoderValue - distance;
+		} else {
+			distanceRight  = rightEncoderValue + distance;
+			distanceLeft = leftEncoderValue + distance;
 		}
-		double distanceRight  = distance + (-rightEncoderValue);
-		double distanceLeft = distance + (-leftEncoderValue);
 		
 		double currentYaw;
 		double startYaw = navx.getRawYaw();
 		SmartDashboard.putNumber("Start Yaw: ", startYaw);
-		
 		ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, speed);
 		SmartDashboard.putNumber("Right Distance To ", distanceRight);
 		SmartDashboard.putNumber("Left Distance To ", distanceLeft);
 		SmartDashboard.putNumber("Start Left Enoder Value ", leftEncoderValue);
 		SmartDashboard.putNumber("Start Right Encoder Value", rightEncoderValue);
-		
-
 		
 		while(!isRightComplete && !isLeftComplete)
 		{
@@ -294,13 +295,13 @@ public class Drivetrain implements IDriveTrain
 				if (currentYaw > (startYaw + 1)) 
 				{
 					// Veering left, so slow down right
-					System.out.println("Veering left");
+					//System.out.println("Veering left");
 					ActuatorConfig.getInstance().getDrivetrain().setSpeed((speed + .12), speed);	
 				}
 				else if (currentYaw < (startYaw + 1)) 
 				{	
 					// Veering right, so slow down left
-					System.out.println("Veering right");
+					//System.out.println("Veering right");
 					ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, (speed + .12));
 				}
 			}
@@ -317,13 +318,13 @@ public class Drivetrain implements IDriveTrain
 				if (currentYaw > (startYaw + 1)) 
 				{
 					// Veering left, so slow down right
-					System.out.println("Veering left");
+					//System.out.println("Veering left");
 					ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, (speed - .12));	
 				}
 				else if (currentYaw < (startYaw + 1)) 
 				{	
 					// Veering right, so slow down left
-					System.out.println("Veering right");
+					//System.out.println("Veering right");
 					ActuatorConfig.getInstance().getDrivetrain().setSpeed((speed - .12),speed );
 				}
 			}

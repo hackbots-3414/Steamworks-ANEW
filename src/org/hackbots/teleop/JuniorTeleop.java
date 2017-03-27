@@ -6,6 +6,8 @@ import org.hackbots.sensors.Gamepad;
 import org.hackbots.sensors.HBJoystick;
 import org.hackbots.sensors.IGamepad;
 import org.hackbots.util.ButtonGamepad;
+import org.hackbots.sensors.NavX;
+import org.hackbots.sensors.SensorConfig;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -205,7 +207,30 @@ public class JuniorTeleop implements ITeleop
 					rightJoystick.setReversed(false);
 					System.out.println("Not reversing...");
 				}
-				
+				if((rightJoystick.getRawButton(1)|| leftJoystick.getRawButton(1)) 
+				&& (rightJoystick.getRawButton(2) || leftJoystick.getRawButton(2)) 
+				&& (leftJoystick.getY() > 0.15 || rightJoystick.getY() > 0.15))
+				{
+					NavX navx = SensorConfig.getInstance().getNavX();
+					double currentYaw;
+					double startYaw = navx.getRawYaw();
+					currentYaw = navx.getRawYaw();
+					SmartDashboard.putNumber("Current Yaw ", currentYaw);
+					drivetrain.setSpeed(leftJoystick.getYAxis() / 2, rightJoystick.getYAxis() / 2);
+					//ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, speed);
+					if (currentYaw > (startYaw + 1)) 
+					{
+						// Veering left, so slow down right
+						//System.out.println("Veering left");
+						//ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, (speed - .12));	
+					}
+					else if (currentYaw < (startYaw + 1)) 
+					{	
+						// Veering right, so slow down left
+						//System.out.println("Veering right");
+						//ActuatorConfig.getInstance().getDrivetrain().setSpeed((speed - .12),speed );
+					}
+				}
 //				if(gamepad.getButtonValue(ButtonGamepad.ONE))
 //				{
 //					ActuatorConfig.getInstance().getShooter().setSpeed(0.9);
@@ -236,17 +261,17 @@ public class JuniorTeleop implements ITeleop
 		{
 			while(isRunning)
 			{				
-				if(gamepad.getButtonValue(ButtonGamepad.EIGHT))
-				{
-					leftJoystick.setReversed(true);
-					rightJoystick.setReversed(true);
-					System.out.println("Reversing...");
-				}		
-				else if(gamepad.getButtonValue(ButtonGamepad.SEVEN))
-				{
-					leftJoystick.setReversed(false);
-					rightJoystick.setReversed(false);
-				}
+//				if(gamepad.getButtonValue(ButtonGamepad.EIGHT))
+//				{
+//					leftJoystick.setReversed(true);
+//					rightJoystick.setReversed(true);
+//					System.out.println("Reversing...");
+//				}		
+//				else if(gamepad.getButtonValue(ButtonGamepad.SEVEN))
+//				{
+//					leftJoystick.setReversed(false);
+//					rightJoystick.setReversed(false);
+//				}
 			}
 		}		
 	}
