@@ -216,19 +216,21 @@ public class JuniorTeleop implements ITeleop
 					double startYaw = navx.getRawYaw();
 					currentYaw = navx.getRawYaw();
 					SmartDashboard.putNumber("Current Yaw ", currentYaw);
-					drivetrain.setSpeed(leftJoystick.getYAxis() / 2, rightJoystick.getYAxis() / 2);
+					//drivetrain.setSpeed(leftJoystick.getYAxis() / 2, rightJoystick.getYAxis() / 2);
 					//ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, speed);
 					if (currentYaw > (startYaw + 1)) 
 					{
 						// Veering left, so slow down right
 						//System.out.println("Veering left");
 						//ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, (speed - .12));	
+						ActuatorConfig.getInstance().getDrivetrain().setSpeed(0.5, (0.5- .12));
 					}
 					else if (currentYaw < (startYaw + 1)) 
 					{	
 						// Veering right, so slow down left
 						//System.out.println("Veering right");
 						//ActuatorConfig.getInstance().getDrivetrain().setSpeed((speed - .12),speed );
+						ActuatorConfig.getInstance().getDrivetrain().setSpeed((0.5- .12), 0.5);
 					}
 				}
 //				if(gamepad.getButtonValue(ButtonGamepad.ONE))
