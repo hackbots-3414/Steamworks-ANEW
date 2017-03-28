@@ -3,8 +3,7 @@ package org.usfirst.frc.team3414.robot;
 
 import org.hackbots.acutator.ActuatorConfig;
 import org.hackbots.autonomous.AutoBase;
-import org.hackbots.autonomous.AutonBlueAllianceCenterStartShoot;
-import org.hackbots.autonomous.AutonBlueAllianceLeftStartShoot;
+import org.hackbots.autonomous.AutonBlueAllianceCenterGearShoot;
 import org.hackbots.autonomous.AutonCenterStartCenterGear;
 import org.hackbots.autonomous.AutonCenterStartLeftGear;
 import org.hackbots.autonomous.AutonCenterStartRightGear;
@@ -14,11 +13,9 @@ import org.hackbots.autonomous.AutonDriveLeftAndForward;
 import org.hackbots.autonomous.AutonDriveRightAndForward;
 import org.hackbots.autonomous.AutonLeftStartCenterGear;
 import org.hackbots.autonomous.AutonLeftStartLeftGear;
-import org.hackbots.autonomous.AutonRedAllianceCenterStartShoot;
-import org.hackbots.autonomous.AutonRedAllianceRightStartShoot;
+import org.hackbots.autonomous.AutonRedAllianceCenterGearShoot;
 import org.hackbots.autonomous.AutonRightStartCenterGear;
 import org.hackbots.autonomous.AutonRightStartRightGear;
-import org.hackbots.sensors.HBJoystick;
 import org.hackbots.sensors.SensorConfig;
 import org.hackbots.teleop.JuniorTeleop;
 
@@ -37,7 +34,8 @@ public class Robot extends SampleRobot
 	{
 		RobotStatus.setIsRunning(true);
 		
-		CameraServer.getInstance().addAxisCamera("169.254.224.101");
+		//CameraServer.getInstance().addAxisCamera("169.254.224.101");
+		CameraServer.getInstance().startAutomaticCapture();
 		//camera.setResolution(1280, 720);
 		
 		ActuatorConfig.getInstance().init();
@@ -84,10 +82,8 @@ public class Robot extends SampleRobot
 		autonChooser.addObject("Center Start Center Gear Delivery", new AutonCenterStartCenterGear());
 		autonChooser.addObject("Center Start Right Gear Delivery", new AutonCenterStartRightGear());
 		autonChooser.addObject("Center Start Left Gear Delivery", new AutonCenterStartLeftGear());
-		autonChooser.addObject("Blue Alliance Center Start Shoot - Not Made", new AutonBlueAllianceCenterStartShoot());
-		autonChooser.addObject("Blue Alliance Left Start Shoot - Not Made", new AutonBlueAllianceLeftStartShoot());
-		autonChooser.addObject("Red Alliance Center Start Shoot - Not Made", new AutonRedAllianceCenterStartShoot());
-		autonChooser.addObject("Red Alliance Right Start Shoot - Not Made", new AutonRedAllianceRightStartShoot());
+		autonChooser.addObject("Blue Center Start Gear and Shoot", new AutonBlueAllianceCenterGearShoot());
+		autonChooser.addObject("Red Center Start Gear and Shoot", new AutonRedAllianceCenterGearShoot());
 		
 				
 		SmartDashboard.putData("Auton", autonChooser);

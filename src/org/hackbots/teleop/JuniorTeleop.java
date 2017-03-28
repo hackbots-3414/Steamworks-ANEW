@@ -28,6 +28,9 @@ public class JuniorTeleop implements ITeleop
 	
 	//private PowerDistributionPanel pdb = new PowerDistributionPanel(8);
 	
+	private double startYaw;
+	private double endYaw;
+	
 	public void init() 
 	{
 		rightJoystick = new HBJoystick(0);
@@ -64,13 +67,40 @@ public class JuniorTeleop implements ITeleop
 //				SmartDashboard.putBoolean("Joys Reveresed: ", leftJoystick.isReversed());
 //				drivetrain.setSpeed((leftJoystick.getYAxis()), (rightJoystick.getYAxis()));
 				
-				ActuatorConfig.getInstance().getDrivetrain().makeHeadingGreatAgain();
+				//ActuatorConfig.getInstance().getDrivetrain().makeHeadingGreatAgain();
 				
 				if (leftJoystick.getY() > 0.15 || rightJoystick.getY() > 0.15 || leftJoystick.getY() < -0.20 || rightJoystick.getY() < -0.1)
 				{
-					//double speed = (leftJoystick.getY() + rightJoystick.getYAxis()) / 2;
-					System.out.println("Mofin");
-					drivetrain.setSpeed(leftJoystick.getYAxis() / 2, rightJoystick.getYAxis() / 2);//Add Gyro 
+					startYaw = SensorConfig.getInstance().getNavX().getRawYaw();
+					double leftCorrect = 0;
+					double rightCorrect = 0;
+					
+					if (endYaw > (startYaw)) 
+					{
+					
+						//drivetrain.setSpeed((leftJoystick.getYAxis() / 2), (rightJoystick.getYAxis() / 2) + 0.2);//Add Gyro 
+						System.out.println("Veering Right Telop");
+						rightCorrect = 0.2;
+					}
+					else if (endYaw < (startYaw)) 
+					{	
+						//drivetrain.setSpeed((leftJoystick.getYAxis() / 2) + 0.2, (rightJoystick.getYAxis() / 2));//Add Gyro 
+						System.out.println("Veering Left Telop");
+						leftCorrect = 0.2;
+					}
+					else
+					{
+						leftCorrect = 0;
+						rightCorrect = 0;
+					}
+					
+					drivetrain.setSpeed((leftJoystick.getYAxis() / 2) + leftCorrect, (rightJoystick.getYAxis() / 2) + rightCorrect);//Add Gyro 
+					
+					endYaw = SensorConfig.getInstance().getNavX().getRawYaw();
+					
+					SmartDashboard.putNumber("Statrt Yaw Tle", startYaw);
+					SmartDashboard.putNumber("End Yaw Tle", endYaw);
+				
 				}
 				else if((leftJoystick.getY() > 0.15 && rightJoystick.getY() < -0.15) || (leftJoystick.getY() < -0.20 && rightJoystick.getY() > 0.1))
 				{
@@ -143,7 +173,7 @@ public class JuniorTeleop implements ITeleop
 					
 				if(gamepad.getButtonValue(ButtonGamepad.ONE))
 				{
-					ActuatorConfig.getInstance().getAgitator().setSpeed(-0.20);
+					ActuatorConfig.getInstance().getAgitator().setSpeed(-0.30);
 				}
 				else
 				{
@@ -207,15 +237,15 @@ public class JuniorTeleop implements ITeleop
 					rightJoystick.setReversed(false);
 					System.out.println("Not reversing...");
 				}
-				if((rightJoystick.getRawButton(1)|| leftJoystick.getRawButton(1)) 
-				&& (rightJoystick.getRawButton(2) || leftJoystick.getRawButton(2)) 
+				/*if((rightJoystick.getRawButton(3)|| leftJoystick.getRawButton(3)) 
 				&& (leftJoystick.getY() > 0.15 || rightJoystick.getY() > 0.15))
 				{
 					NavX navx = SensorConfig.getInstance().getNavX();
 					double currentYaw;
 					double startYaw = navx.getRawYaw();
 					currentYaw = navx.getRawYaw();
-					SmartDashboard.putNumber("Current Yaw ", currentYaw);
+					SmartDashboard.putNumber("Current Yaw Tle", currentYaw);
+					SmartDashboard.putNumber("Start Yaw Tle", startYaw);
 					//drivetrain.setSpeed(leftJoystick.getYAxis() / 2, rightJoystick.getYAxis() / 2);
 					//ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, speed);
 					if (currentYaw > (startYaw + 1)) 
@@ -232,7 +262,7 @@ public class JuniorTeleop implements ITeleop
 						//ActuatorConfig.getInstance().getDrivetrain().setSpeed((speed - .12),speed );
 						ActuatorConfig.getInstance().getDrivetrain().setSpeed((0.5- .12), 0.5);
 					}
-				}
+				}*/
 //				if(gamepad.getButtonValue(ButtonGamepad.ONE))
 //				{
 //					ActuatorConfig.getInstance().getShooter().setSpeed(0.9);

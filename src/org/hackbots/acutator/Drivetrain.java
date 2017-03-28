@@ -205,13 +205,13 @@ public class Drivetrain implements IDriveTrain
 		 
 		if(heading > (currentHeading))
 		{
-			System.out.println("Verring Right: " + heading + "Should be: " + currentHeading);
+			//System.out.println("Verring Right: " + heading + "Should be: " + currentHeading);
 			//ActuatorConfig.getInstance().getDrivetrain().setSpeed(0.2, -0.2);
 			
 		}
 		else if(heading < (currentHeading))
 		{
-			System.out.println("Verring Left " + heading + "Should be: " + currentHeading);
+			//System.out.println("Verring Left " + heading + "Should be: " + currentHeading);
 			//ActuatorConfig.getInstance().getDrivetrain().setSpeed(-0.2, 0.2);
 		}
 		else
