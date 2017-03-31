@@ -10,11 +10,11 @@ public class AutonDriveLeftAndForward extends AutoBase
 		if (RobotStatus.isAuto())
 		{
 			System.out.println("Go Left Then Forward");
-			ActuatorConfig.getInstance().getDrivetrain().goForward(2, 0.35);
+			ActuatorConfig.getInstance().getDrivetrain().goForwardGyro(2, 0.35);
 			ActuatorConfig.getInstance().getDrivetrain().turnLeft(0.5, 90);
-			ActuatorConfig.getInstance().getDrivetrain().goForward(4, 0.35);
+			ActuatorConfig.getInstance().getDrivetrain().goForwardGyro(4, 0.35);
 			ActuatorConfig.getInstance().getDrivetrain().turnRight(0.5, 90);
-			ActuatorConfig.getInstance().getDrivetrain().goForward(8, 0.35);
+			ActuatorConfig.getInstance().getDrivetrain().goForwardGyro(8, 0.35);
 		}
 	}
 

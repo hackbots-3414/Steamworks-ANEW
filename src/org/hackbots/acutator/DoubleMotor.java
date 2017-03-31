@@ -30,7 +30,15 @@ public class DoubleMotor extends MotorBase
 			motorTwo.setSpeed(speed);
 		}	
 	}
-
+	public double getCurrentMotorOne()
+	{
+		return motorOne.getCurrent();
+	}
+	
+	public double getCurrentMotorTwo()
+	{
+		return motorTwo.getCurrent();
+	}
 	public void stop() 
 	{
 		motorOne.stop();

@@ -3,7 +3,6 @@ package org.hackbots.acutator;
 import org.hackbots.sensors.HBJoystick;
 import org.hackbots.sensors.NavX;
 import org.hackbots.sensors.SensorConfig;
-import org.usfirst.frc.team3414.robot.RobotStatus;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -16,6 +15,9 @@ public class Drivetrain implements IDriveTrain
 	
 	private HBJoystick rightJoystick;
 	private HBJoystick leftJoystick;
+	
+	private double startYaw;
+	private double endYaw;
 	
 	public Drivetrain(TripleMotor rightMotor, TripleMotor leftMotor)
 	{
@@ -167,6 +169,9 @@ public class Drivetrain implements IDriveTrain
 			 rightEncoderValue = Math.abs(ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.000122));
 			 leftEncoderValue = Math.abs(ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.000122));
 			 
+			// System.out.println("Forwarding");
+			 
+			 
 			 currentHeading =  SensorConfig.getInstance().getNavX().getRawYaw();
 			 
 			 if(isReversed)
@@ -181,6 +186,7 @@ public class Drivetrain implements IDriveTrain
 			 if(speed < 0.10)
 			 {
 				 ActuatorConfig.getInstance().getDrivetrain().stop();
+				 System.err.println("Stopping Drivetrain");
 				 break;
 			 }
 			 else if(speed > 0.25)
@@ -193,31 +199,39 @@ public class Drivetrain implements IDriveTrain
 				speed = speed * -1;
 			}
 			
-			 makeHeadingGreatAgain();
-			 ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, speed);
+			 
+			startYaw = SensorConfig.getInstance().getNavX().getRawYaw();
+			double leftCorrect = 0;
+			double rightCorrect = 0;
+			
+			if (endYaw > (startYaw)) 
+			{
+			
+				//drivetrain.setSpeed((leftJoystick.getYAxis() / 2), (rightJoystick.getYAxis() / 2) + 0.2);//Add Gyro 
+				System.out.println("Veering Right Telop");
+				rightCorrect = 0.2;
+			}
+			else if (endYaw < (startYaw)) 
+			{	
+				//drivetrain.setSpeed((leftJoystick.getYAxis() / 2) + 0.2, (rightJoystick.getYAxis() / 2));//Add Gyro 
+				System.out.println("Veering Left Telop");
+				leftCorrect = 0.2;
+			}
+			else
+			{
+				leftCorrect = 0;
+				rightCorrect = 0;
+			}
+			
+		//	drivetrain.setSpeed((leftJoystick.getYAxis() / 2) + leftCorrect, (rightJoystick.getYAxis() / 2) + rightCorrect);//Add Gyro 
+			ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed + leftCorrect, speed + rightCorrect);
+			endYaw = SensorConfig.getInstance().getNavX().getRawYaw();
 		}	
 	}
 	
-	public void makeHeadingGreatAgain()
+	public void makeHeadingGreatAgain(double speed)
 	{
-		NavX navX = SensorConfig.getInstance().getNavX();
-		double heading =  navX.getRawYaw();
-		 
-		if(heading > (currentHeading))
-		{
-			//System.out.println("Verring Right: " + heading + "Should be: " + currentHeading);
-			//ActuatorConfig.getInstance().getDrivetrain().setSpeed(0.2, -0.2);
-			
-		}
-		else if(heading < (currentHeading))
-		{
-			//System.out.println("Verring Left " + heading + "Should be: " + currentHeading);
-			//ActuatorConfig.getInstance().getDrivetrain().setSpeed(-0.2, 0.2);
-		}
-		else
-		{
-			System.out.println("Good " + heading + "Should be: " + currentHeading);
-		}
+		
 		
 	}
 	
@@ -284,7 +298,7 @@ public class Drivetrain implements IDriveTrain
 		  	}
 			if(isReversed)
 			{
-				if(leftEncoderValue <= distanceLeft)
+				if(rightEncoderValue <= distanceRight)
 				{
 					isLeftComplete = true;
 				//	ActuatorConfig.getInstance().getDrivetrain().getLeftMotor().stop();
@@ -296,18 +310,18 @@ public class Drivetrain implements IDriveTrain
 				{
 					// Veering left, so slow down right
 					//System.out.println("Veering left");
-					ActuatorConfig.getInstance().getDrivetrain().setSpeed((speed + .12), speed);	
+					ActuatorConfig.getInstance().getDrivetrain().setSpeed((speed + .30), speed);	
 				}
 				else if (currentYaw < (startYaw + 1)) 
 				{	
 					// Veering right, so slow down left
 					//System.out.println("Veering right");
-					ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, (speed + .12));
+					ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, (speed + .30));
 				}
 			}
 			else
 			{
-				if(leftEncoderValue >= distanceLeft)
+				if(rightEncoderValue >= distanceRight)
 				{
 					isLeftComplete = true;
 				//	ActuatorConfig.getInstance().getDrivetrain().getLeftMotor().stop();
@@ -319,24 +333,24 @@ public class Drivetrain implements IDriveTrain
 				{
 					// Veering left, so slow down right
 					//System.out.println("Veering left");
-					ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, (speed - .12));	
+					ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, (speed - .30));	
 				}
 				else if (currentYaw < (startYaw + 1)) 
 				{	
 					// Veering right, so slow down left
 					//System.out.println("Veering right");
-					ActuatorConfig.getInstance().getDrivetrain().setSpeed((speed - .12),speed );
+					ActuatorConfig.getInstance().getDrivetrain().setSpeed((speed - .30),speed );
 				}
 			}
 		}	
 		ActuatorConfig.getInstance().getDrivetrain().stop();
 	}
-	public void goForwardGyro(int distance, double speed)
+	public void goForwardGyro(double distance, double speed)
 	{
 		moveGyro(distance, speed, false);
 	}
 	
-	public void goBackwardsGyro(int distance, double speed)
+	public void goBackwardsGyro(double distance, double speed)
 	{
 		moveGyro(distance, speed, true);
 	}

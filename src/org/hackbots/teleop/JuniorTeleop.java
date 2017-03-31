@@ -94,8 +94,8 @@ public class JuniorTeleop implements ITeleop
 						rightCorrect = 0;
 					}
 					
-					drivetrain.setSpeed((leftJoystick.getYAxis() / 2) + leftCorrect, (rightJoystick.getYAxis() / 2) + rightCorrect);//Add Gyro 
-					
+				//	drivetrain.setSpeed((leftJoystick.getYAxis() / 2) + leftCorrect, (rightJoystick.getYAxis() / 2) + rightCorrect);//Add Gyro 
+					drivetrain.setSpeed((leftJoystick.getYAxis()) + leftCorrect, (rightJoystick.getYAxis()) + rightCorrect);
 					endYaw = SensorConfig.getInstance().getNavX().getRawYaw();
 					
 					SmartDashboard.putNumber("Statrt Yaw Tle", startYaw);
@@ -107,11 +107,13 @@ public class JuniorTeleop implements ITeleop
 					if(rightJoystick.isReversed() && leftJoystick.isReversed())
 					{
 						drivetrain.setSpeed((leftJoystick.getYAxis() / 2), (rightJoystick.getYAxis() / 2));
+						//drivetrain.setSpeed((leftJoystick.getYAxis()), (rightJoystick.getYAxis()));
 					}
 					
 					else
 					{
 						drivetrain.setSpeed((leftJoystick.getYAxis() / 2), (rightJoystick.getYAxis() / 2));
+						//drivetrain.setSpeed((leftJoystick.getYAxis()), (rightJoystick.getYAxis()));
 					}
 				}
 				
@@ -180,7 +182,10 @@ public class JuniorTeleop implements ITeleop
 					ActuatorConfig.getInstance().getAgitator().setSpeed(0);
 				}
 				
-				if(gamepad.getButtonValue(ButtonGamepad.TWO))
+				if (gamepad.getButtonValue(ButtonGamepad.TWO))
+					//&&
+						//(ActuatorConfig.getInstance().getClimberMotor().getCurrentMotorOne() < 50
+						//|| ActuatorConfig.getInstance().getClimberMotor().getCurrentMotorTwo() < 50))
 				{
 					ActuatorConfig.getInstance().getClimberMotor().setSpeed(-1);
 				}
@@ -207,11 +212,11 @@ public class JuniorTeleop implements ITeleop
 					ActuatorConfig.getInstance().getIntakeMotor().setSpeed(0);
 				}
 				
-				if(gamepad.getButtonValue(ButtonGamepad.EIGHT))
+				if(gamepad.getButtonValue(ButtonGamepad.SEVEN))
 				{
 					ActuatorConfig.getInstance().getGearManipulator().set(Value.kForward);
 				}
-				else if (gamepad.getButtonValue(ButtonGamepad.SEVEN))
+				else if (gamepad.getButtonValue(ButtonGamepad.EIGHT))
 				{
 					ActuatorConfig.getInstance().getGearManipulator().set(Value.kReverse);
 				}

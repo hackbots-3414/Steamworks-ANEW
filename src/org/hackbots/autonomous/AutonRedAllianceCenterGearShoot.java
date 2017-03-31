@@ -13,7 +13,7 @@ public class AutonRedAllianceCenterGearShoot extends AutoBase
 			if (RobotStatus.isAuto())
 			{
 				System.out.println("Center Gear Delivery and Shoot on Red Alliance");
-				ActuatorConfig.getInstance().getDrivetrain().goForwardGyro(9, 0.35);
+				ActuatorConfig.getInstance().getDrivetrain().goForwardGyro(5, 0.35);
 				ActuatorConfig.getInstance().getGearManipulator().set(Value.kForward);
 				ActuatorConfig.getInstance().getDrivetrain().goBackwardsGyro(2, 0.35);
 				ActuatorConfig.getInstance().getGearManipulator().set(Value.kReverse);

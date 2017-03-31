@@ -53,6 +53,11 @@ public class Motor extends MotorBase
 	{
 		return direction;
 	}
+	
+	public double getCurrent()
+	{
+		return this.getCurrent();
+	}
 
 	public void setDirection(RotationalDirection direction)
 	{
