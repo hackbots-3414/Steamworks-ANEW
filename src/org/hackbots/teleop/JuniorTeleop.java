@@ -9,7 +9,9 @@ import org.hackbots.util.ButtonGamepad;
 import org.hackbots.sensors.NavX;
 import org.hackbots.sensors.SensorConfig;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class JuniorTeleop implements ITeleop
@@ -30,6 +32,11 @@ public class JuniorTeleop implements ITeleop
 	
 	private double startYaw;
 	private double endYaw;
+	
+	private PowerDistributionPanel pdb = new PowerDistributionPanel(23);
+	private double climberMaxCurrent = 0;
+	
+	private Compressor compressor = new Compressor();
 	
 	public void init() 
 	{
@@ -61,6 +68,12 @@ public class JuniorTeleop implements ITeleop
 		{
 			while(isRunning)
 			{
+				/*if(checkCompressor())
+				{
+					continue;
+				}*/
+				
+				
 				SmartDashboard.putNumber("Left Encoder - Teleop", ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (0.000122));//
 				SmartDashboard.putNumber("Right Encoder - Teleop", ActuatorConfig.getInstance().getRightEncoder().getEncPosition()* (-0.000122));
 	
@@ -175,30 +188,49 @@ public class JuniorTeleop implements ITeleop
 					
 				if(gamepad.getButtonValue(ButtonGamepad.ONE))
 				{
-					ActuatorConfig.getInstance().getAgitator().setSpeed(-0.30);
+					ActuatorConfig.getInstance().getAgitator().setSpeed(-0.20);//-0.3
 				}
 				else
 				{
 					ActuatorConfig.getInstance().getAgitator().setSpeed(0);
 				}
 				
-				if (gamepad.getButtonValue(ButtonGamepad.TWO))
+				if (gamepad.getButtonValue(ButtonGamepad.THREE))
 					//&&
 						//(ActuatorConfig.getInstance().getClimberMotor().getCurrentMotorOne() < 50
 						//|| ActuatorConfig.getInstance().getClimberMotor().getCurrentMotorTwo() < 50))
 				{
+					double climberCurrentOne = pdb.getCurrent(5);
+					double climberCurrentTwo = pdb.getCurrent(9);
+					
 					ActuatorConfig.getInstance().getClimberMotor().setSpeed(-1);
+					System.out.println("Climber Current One: " + climberCurrentOne);//Channels: 9,5
+					System.out.println("Climber Current Two: " + climberCurrentTwo);
+					
+					if(climberCurrentOne > climberMaxCurrent)
+					{
+						climberMaxCurrent = climberCurrentOne;
+					}
+					else if(climberCurrentTwo > climberMaxCurrent)
+					{
+						climberMaxCurrent = climberCurrentTwo;
+					}
 				}
 				else
 				{
 					ActuatorConfig.getInstance().getClimberMotor().setSpeed(0);
+					System.out.println("Climber Max Current: " + climberMaxCurrent);
 				}
-				
-				if(gamepad.getButtonValue(ButtonGamepad.THREE))
+
+				if(gamepad.getButtonValue(ButtonGamepad.TWO) && gamepad.getButtonValue(ButtonGamepad.SIX))
 				{
-					ActuatorConfig.getInstance().getShooter().setSpeed(0.9);
+					ActuatorConfig.getInstance().getShooter().setSpeed(0.85);
 				}
-				else
+				else if (gamepad.getButtonValue(ButtonGamepad.TWO))
+				{
+					ActuatorConfig.getInstance().getShooter().setSpeed(0.95);
+				}
+				else 
 				{
 					ActuatorConfig.getInstance().getShooter().setSpeed(0);
 				}
@@ -311,5 +343,12 @@ public class JuniorTeleop implements ITeleop
 //				}
 			}
 		}		
+	}
+	
+	private boolean checkCompressor()
+	{
+		System.out.println("Compreesor Enabled: " + compressor.enabled());
+		
+		return compressor.enabled();
 	}
 }

@@ -34,9 +34,8 @@ public class Robot extends SampleRobot
 	{
 		RobotStatus.setIsRunning(true);
 		
-		//CameraServer.getInstance().addAxisCamera("169.254.224.101");
+		CameraServer.getInstance().addAxisCamera("10.34.14.3");
 		CameraServer.getInstance().startAutomaticCapture();
-		//camera.setResolution(1280, 720);
 		
 		ActuatorConfig.getInstance().init();
 		SensorConfig.getInstance().init();
@@ -74,19 +73,19 @@ public class Robot extends SampleRobot
 		autonChooser.addObject("Do Nothing", new AutonDoNothing());
 		autonChooser.addObject("Drive Forward", new AutonDriveForward());
 		autonChooser.addObject("Left Start Left Gear Delivery", new AutonLeftStartLeftGear());
-		autonChooser.addObject("Left Start Center Gear Delivery", new AutonLeftStartCenterGear());
-		autonChooser.addObject("Right Start Center Gear Delivery", new AutonRightStartCenterGear());
 		autonChooser.addObject("Right Start Right Gear Delivery", new AutonRightStartRightGear());
-		autonChooser.addObject("Drive Left then Forward", new AutonDriveLeftAndForward());
-		autonChooser.addObject("Drive Right then Forward", new AutonDriveRightAndForward());
 		autonChooser.addObject("Center Start Center Gear Delivery", new AutonCenterStartCenterGear());
+		
+		/*autonChooser.addObject("Left Start Center Gear Delivery", new AutonLeftStartCenterGear());
+		autonChooser.addObject("Right Start Center Gear Delivery", new AutonRightStartCenterGear());
+		autonChooser.addObject("Drive Left then Forward", new AutonDriveLeftAndForward());
+		autonChooser.addObject("Drive Right then Forward", new AutonDriveRightAndForward());	
 		autonChooser.addObject("Center Start Right Gear Delivery", new AutonCenterStartRightGear());
 		autonChooser.addObject("Center Start Left Gear Delivery", new AutonCenterStartLeftGear());
 		autonChooser.addObject("Blue Center Start Gear and Shoot", new AutonBlueAllianceCenterGearShoot());
-		autonChooser.addObject("Red Center Start Gear and Shoot", new AutonRedAllianceCenterGearShoot());
-		
-				
-		SmartDashboard.putData("Auton", autonChooser);
+		autonChooser.addObject("Red Center Start Gear and Shoot", new AutonRedAllianceCenterGearShoot());*/
+					
+		SmartDashboard.putData("Autons", autonChooser);
 		
 	//	SmartDashboard.putBoolean("Kill Switch", RobotStatus.isAuto());
 	}
