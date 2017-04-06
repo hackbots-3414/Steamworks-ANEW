@@ -5,13 +5,12 @@ import org.usfirst.frc.team3414.robot.RobotStatus;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
-public class AutonRedAllianceCenterGearShoot extends AutoBase 
+public class AutonRedAllianceCenterStartShoot extends AutoBase 
 {
 
-		public void doAuto()
+		protected void vanillaAuto()
 		{
-			if (RobotStatus.isAuto())
-			{
+			
 				System.out.println("Center Gear Delivery and Shoot on Red Alliance");
 				ActuatorConfig.getInstance().getDrivetrain().goForwardGyro(5, 0.35);
 				ActuatorConfig.getInstance().getGearManipulator().set(Value.kForward);
@@ -21,7 +20,19 @@ public class AutonRedAllianceCenterGearShoot extends AutoBase
 				ActuatorConfig.getInstance().getDrivetrain().turnRight(0.35, 135);
 				ActuatorConfig.getInstance().getAgitator().setSpeed(0.4);
 				
-			}
+			
+		}
+
+		@Override
+		protected void redShoot() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		protected void blueShoot() {
+			// TODO Auto-generated method stub
+			
 		}
 
 }

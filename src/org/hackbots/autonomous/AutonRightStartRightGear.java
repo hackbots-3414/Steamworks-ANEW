@@ -8,10 +8,9 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class AutonRightStartRightGear extends AutoBase
 {
-	public void doAuto()
+	protected void vanillaAuto()
 	{
-		if (RobotStatus.isAuto())
-		{
+		
 			System.out.println("Auton Right Gear Delivery (RIGHT START");
 			
 		//	SmartDashboard.putNumber("Left Encoder", ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.00013));//
@@ -25,7 +24,19 @@ public class AutonRightStartRightGear extends AutoBase
 			SensorConfig.getInstance().getTimer().waitTimeInMillis(2000);
 			ActuatorConfig.getInstance().getDrivetrain().goBackwardsGyro(1, 0.35);
 			ActuatorConfig.getInstance().getGearManipulator().set(Value.kReverse);
-		}
+		
+	}
+
+	@Override
+	protected void redShoot() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void blueShoot() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

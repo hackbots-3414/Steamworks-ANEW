@@ -4,7 +4,8 @@ import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Relay.Value;
 
 public class ActuatorConfig 
 {
@@ -45,6 +46,8 @@ public class ActuatorConfig
 	
 	private DoubleSolenoid gearManipulator;
 	private DoubleSolenoid topSolenoid;
+	
+	private Relay spike = new Relay(1);
 
 	private ActuatorConfig(){}
 	
@@ -121,6 +124,8 @@ public class ActuatorConfig
 		drivetrain = new Drivetrain(rightTripleMotor, leftTripleMotor);
 		
 		climberMotors = new DoubleMotor(climberMotorOne, climberMotorTwo);		
+		
+		spike.set(Value.kForward);
 	}
 	
 	public Drivetrain getDrivetrain()
