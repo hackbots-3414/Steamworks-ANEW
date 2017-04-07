@@ -2,6 +2,7 @@
 package org.usfirst.frc.team3414.robot;
 
 import org.hackbots.acutator.ActuatorConfig;
+import org.hackbots.autonomous.Alliance;
 import org.hackbots.autonomous.AutoBase;
 import org.hackbots.autonomous.AutonBlueAllianceLeftStartShoot;
 import org.hackbots.autonomous.AutonRedAllianceRightStartShoot;
@@ -27,7 +28,7 @@ public class Robot extends SampleRobot
 	
 	private SendableChooser<AutoBase> autonChooser;
 	private SendableChooser<Object> shootChooser;
-	private SendableChooser<Object> allianceChooser;
+	private SendableChooser<Alliance> allianceChooser;
 	
 	
 
@@ -74,7 +75,7 @@ public class Robot extends SampleRobot
 	{
 		autonChooser = new SendableChooser<AutoBase>();
 		shootChooser = new SendableChooser<Object>();
-		allianceChooser = new SendableChooser<Object>();
+		allianceChooser = new SendableChooser<Alliance>();
 		
 		autonChooser.addObject("Do Nothing", new AutonDoNothing());
 		autonChooser.addObject("Drive Forward", new AutonDriveForward());
@@ -97,8 +98,8 @@ public class Robot extends SampleRobot
 		
 		SmartDashboard.putData("Shoot Option", shootChooser);
 		
-		allianceChooser.addObject("Red", true);
-		allianceChooser.addObject("Blue", false);
+		allianceChooser.addObject("Red", Alliance.RED);
+		allianceChooser.addObject("Blue", Alliance.BLUE);
 		SmartDashboard.putData("Alliance", allianceChooser);
 		
 	//	SmartDashboard.putBoolean("Kill Switch", RobotStatus.isAuto());
@@ -112,7 +113,7 @@ public class Robot extends SampleRobot
 		RobotStatus.setIsTeleop(false);
 		System.out.println(autonChooser.getSelected());
 		
-		autonChooser.getSelected().doAuto((boolean)shootChooser.getSelected(), (boolean)allianceChooser.getSelected());
+		autonChooser.getSelected().doAuto((boolean)shootChooser.getSelected(), allianceChooser.getSelected());
 
 	}
 	

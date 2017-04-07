@@ -5,9 +5,8 @@ import org.hackbots.acutator.Drivetrain;
 import org.hackbots.sensors.Gamepad;
 import org.hackbots.sensors.HBJoystick;
 import org.hackbots.sensors.IGamepad;
-import org.hackbots.util.ButtonGamepad;
-import org.hackbots.sensors.NavX;
 import org.hackbots.sensors.SensorConfig;
+import org.hackbots.util.ButtonGamepad;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -67,13 +66,7 @@ public class JuniorTeleop implements ITeleop
 		public void run()
 		{
 			while(isRunning)
-			{
-				/*if(checkCompressor())
-				{
-					continue;
-				}*/
-				
-				
+			{				
 				SmartDashboard.putNumber("Left Encoder - Teleop", ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (0.000122));//
 				SmartDashboard.putNumber("Right Encoder - Teleop", ActuatorConfig.getInstance().getRightEncoder().getEncPosition()* (-0.000122));
 	

@@ -15,26 +15,29 @@ public abstract class AutoBase
 		
 		protected NavX navX = SensorConfig.getInstance().getNavX();
 		
-		public void doAuto(boolean shoot, boolean redAlliance)
+		public void doAuto(boolean shoot, Alliance alliance)
 		{
 			if(RobotStatus.isAuto())		
 			{
 				vanillaAuto();
-				
-				if(shoot && redAlliance)
+					
+				if(shoot)
 				{
-					redShoot();
-				}
-				else if(shoot)
-				{
-					blueShoot();
-				}
+					switch(alliance)
+					{
+						case RED:
+							redShoot();
+							break;
+						
+						case BLUE:
+							blueShoot();
+							break;
+					}
+				}	
 			}	
 		}
 		
 		protected abstract void vanillaAuto();
-		
-		//protected abstract void shoot();
 			
 		protected abstract void redShoot();
 		

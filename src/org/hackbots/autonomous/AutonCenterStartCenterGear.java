@@ -28,28 +28,28 @@ public class AutonCenterStartCenterGear extends AutoBase
 
 	protected void blueShoot() 
 	{
-		ActuatorConfig.getInstance().getDrivetrain().turnLeft(0.5, 100);
-		SensorConfig.getInstance().getTimer().waitTimeInMillis(500);
-		ActuatorConfig.getInstance().getShooter().setSpeed(0.90);
-		ActuatorConfig.getInstance().getDrivetrain().goForwardGyro(4, 0.35);
-		
-		
-		ActuatorConfig.getInstance().getAgitator().setSpeed(-.20);
-		SensorConfig.getInstance().getTimer().waitTimeInMillis(7000);
-		ActuatorConfig.getInstance().getShooter().setSpeed(0);
-		ActuatorConfig.getInstance().getAgitator().setSpeed(0);
+		ActuatorConfig.getInstance().getDrivetrain().turnLeft(0.5, 93);
+		shoot();
 	}
 	
 	protected void redShoot()
 	{
-		ActuatorConfig.getInstance().getDrivetrain().turnRight(0.5, 100);
-		SensorConfig.getInstance().getTimer().waitTimeInMillis(500);
+		ActuatorConfig.getInstance().getDrivetrain().turnRight(0.5, 93);
+		shoot();
+	}
+	
+	protected void shoot()
+	{
+		SensorConfig.getInstance().getTimer().waitTimeInMillis(500);//Wait
+		
+		//Start Shooter
 		ActuatorConfig.getInstance().getShooter().setSpeed(0.90);
-		ActuatorConfig.getInstance().getDrivetrain().goForwardGyro(4, 0.35);
-		
-		
+		ActuatorConfig.getInstance().getDrivetrain().goForwardGyro(4.15, 0.35);
 		ActuatorConfig.getInstance().getAgitator().setSpeed(-.20);
-		SensorConfig.getInstance().getTimer().waitTimeInMillis(7000);
+		
+		SensorConfig.getInstance().getTimer().waitTimeInMillis(9000);//More wair
+		
+		//Stop the boy
 		ActuatorConfig.getInstance().getShooter().setSpeed(0);
 		ActuatorConfig.getInstance().getAgitator().setSpeed(0);
 	}
