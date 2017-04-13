@@ -3,7 +3,9 @@ package org.hackbots.acutator;
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Relay.Value;
 
@@ -47,7 +49,9 @@ public class ActuatorConfig
 	private DoubleSolenoid gearManipulator;
 	private DoubleSolenoid topSolenoid;
 	
-	private Relay spike = new Relay(1);
+	private Relay spike;
+	
+	private Compressor compressor;
 
 	private ActuatorConfig(){}
 	
@@ -98,13 +102,16 @@ public class ActuatorConfig
 		shooterMotor = new Motor (shooterTalon);
 		intakeMotor = new Motor (intakeTalon);
 		
-		rightMotorOne.setCurrentLimit(20);
-		rightMotorTwo.setCurrentLimit(20);
-		rightMotorThree.setCurrentLimit(20);
+		rightMotorOne.setCurrentLimit(17);
+		rightMotorTwo.setCurrentLimit(17);
+		rightMotorThree.setCurrentLimit(17);
 		
-		leftMotorTwo.setCurrentLimit(20);
-		leftMotorOne.setCurrentLimit(20);
-		leftMotorThree.setCurrentLimit(20);
+		leftMotorTwo.setCurrentLimit(17);
+		leftMotorOne.setCurrentLimit(17);
+		leftMotorThree.setCurrentLimit(17);
+		
+		agitatorMotor.setCurrentLimit(60);
+		intakeMotor.setCurrentLimit(60);
 		
 		leftTalonThree.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		leftTalonThree.configEncoderCodesPerRev(2048);
@@ -125,7 +132,10 @@ public class ActuatorConfig
 		
 		climberMotors = new DoubleMotor(climberMotorOne, climberMotorTwo);		
 		
+		spike = new Relay(1);
 		spike.set(Value.kForward);
+		
+		compressor = new Compressor();
 	}
 	
 	public Drivetrain getDrivetrain()
@@ -170,5 +180,10 @@ public class ActuatorConfig
 	public DoubleSolenoid getGearTopSolenoid()
 	{
 		return topSolenoid;
+	}
+	
+	public Compressor getCompressor()
+	{
+		return compressor;
 	}
 }

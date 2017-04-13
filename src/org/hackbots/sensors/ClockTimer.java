@@ -1,10 +1,19 @@
 package org.hackbots.sensors;
 
-public class ClockTimer {
+public class ClockTimer
+{
+	private static ClockTimer instance;
 	
-	public ClockTimer()
+	private ClockTimer(){}
+	
+	public static ClockTimer getInstance()
 	{
-
+		if(instance == null)
+		{
+			instance = new ClockTimer();
+		}
+		
+		return instance;
 	}
 
 	public void waitTimeInMillis(double milliseconds)
@@ -15,6 +24,7 @@ public class ClockTimer {
 			Thread.sleep((long) milliseconds);
 		} catch (InterruptedException e)
 		{
+			System.err.println("Interrupted Timer! ---------------------");
 			e.printStackTrace();
 		}
 	}
@@ -29,5 +39,11 @@ public class ClockTimer {
 	{
 		// Timer.delay(minutes * 60);
 		this.waitTimeInMillis(minutes * 3600);
+	}
+	
+	public boolean interrupt()
+	{
+		Thread.currentThread().interrupt();
+		return Thread.interrupted();
 	}
 }

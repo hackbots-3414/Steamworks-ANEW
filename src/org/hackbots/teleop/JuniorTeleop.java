@@ -2,22 +2,28 @@ package org.hackbots.teleop;
 
 import org.hackbots.acutator.ActuatorConfig;
 import org.hackbots.acutator.Drivetrain;
+import org.hackbots.autonomous.AutonStatus;
+import org.hackbots.sensors.ClockTimer;
 import org.hackbots.sensors.Gamepad;
 import org.hackbots.sensors.HBJoystick;
 import org.hackbots.sensors.IGamepad;
 import org.hackbots.sensors.SensorConfig;
 import org.hackbots.util.ButtonGamepad;
+import org.hackbots.util.Status;
 
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class JuniorTeleop implements ITeleop
 {
 	private HBJoystick rightJoystick;
 	private HBJoystick leftJoystick;
-
+	
+//	private Button killButtonLeft;
+//	private Button killButtonRight;
+	
 	private IGamepad gamepad;
 	
 	private Thread driveThread;
@@ -27,22 +33,32 @@ public class JuniorTeleop implements ITeleop
 	
 	private Drivetrain drivetrain = ActuatorConfig.getInstance().getDrivetrain();
 	
-	//private PowerDistributionPanel pdb = new PowerDistributionPanel(8);
-	
 	private double startYaw;
 	private double endYaw;
 	
-	private PowerDistributionPanel pdb = new PowerDistributionPanel(23);
+	private PowerDistributionPanel pdb;
 	private double climberMaxCurrent = 0;
 	
-	private Compressor compressor = new Compressor();
+	private SendableChooser<Object> parkingChooser;
 	
 	public void init() 
 	{
 		rightJoystick = new HBJoystick(0);
 		leftJoystick = new HBJoystick(1);
+		
+		AutonStatus.getInstance().setStatus(Status.CANCELED);
+		System.out.println("Killing Auton! -----------------------------------------------------");
+		System.out.println("Interrupting Timer: " + ClockTimer.getInstance().interrupt());
+		isRunning = false;
 
 		gamepad = new Gamepad(2);
+		
+		parkingChooser = new SendableChooser<Object>();
+		parkingChooser.addObject("Yes", true);
+		parkingChooser.addObject("No", false);
+		SmartDashboard.putData("Parking Brake", parkingChooser);
+		
+		pdb = SensorConfig.getInstance().getPDB();
 		
 		driveThread = new Thread(new DriveThread());
 		controlThread = new Thread(new ControlThread());
@@ -67,6 +83,8 @@ public class JuniorTeleop implements ITeleop
 		{
 			while(isRunning)
 			{				
+				//System.out.println("Battery Voltage: " + pdb.getVoltage());
+				
 				SmartDashboard.putNumber("Left Encoder - Teleop", ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (0.000122));//
 				SmartDashboard.putNumber("Right Encoder - Teleop", ActuatorConfig.getInstance().getRightEncoder().getEncPosition()* (-0.000122));
 	
@@ -212,7 +230,7 @@ public class JuniorTeleop implements ITeleop
 				else
 				{
 					ActuatorConfig.getInstance().getClimberMotor().setSpeed(0);
-					System.out.println("Climber Max Current: " + climberMaxCurrent);
+					//System.out.println("Climber Max Current: " + climberMaxCurrent);
 				}
 
 				if(gamepad.getButtonValue(ButtonGamepad.TWO) && gamepad.getButtonValue(ButtonGamepad.SIX))
@@ -265,7 +283,7 @@ public class JuniorTeleop implements ITeleop
 				{
 					leftJoystick.setReversed(false);
 					rightJoystick.setReversed(false);
-					System.out.println("Not reversing...");
+					//System.out.println("Not reversing...");
 				}
 				/*if((rightJoystick.getRawButton(3)|| leftJoystick.getRawButton(3)) 
 				&& (leftJoystick.getY() > 0.15 || rightJoystick.getY() > 0.15))
@@ -336,12 +354,5 @@ public class JuniorTeleop implements ITeleop
 //				}
 			}
 		}		
-	}
-	
-	private boolean checkCompressor()
-	{
-		System.out.println("Compreesor Enabled: " + compressor.enabled());
-		
-		return compressor.enabled();
 	}
 }

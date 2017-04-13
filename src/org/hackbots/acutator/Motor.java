@@ -15,6 +15,8 @@ public class Motor extends MotorBase
 	public Motor(CANTalon talon)
 	{
 		this.talon = talon;
+		// Added 4/10/17 to avoid brownouts. This limits the number of volts / sec to allow 
+		//this.talon.setVoltageRampRate(6.0);
 		direction = RotationalDirection.NONE;
 	}
 		

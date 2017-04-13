@@ -1,14 +1,8 @@
 package org.hackbots.sensors;
 
-import java.util.ArrayList;
-
-import org.hackbots.util.Observer;
-import org.hackbots.util.Subject;
-import org.usfirst.frc.team3414.robot.RobotStatus;
-
 import com.kauailabs.navx.frc.AHRS;
 
-public class NavX implements Subject, Runnable
+public class NavX
 {
 	private AHRS ahrs;
 	
@@ -17,18 +11,15 @@ public class NavX implements Subject, Runnable
 	private boolean isEnabled = true;
 	
 	private double pastYaw = 0;
-	
-	private ArrayList<Observer> observers;
-	
-	private Thread newThread = new Thread(this);
+
+	//private Thread newThread = new Thread(this);
 	
 	public NavX(AHRS ahrs)
 	{
 		this.ahrs = ahrs;
 		
-		observers= new ArrayList<Observer>();
+		//newThread.start();
 		
-		newThread.start();
 	}
 		
 	public double getX()
@@ -124,26 +115,7 @@ public class NavX implements Subject, Runnable
 		return ahrs.getVelocityZ();
 	}
 
-	
-	public void registerObserver(Observer observer) 
-	{		
-		observers.add(observer);
-	}
-
-	public void removeObserver(Observer observer) 
-	{
-		observers.remove(observer);
-	}
-
-	public void notifyObservers()
-	{
-		for(Observer observer : observers)
-		{
-			observer.update(this);
-		}
-	}
-
-	public void run() 
+	/*public void run() 
 	{
 		double lastYaw = 0.0;
 		double lastPitch = 0.0;
@@ -167,7 +139,7 @@ public class NavX implements Subject, Runnable
 				System.out.println("Last: " + lastYaw + " Current: " + currentYaw ) ;
 			}*/
 			
-			if(lastYaw != currentYaw)
+			/*if(lastYaw != currentYaw)
 			{
 				//System.out.println("Yaw Changed....");
 			}
@@ -190,5 +162,5 @@ public class NavX implements Subject, Runnable
 			lastRoll = currentRoll;
 			
 		}
-	}
+	}*/
 }

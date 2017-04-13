@@ -13,11 +13,13 @@ import org.hackbots.autonomous.AutonDriveForward;
 import org.hackbots.autonomous.AutonLeftStartLeftGear;
 //import org.hackbots.autonomous.AutonRightStartCenterGear;
 import org.hackbots.autonomous.AutonRightStartRightGear;
+import org.hackbots.autonomous.AutonStatus;
 import org.hackbots.sensors.SensorConfig;
 import org.hackbots.teleop.JuniorTeleop;
+import org.hackbots.util.Status;
 
 import edu.wpi.first.wpilibj.CameraServer;
-
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,7 +32,8 @@ public class Robot extends SampleRobot
 	private SendableChooser<Object> shootChooser;
 	private SendableChooser<Alliance> allianceChooser;
 	
-	
+	private Thread logThread = new Thread(new LogRunnable());
+	private PowerDistributionPanel pdb;
 
 	public void robotInit() 
 	{
@@ -42,7 +45,11 @@ public class Robot extends SampleRobot
 		ActuatorConfig.getInstance().init();
 		SensorConfig.getInstance().init();
 		
+		pdb = SensorConfig.getInstance().getPDB();
+		
 		teleop = new JuniorTeleop();
+		
+		logThread.start();
 		
 		chooseAuto();	
 		
@@ -111,10 +118,21 @@ public class Robot extends SampleRobot
 		RobotStatus.setIsRunning(true);
 		RobotStatus.setIsAuto(true);
 		RobotStatus.setIsTeleop(false);
+		AutonStatus.getInstance().setStatus(Status.RUNNING);
 		System.out.println(autonChooser.getSelected());
 		
 		autonChooser.getSelected().doAuto((boolean)shootChooser.getSelected(), allianceChooser.getSelected());
 
 	}
 	
+	public class LogRunnable implements Runnable
+	{
+		public void run()
+		{
+			while(RobotStatus.isRunning())
+			{
+				System.out.println("Battery Voltage: " + pdb.getVoltage());
+			}
+		}
+	}
 }

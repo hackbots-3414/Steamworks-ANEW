@@ -1,8 +1,11 @@
 package org.hackbots.acutator;
 
+import org.hackbots.autonomous.AutonStatus;
 import org.hackbots.sensors.HBJoystick;
 import org.hackbots.sensors.NavX;
 import org.hackbots.sensors.SensorConfig;
+import org.hackbots.util.Status;
+import org.usfirst.frc.team3414.robot.RobotStatus;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -82,7 +85,7 @@ public class Drivetrain implements IDriveTrain
 	}*/
 
 	public void turnRight(double speed, double angle)
-	{
+	{	
 		rightJoystick = new HBJoystick(0);
 		leftJoystick = new HBJoystick(1);
 		
@@ -90,29 +93,29 @@ public class Drivetrain implements IDriveTrain
 		
 		float currentYaw = navX.getYaw();
 		float endAngle = currentYaw + (float)angle;
-		
+		System.out.println("Start Angle: " + currentYaw);
+		System.out.println("End Angle: " + endAngle);		
 		ActuatorConfig.getInstance().getDrivetrain().setSpeed(-speed, speed);
 		
 		if(endAngle > 360) {
 			endAngle = endAngle - 360;
+			System.out.println("Adjusted End Angle: " + endAngle);
 			while(currentYaw < endAngle || (currentYaw + angle) > 360 )
 			{
 				currentYaw = navX.getYaw();
-				if(rightJoystick.getRawButton(1) || leftJoystick.getRawButton(1))
-				{
-					System.out.println("Kill Switch");
-					break;
-			  	}
+				 if(RobotStatus.isTeleop() && (AutonStatus.getInstance().getStatus() == Status.CANCELED))
+				 {
+					 break;
+				 }
 			}
 		} else {
 			while(currentYaw < endAngle)
 			{
 				currentYaw = navX.getYaw();
-				if(rightJoystick.getRawButton(1) || leftJoystick.getRawButton(1))
-				{
-					System.out.println("Kill Switch");
-					break;
-			  	}
+				 if(RobotStatus.isTeleop() && (AutonStatus.getInstance().getStatus() == Status.CANCELED))
+				 {
+					 break;
+				 }
 			}
 		}
 		ActuatorConfig.getInstance().getDrivetrain().stop();
@@ -120,6 +123,7 @@ public class Drivetrain implements IDriveTrain
 	
 	public void turnLeft(double speed, double angle)
 	{
+		
 		rightJoystick = new HBJoystick(0);
 		leftJoystick = new HBJoystick(1);
 		
@@ -137,21 +141,19 @@ public class Drivetrain implements IDriveTrain
 			{
 				currentYaw = navX.getYaw();
 				System.out.println("Current Angle: " + currentYaw);
-				if(rightJoystick.getRawButton(1) || leftJoystick.getRawButton(1))
-				{
-					System.out.println("Kill Switch");
-					break;
-			  	}
+				 if(RobotStatus.isTeleop() && (AutonStatus.getInstance().getStatus() == Status.CANCELED))
+				 {
+					 break;
+				 }
 			}
 		} else {
 			while(currentYaw > endAngle)
 			{
 				currentYaw = navX.getYaw();
-				if(rightJoystick.getRawButton(1) || leftJoystick.getRawButton(1))
-				{
-					System.out.println("Kill Switch");
-					break;
-			  	}
+				 if(RobotStatus.isTeleop() && (AutonStatus.getInstance().getStatus() == Status.CANCELED))
+				 {
+					 break;
+				 }
 			}
 		}
 		ActuatorConfig.getInstance().getDrivetrain().stop();
@@ -159,6 +161,11 @@ public class Drivetrain implements IDriveTrain
 	
 	private void move(double distance, double startSpeed, boolean isReversed)
 	{
+		if(RobotStatus.isTeleop() && (AutonStatus.getInstance().getStatus() == Status.CANCELED))
+		{
+			return;
+		}
+		
 		double rightEncoderValue = Math.abs(ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.000122));
 		double leftEncoderValue =  Math.abs(ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.000122));
 		
@@ -171,6 +178,10 @@ public class Drivetrain implements IDriveTrain
 			 
 			// System.out.println("Forwarding");
 			 
+			 if(RobotStatus.isTeleop() && (AutonStatus.getInstance().getStatus() == Status.CANCELED))
+			 {
+				 break;
+			 }
 			 
 			 currentHeading =  SensorConfig.getInstance().getNavX().getRawYaw();
 			 
@@ -250,7 +261,7 @@ public class Drivetrain implements IDriveTrain
 	}
 	
 	public void moveGyro(double distance, double speed, boolean isReversed)
-	{
+	{	
 		rightJoystick = new HBJoystick(0);
 		leftJoystick = new HBJoystick(1);
 		
@@ -291,11 +302,18 @@ public class Drivetrain implements IDriveTrain
 			 // This Kill Switch will only work once Teleop begins and Joysticks start working
 			 // This is a safety in case loop cannot complete for some reason while running Auton.
 			 // To test: Run Auton and hit disable before loop completes. Then start teleop and press kill switch buttons 
-			if(rightJoystick.getRawButton(1) || leftJoystick.getRawButton(1))
+			/*if(rightJoystick.getRawButton(1) || leftJoystick.getRawButton(1))
 			{
 				System.out.println("Kill Switch");
 				break;
-		  	}
+		  	}*/
+			 
+			 if(RobotStatus.isTeleop() && (AutonStatus.getInstance().getStatus() == Status.CANCELED))
+			 {
+				 break;
+			 }
+			 
+			 
 			if(isReversed)
 			{
 				if(rightEncoderValue <= distanceRight)
