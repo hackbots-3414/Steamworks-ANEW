@@ -16,9 +16,9 @@ public class AutonRightStartRightGear extends AutoBase
 		//	SmartDashboard.putNumber("Left Encoder", ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.00013));//
 		//	SmartDashboard.putNumber("Right Encoder", ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.00013));
 
-			ActuatorConfig.getInstance().getDrivetrain().goForwardGyro(6.4, 0.35);//9,0.35
-			ActuatorConfig.getInstance().getDrivetrain().turnLeft(0.5, 45);
-			ActuatorConfig.getInstance().getDrivetrain().goForwardGyro(1.6, 0.35);
+			ActuatorConfig.getInstance().getDrivetrain().goForwardGyro(6.55, 0.35);//9,0.35 //6.48
+			ActuatorConfig.getInstance().getDrivetrain().turnLeft(0.5, 48);//45
+			ActuatorConfig.getInstance().getDrivetrain().goForwardGyro(1.1, 0.35);//1.6
 			SensorConfig.getInstance().getTimer().waitTimeInMillis(1000);
 			ActuatorConfig.getInstance().getGearManipulator().set(Value.kForward);
 			SensorConfig.getInstance().getTimer().waitTimeInMillis(2000);

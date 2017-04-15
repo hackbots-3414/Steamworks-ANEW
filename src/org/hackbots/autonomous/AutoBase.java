@@ -15,7 +15,7 @@ public abstract class AutoBase implements Runnable
 		
 		protected NavX navX = SensorConfig.getInstance().getNavX();
 		
-		private Thread autonThread = new Thread(this);
+		private Thread autonThread;
 		
 		private boolean shoot;
 		private Alliance alliance;
@@ -25,6 +25,7 @@ public abstract class AutoBase implements Runnable
 			this.shoot = shoot;
 			this.alliance = alliance;
 			
+			autonThread = new Thread(this);
 			autonThread.start();
 		}
 		
@@ -56,6 +57,8 @@ public abstract class AutoBase implements Runnable
 							break;
 					}
 				}	
-			}	
+			}
+			
+			System.out.println("Auton Thread Completed----------------------------------------");
 		}
 }

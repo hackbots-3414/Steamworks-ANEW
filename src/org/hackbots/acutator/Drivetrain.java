@@ -22,6 +22,8 @@ public class Drivetrain implements IDriveTrain
 	private double startYaw;
 	private double endYaw;
 	
+	private boolean isSwitched = false;
+	
 	public Drivetrain(TripleMotor rightMotor, TripleMotor leftMotor)
 	{
 		this.rightMotor = rightMotor;
@@ -89,6 +91,8 @@ public class Drivetrain implements IDriveTrain
 		rightJoystick = new HBJoystick(0);
 		leftJoystick = new HBJoystick(1);
 		
+		isSwitched = false;
+		
 		NavX navX = SensorConfig.getInstance().getNavX();
 		
 		float currentYaw = navX.getYaw();
@@ -100,14 +104,30 @@ public class Drivetrain implements IDriveTrain
 		if(endAngle > 360) {
 			endAngle = endAngle - 360;
 			System.out.println("Adjusted End Angle: " + endAngle);
-			while(currentYaw < endAngle || (currentYaw + angle) > 360 )
-			{
+			// Turn right until passing 0
+			while ((currentYaw + angle) > 360) {
 				currentYaw = navX.getYaw();
 				 if(RobotStatus.isTeleop() && (AutonStatus.getInstance().getStatus() == Status.CANCELED))
 				 {
 					 break;
 				 }
 			}
+			// Continue turning right until target is reached
+			while (currentYaw < endAngle) {
+				currentYaw = navX.getYaw();
+				 if(RobotStatus.isTeleop() && (AutonStatus.getInstance().getStatus() == Status.CANCELED))
+				 {
+					 break;
+				 }
+			}
+			/*while(currentYaw < endAngle || (currentYaw + angle) > 360 )
+			{
+				currentYaw = navX.getYaw();
+				 if(RobotStatus.isTeleop() && (AutonStatus.getInstance().getStatus() == Status.CANCELED))
+				 {
+					 break;
+				 }
+			}*/
 		} else {
 			while(currentYaw < endAngle)
 			{
@@ -123,9 +143,10 @@ public class Drivetrain implements IDriveTrain
 	
 	public void turnLeft(double speed, double angle)
 	{
-		
 		rightJoystick = new HBJoystick(0);
 		leftJoystick = new HBJoystick(1);
+		
+		isSwitched = false;
 		
 		NavX navX = SensorConfig.getInstance().getNavX();
 		
@@ -137,15 +158,44 @@ public class Drivetrain implements IDriveTrain
 		if(endAngle < 0) {
 			endAngle = 360 + endAngle;
 			System.out.println("Adjusted End Angle: " + endAngle);
-			while((currentYaw + angle) <= 360 || (currentYaw - endAngle) > 0 )
-			{
+			//Loop until we pass 0
+			while((currentYaw + angle) <= 360) {
 				currentYaw = navX.getYaw();
 				System.out.println("Current Angle: " + currentYaw);
-				 if(RobotStatus.isTeleop() && (AutonStatus.getInstance().getStatus() == Status.CANCELED))
+				if(RobotStatus.isTeleop() && (AutonStatus.getInstance().getStatus() == Status.CANCELED))
 				 {
 					 break;
 				 }
 			}
+			// Now loop until we reach the target angle
+			while(currentYaw > endAngle) {
+				currentYaw = navX.getYaw();
+				System.out.println("Current Angle: " + currentYaw);
+				if(RobotStatus.isTeleop() && (AutonStatus.getInstance().getStatus() == Status.CANCELED))
+				 {
+					 break;
+				 }
+			}
+			/*while((currentYaw + angle) <= 360 || (currentYaw - endAngle) > 0 )
+			{
+				if(currentYaw + 1.5 < 360 && !isSwitched)
+				{
+					continue;
+				}
+				else
+				{
+					isSwitched = true;
+				}
+				
+				currentYaw = navX.getYaw();
+				System.out.println("Current Angle: " + currentYaw);
+				
+				
+				if(RobotStatus.isTeleop() && (AutonStatus.getInstance().getStatus() == Status.CANCELED))
+				 {
+					 break;
+				 }
+			} */
 		} else {
 			while(currentYaw > endAngle)
 			{

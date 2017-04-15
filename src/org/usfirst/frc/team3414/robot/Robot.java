@@ -49,7 +49,7 @@ public class Robot extends SampleRobot
 		
 		teleop = new JuniorTeleop();
 		
-		logThread.start();
+		//logThread.start();
 		
 		chooseAuto();	
 		

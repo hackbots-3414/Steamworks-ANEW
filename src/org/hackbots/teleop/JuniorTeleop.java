@@ -39,7 +39,7 @@ public class JuniorTeleop implements ITeleop
 	private PowerDistributionPanel pdb;
 	private double climberMaxCurrent = 0;
 	
-	private SendableChooser<Object> parkingChooser;
+	//private SendableChooser<Object> parkingChooser;
 	
 	public void init() 
 	{
@@ -53,17 +53,17 @@ public class JuniorTeleop implements ITeleop
 
 		gamepad = new Gamepad(2);
 		
-		parkingChooser = new SendableChooser<Object>();
-		parkingChooser.addObject("Yes", true);
-		parkingChooser.addObject("No", false);
-		SmartDashboard.putData("Parking Brake", parkingChooser);
+//		parkingChooser = new SendableChooser<Object>();
+//		parkingChooser.addObject("Yes", true);
+//		parkingChooser.addObject("No", false);
+//		SmartDashboard.putData("Parking Brake", parkingChooser);
 		
 		pdb = SensorConfig.getInstance().getPDB();
 		
 		driveThread = new Thread(new DriveThread());
 		controlThread = new Thread(new ControlThread());
 		
-		controlThread.start();
+		//controlThread.start();
 		driveThread.start();
 		
 		isRunning = true;
@@ -285,6 +285,16 @@ public class JuniorTeleop implements ITeleop
 					rightJoystick.setReversed(false);
 					//System.out.println("Not reversing...");
 				}
+				
+				try 
+				{
+					Thread.sleep(1);
+				} 
+				catch (InterruptedException e) 
+				{
+					e.printStackTrace();
+				}
+				
 				/*if((rightJoystick.getRawButton(3)|| leftJoystick.getRawButton(3)) 
 				&& (leftJoystick.getY() > 0.15 || rightJoystick.getY() > 0.15))
 				{

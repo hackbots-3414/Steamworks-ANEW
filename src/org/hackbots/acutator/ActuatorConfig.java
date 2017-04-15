@@ -102,13 +102,13 @@ public class ActuatorConfig
 		shooterMotor = new Motor (shooterTalon);
 		intakeMotor = new Motor (intakeTalon);
 		
-		rightMotorOne.setCurrentLimit(17);
-		rightMotorTwo.setCurrentLimit(17);
-		rightMotorThree.setCurrentLimit(17);
+		rightMotorOne.setCurrentLimit(20);
+		rightMotorTwo.setCurrentLimit(20);
+		rightMotorThree.setCurrentLimit(20);
 		
-		leftMotorTwo.setCurrentLimit(17);
-		leftMotorOne.setCurrentLimit(17);
-		leftMotorThree.setCurrentLimit(17);
+		leftMotorTwo.setCurrentLimit(20);
+		leftMotorOne.setCurrentLimit(20);
+		leftMotorThree.setCurrentLimit(20);
 		
 		agitatorMotor.setCurrentLimit(60);
 		intakeMotor.setCurrentLimit(60);
