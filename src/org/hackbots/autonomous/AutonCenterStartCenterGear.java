@@ -45,7 +45,7 @@ public class AutonCenterStartCenterGear extends AutoBase
 		
 		//Start Shooter
 		ActuatorConfig.getInstance().getShooter().setSpeed(0.90);
-		ActuatorConfig.getInstance().getDrivetrain().goForwardGyro(4.37, 0.35);//4.17 //4.25 //4.27//4.36
+		ActuatorConfig.getInstance().getDrivetrain().goForwardGyro(4.43, 0.35);//4.17 //4.25 //4.27//4.36//4.37
 		ActuatorConfig.getInstance().getAgitator().setSpeed(-.20);
 		
 		SensorConfig.getInstance().getTimer().waitTimeInMillis(6500);//More wair
