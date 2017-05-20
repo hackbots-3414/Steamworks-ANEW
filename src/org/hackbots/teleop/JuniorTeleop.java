@@ -199,7 +199,7 @@ public class JuniorTeleop implements ITeleop
 					
 				if(gamepad.getButtonValue(ButtonGamepad.ONE))
 				{
-					ActuatorConfig.getInstance().getAgitator().setSpeed(-0.20);//-0.3
+					ActuatorConfig.getInstance().getAgitator().setSpeed(-0.25);//-0.3 //-.02
 				}
 				else
 				{
@@ -235,11 +235,11 @@ public class JuniorTeleop implements ITeleop
 
 				if(gamepad.getButtonValue(ButtonGamepad.TWO) && gamepad.getButtonValue(ButtonGamepad.SIX))
 				{
-					ActuatorConfig.getInstance().getShooter().setSpeed(0.85);
+					ActuatorConfig.getInstance().getShooter().setSpeed(0.75);//85
 				}
 				else if (gamepad.getButtonValue(ButtonGamepad.TWO))
 				{
-					ActuatorConfig.getInstance().getShooter().setSpeed(0.95);
+					ActuatorConfig.getInstance().getShooter().setSpeed(0.85);//95
 				}
 				else 
 				{
@@ -278,11 +278,14 @@ public class JuniorTeleop implements ITeleop
 					leftJoystick.setReversed(true);
 					rightJoystick.setReversed(true);
 					System.out.println("Reversing...");
+				//	rightJoystick = new HBJoystick (1);
+				//	leftJoystick = new HBJoystick (0);
 				}		
 				else if(rightJoystick.getRawButton(1) || leftJoystick.getRawButton(1))
 				{
 					leftJoystick.setReversed(false);
 					rightJoystick.setReversed(false);
+					
 					//System.out.println("Not reversing...");
 				}
 				
