@@ -13,10 +13,14 @@ import org.hackbots.util.Status;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.tables.ITable;
+import edu.wpi.first.wpilibj.tables.ITableListener;
 
-public class JuniorTeleop implements ITeleop
+public class JuniorTeleop implements ITeleop, ITableListener
 {
 	private HBJoystick rightJoystick;
 	private HBJoystick leftJoystick;
@@ -40,6 +44,8 @@ public class JuniorTeleop implements ITeleop
 	private double climberMaxCurrent = 0;
 	
 	//private SendableChooser<Object> parkingChooser;
+
+	private NetworkTable table;
 	
 	public void init() 
 	{
@@ -52,6 +58,9 @@ public class JuniorTeleop implements ITeleop
 		isRunning = false;
 
 		gamepad = new Gamepad(2);
+		
+		table = NetworkTable.getTable("SmartDashboard");
+		table.addTableListener(this);
 		
 //		parkingChooser = new SendableChooser<Object>();
 //		parkingChooser.addObject("Yes", true);
@@ -367,5 +376,22 @@ public class JuniorTeleop implements ITeleop
 //				}
 			}
 		}		
+	}
+	
+	public void valueChanged(ITable table, String key, Object value, boolean isKeyNew) 
+	{
+		System.out.println("Key: " + key + " Value: " + value + " NewKey: " + isKeyNew);
+		
+		/*-------------------------Start transmission-------------------------
+			------------------------------TODO------------------------------
+			
+			Use this method to test where the joystick values are stored. If they can be retrieved, then great! Create a second table listener
+			class that has a joystick listener registered to it. Make telop joystick listener, if changes related to joystick are made, then 
+			notify telop and tell it what happened(button, ect).
+			
+			--------------------------END TODO------------------------------
+			
+		  -------------------------End transmission-------------------------
+		*/
 	}
 }
