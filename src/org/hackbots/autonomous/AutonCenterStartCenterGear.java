@@ -29,15 +29,15 @@ public class AutonCenterStartCenterGear extends AutoBase
 
 	protected void blueShoot() 
 	{
-		ActuatorConfig.getInstance().getShooter().setSpeed(0.80);//81
-		ActuatorConfig.getInstance().getDrivetrain().turnLeft(0.5, 96);//95, 92(gold)//99
+		ActuatorConfig.getInstance().getShooter().setSpeed(0.95);//81
+		ActuatorConfig.getInstance().getDrivetrain().turnLeft(0.5, 98);//95, 92(gold)//99
 		shoot();
 	}
 	
 	protected void redShoot()
 	{
-		ActuatorConfig.getInstance().getShooter().setSpeed(0.80);//81
-		ActuatorConfig.getInstance().getDrivetrain().turnRight(0.5, 90);//98(gold apparently)//100 is wayyyyy to much
+		ActuatorConfig.getInstance().getShooter().setSpeed(0.95);//81
+		ActuatorConfig.getInstance().getDrivetrain().turnRight(0.5, 97);//98(gold apparently)//100 is wayyyyy to much
 		shoot();
 	}
 	

@@ -239,7 +239,7 @@ public class JuniorTeleop implements ITeleop
 				}
 				else if (gamepad.getButtonValue(ButtonGamepad.TWO))
 				{
-					ActuatorConfig.getInstance().getShooter().setSpeed(0.85);//95
+					ActuatorConfig.getInstance().getShooter().setSpeed(1.00);//95 //85
 				}
 				else 
 				{
