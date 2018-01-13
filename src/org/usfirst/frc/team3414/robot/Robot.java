@@ -5,12 +5,12 @@ import org.hackbots.acutator.ActuatorConfig;
 import org.hackbots.autonomous.Alliance;
 import org.hackbots.autonomous.AutoBase;
 import org.hackbots.autonomous.AutonBlueAllianceLeftStartShoot;
-import org.hackbots.autonomous.AutonRedAllianceRightStartShoot;
 import org.hackbots.autonomous.AutonCenterStartCenterGear;
 import org.hackbots.autonomous.AutonDoNothing;
 import org.hackbots.autonomous.AutonDriveForward;
 //import org.hackbots.autonomous.AutonLeftStartCenterGear;
 import org.hackbots.autonomous.AutonLeftStartLeftGear;
+import org.hackbots.autonomous.AutonRedAllianceRightStartShoot;
 //import org.hackbots.autonomous.AutonRightStartCenterGear;
 import org.hackbots.autonomous.AutonRightStartRightGear;
 import org.hackbots.autonomous.AutonStatus;
@@ -60,8 +60,8 @@ public class Robot extends SampleRobot
 	{
 		System.out.println("Disabled");
 		// Mentor Francis added the next two lines to reset the encoders each time. This allows repeated testing of Auton without redeploying code
-		ActuatorConfig.getInstance().getRightEncoder().setEncPosition(0);
-		ActuatorConfig.getInstance().getLeftEncoder().setEncPosition(0);
+		ActuatorConfig.getInstance().getRightEncoder().getSensorCollection().setQuadraturePosition(0, 10);
+		ActuatorConfig.getInstance().getLeftEncoder().getSensorCollection().setQuadraturePosition(0, 10);
 		teleop.stop();
 	}
 

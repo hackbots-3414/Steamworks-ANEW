@@ -216,15 +216,15 @@ public class Drivetrain implements IDriveTrain
 			return;
 		}
 		
-		double rightEncoderValue = Math.abs(ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.000122));
-		double leftEncoderValue =  Math.abs(ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.000122));
+		double rightEncoderValue = Math.abs(ActuatorConfig.getInstance().getRightEncoder().getSensorCollection().getQuadraturePosition()  * (0.000122));
+		double leftEncoderValue =  Math.abs(ActuatorConfig.getInstance().getLeftEncoder().getSensorCollection().getQuadraturePosition() * (-0.000122));
 		
 		double speed = 0;
 		
 		while(true)
 		{		
-			 rightEncoderValue = Math.abs(ActuatorConfig.getInstance().getRightEncoder().getEncPosition()  * (0.000122));
-			 leftEncoderValue = Math.abs(ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (-0.000122));
+			 rightEncoderValue = Math.abs(ActuatorConfig.getInstance().getRightEncoder().getSensorCollection().getQuadraturePosition()  * (0.000122));
+			 leftEncoderValue = Math.abs(ActuatorConfig.getInstance().getLeftEncoder().getSensorCollection().getQuadraturePosition() * (-0.000122));
 			 
 			// System.out.println("Forwarding");
 			 
@@ -321,8 +321,8 @@ public class Drivetrain implements IDriveTrain
 		boolean isLeftComplete = false;
 		double distanceRight;
 		double distanceLeft;	
-		double rightEncoderValue = ActuatorConfig.getInstance().getRightEncoder().getEncPosition() * (-0.000122);
-		double leftEncoderValue =  ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (0.000122);
+		double rightEncoderValue = ActuatorConfig.getInstance().getRightEncoder().getSensorCollection().getQuadraturePosition() * (-0.000122);
+		double leftEncoderValue =  ActuatorConfig.getInstance().getLeftEncoder().getSensorCollection().getQuadraturePosition() * (0.000122);
 		if(isReversed) {
 			speed = speed * -1;
 			distanceRight  = rightEncoderValue - distance;
@@ -343,8 +343,8 @@ public class Drivetrain implements IDriveTrain
 		
 		while(!isRightComplete && !isLeftComplete)
 		{
-			 rightEncoderValue = ActuatorConfig.getInstance().getRightEncoder().getEncPosition() * (-0.000122);
-			 leftEncoderValue = ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (0.000122);
+			 rightEncoderValue = ActuatorConfig.getInstance().getRightEncoder().getSensorCollection().getQuadraturePosition() * (-0.000122);
+			 leftEncoderValue = ActuatorConfig.getInstance().getLeftEncoder().getSensorCollection().getQuadraturePosition() * (0.000122);
 			 
 			 SmartDashboard.putNumber("Left Enoder Value ", leftEncoderValue);
 			 SmartDashboard.putNumber("Right Encoder Value", rightEncoderValue);

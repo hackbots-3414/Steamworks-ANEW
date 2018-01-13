@@ -2,17 +2,18 @@ package org.hackbots.acutator;
 
 import org.hackbots.util.RotationalDirection;
 
-import com.ctre.CANTalon;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 public class Motor extends MotorBase
 {
-	private CANTalon talon;//The talon that controls the motor
+	private TalonSRX talon;//The talon that controls the motor
 
 	/**
 	 * Creates a motor
 	 * @param talon
 	 */
-	public Motor(CANTalon talon)
+	public Motor(TalonSRX talon)
 	{
 		this.talon = talon;
 		// Added 4/10/17 to avoid brownouts. This limits the number of volts / sec to allow 
@@ -43,7 +44,7 @@ public class Motor extends MotorBase
 			setRunning(false);
 		}
 		
-		talon.set(speed);
+		talon.set(ControlMode.Current, speed);
 	}
 
 	public void stop() 
@@ -73,6 +74,6 @@ public class Motor extends MotorBase
 	
 	public void setCurrentLimit(int amps)
 	{
-		talon.setCurrentLimit(amps);
+		talon.configPeakCurrentLimit(amps, 10);
 	}
 }

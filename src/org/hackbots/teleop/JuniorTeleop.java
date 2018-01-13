@@ -15,15 +15,16 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.tables.ITable;
 import edu.wpi.first.wpilibj.tables.ITableListener;
 
-public class JuniorTeleop implements ITeleop, ITableListener
+public class JuniorTeleop implements ITeleop
 {
 	private HBJoystick rightJoystick;
 	private HBJoystick leftJoystick;
+	
+	private JoystickButton button;
 	
 //	private Button killButtonLeft;
 //	private Button killButtonRight;
@@ -31,7 +32,6 @@ public class JuniorTeleop implements ITeleop, ITableListener
 	private IGamepad gamepad;
 	
 	private Thread driveThread;
-	private Thread controlThread;
 	
 	private boolean isRunning;
 	
@@ -44,8 +44,6 @@ public class JuniorTeleop implements ITeleop, ITableListener
 	private double climberMaxCurrent = 0;
 	
 	//private SendableChooser<Object> parkingChooser;
-
-	private NetworkTable table;
 	
 	public void init() 
 	{
@@ -58,21 +56,19 @@ public class JuniorTeleop implements ITeleop, ITableListener
 		isRunning = false;
 
 		gamepad = new Gamepad(2);
+
 		
-		table = NetworkTable.getTable("SmartDashboard");
-		table.addTableListener(this);
+		button = new JoystickButton(leftJoystick, 11);
 		
 //		parkingChooser = new SendableChooser<Object>();
 //		parkingChooser.addObject("Yes", true);
-//		parkingChooser.addObject("No", false);
+//		parkingChooser.addObject("No", false)
 //		SmartDashboard.putData("Parking Brake", parkingChooser);
 		
 		pdb = SensorConfig.getInstance().getPDB();
 		
 		driveThread = new Thread(new DriveThread());
-		controlThread = new Thread(new ControlThread());
 		
-		//controlThread.start();
 		driveThread.start();
 		
 		isRunning = true;
@@ -94,8 +90,8 @@ public class JuniorTeleop implements ITeleop, ITableListener
 			{				
 				//System.out.println("Battery Voltage: " + pdb.getVoltage());
 				
-				SmartDashboard.putNumber("Left Encoder - Teleop", ActuatorConfig.getInstance().getLeftEncoder().getEncPosition() * (0.000122));//
-				SmartDashboard.putNumber("Right Encoder - Teleop", ActuatorConfig.getInstance().getRightEncoder().getEncPosition()* (-0.000122));
+				SmartDashboard.putNumber("Left Encoder - Teleop", ActuatorConfig.getInstance().getLeftEncoder().getSensorCollection().getQuadraturePosition() * (0.000122));//
+				SmartDashboard.putNumber("Right Encoder - Teleop", ActuatorConfig.getInstance().getRightEncoder().getSensorCollection().getQuadraturePosition() * (-0.000122));
 	
 //				SmartDashboard.putBoolean("Joys Reveresed: ", leftJoystick.isReversed());
 //				drivetrain.setSpeed((leftJoystick.getYAxis()), (rightJoystick.getYAxis()));
@@ -206,7 +202,7 @@ public class JuniorTeleop implements ITeleop, ITableListener
 //					}
 
 					
-				if(gamepad.getButtonValue(ButtonGamepad.ONE))
+				if(gamepad.getButtonState(1))
 				{
 					ActuatorConfig.getInstance().getAgitator().setSpeed(-0.25);//-0.3 //-.02
 				}
@@ -215,7 +211,7 @@ public class JuniorTeleop implements ITeleop, ITableListener
 					ActuatorConfig.getInstance().getAgitator().setSpeed(0);
 				}
 				
-				if (gamepad.getButtonValue(ButtonGamepad.THREE))
+				if (gamepad.getButtonState(3))
 					//&&
 						//(ActuatorConfig.getInstance().getClimberMotor().getCurrentMotorOne() < 50
 						//|| ActuatorConfig.getInstance().getClimberMotor().getCurrentMotorTwo() < 50))
@@ -242,11 +238,11 @@ public class JuniorTeleop implements ITeleop, ITableListener
 					//System.out.println("Climber Max Current: " + climberMaxCurrent);
 				}
 
-				if(gamepad.getButtonValue(ButtonGamepad.TWO) && gamepad.getButtonValue(ButtonGamepad.SIX))
+				if(gamepad.getButtonState(2) && gamepad.getButtonState(6))
 				{
 					ActuatorConfig.getInstance().getShooter().setSpeed(0.75);//85
 				}
-				else if (gamepad.getButtonValue(ButtonGamepad.TWO))
+				else if (gamepad.getButtonState(2))
 				{
 					ActuatorConfig.getInstance().getShooter().setSpeed(1.00);//95 //85
 				}
@@ -255,7 +251,7 @@ public class JuniorTeleop implements ITeleop, ITableListener
 					ActuatorConfig.getInstance().getShooter().setSpeed(0);
 				}
 				
-				if(gamepad.getButtonValue(ButtonGamepad.FOUR))
+				if(gamepad.getButtonState(4))
 				{
 					ActuatorConfig.getInstance().getIntakeMotor().setSpeed(-1);
 				}
@@ -264,20 +260,20 @@ public class JuniorTeleop implements ITeleop, ITableListener
 					ActuatorConfig.getInstance().getIntakeMotor().setSpeed(0);
 				}
 				
-				if(gamepad.getButtonValue(ButtonGamepad.SEVEN))
+				if(gamepad.getButtonState(7))
 				{
 					ActuatorConfig.getInstance().getGearManipulator().set(Value.kForward);
 				}
-				else if (gamepad.getButtonValue(ButtonGamepad.EIGHT))
+				else if (gamepad.getButtonState(8))
 				{
 					ActuatorConfig.getInstance().getGearManipulator().set(Value.kReverse);
 				}
 				
-				if(gamepad.getButtonValue(ButtonGamepad.SIX))
+				if(gamepad.getButtonState(6))
 				{
 					ActuatorConfig.getInstance().getGearTopSolenoid().set(Value.kForward);
 				}
-				else if(gamepad.getButtonValue(ButtonGamepad.FIVE))
+				else if(gamepad.getButtonState(5))
 				{
 					ActuatorConfig.getInstance().getGearTopSolenoid().set(Value.kReverse);
 				}
@@ -306,92 +302,7 @@ public class JuniorTeleop implements ITeleop, ITableListener
 				{
 					e.printStackTrace();
 				}
-				
-				/*if((rightJoystick.getRawButton(3)|| leftJoystick.getRawButton(3)) 
-				&& (leftJoystick.getY() > 0.15 || rightJoystick.getY() > 0.15))
-				{
-					NavX navx = SensorConfig.getInstance().getNavX();
-					double currentYaw;
-					double startYaw = navx.getRawYaw();
-					currentYaw = navx.getRawYaw();
-					SmartDashboard.putNumber("Current Yaw Tle", currentYaw);
-					SmartDashboard.putNumber("Start Yaw Tle", startYaw);
-					//drivetrain.setSpeed(leftJoystick.getYAxis() / 2, rightJoystick.getYAxis() / 2);
-					//ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, speed);
-					if (currentYaw > (startYaw + 1)) 
-					{
-						// Veering left, so slow down right
-						//System.out.println("Veering left");
-						//ActuatorConfig.getInstance().getDrivetrain().setSpeed(speed, (speed - .12));	
-						ActuatorConfig.getInstance().getDrivetrain().setSpeed(0.5, (0.5- .12));
-					}
-					else if (currentYaw < (startYaw + 1)) 
-					{	
-						// Veering right, so slow down left
-						//System.out.println("Veering right");
-						//ActuatorConfig.getInstance().getDrivetrain().setSpeed((speed - .12),speed );
-						ActuatorConfig.getInstance().getDrivetrain().setSpeed((0.5- .12), 0.5);
-					}
-				}*/
-//				if(gamepad.getButtonValue(ButtonGamepad.ONE))
-//				{
-//					ActuatorConfig.getInstance().getShooter().setSpeed(0.9);
-//					
-//					if(ActuatorConfig.getInstance().getShooter().isRunning())
-//					{
-//						System.out.println("Shooter is Runnin");
-//
-//						ActuatorConfig.getInstance().getAgitator().setSpeed(-0.25);
-//					}
-//				}
-//				else
-//				{
-//					ActuatorConfig.getInstance().getShooter().setSpeed(0);
-//	 					ActuatorConfig.getInstance().getAgitator().setSpeed(0);
-//				}	
-				
-//				if (gamepad.getButtonValue(ButtonGamepad.ONE))
-//				{
-//					drivetrain.setSpeed(-0.2, 0.2);
-//				}
-		}	
-	}
-}
-	public class ControlThread implements Runnable
-	{
-		public void run()
-		{
-			while(isRunning)
-			{				
-//				if(gamepad.getButtonValue(ButtonGamepad.EIGHT))
-//				{
-//					leftJoystick.setReversed(true);
-//					rightJoystick.setReversed(true);
-//					System.out.println("Reversing...");
-//				}		
-//				else if(gamepad.getButtonValue(ButtonGamepad.SEVEN))
-//				{
-//					leftJoystick.setReversed(false);
-//					rightJoystick.setReversed(false);
-//				}
-			}
-		}		
-	}
-	
-	public void valueChanged(ITable table, String key, Object value, boolean isKeyNew) 
-	{
-		System.out.println("Key: " + key + " Value: " + value + " NewKey: " + isKeyNew);
-		
-		/*-------------------------Start transmission-------------------------
-			------------------------------TODO------------------------------
-			
-			Use this method to test where the joystick values are stored. If they can be retrieved, then great! Create a second table listener
-			class that has a joystick listener registered to it. Make telop joystick listener, if changes related to joystick are made, then 
-			notify telop and tell it what happened(button, ect).
-			
-			--------------------------END TODO------------------------------
-			
-		  -------------------------End transmission-------------------------
-		*/
+			}	
+		}
 	}
 }

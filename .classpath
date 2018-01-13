@@ -10,8 +10,9 @@
 	<classpathentry kind="var" path="opencv.sources"/>
 	<classpathentry kind="var" path="wpilib.sources"/>
 	<classpathentry kind="var" path="networktables.sources"/>
-	<classpathentry kind="var" path="USERLIBS_DIR/CTRLib.jar"/>
 	<classpathentry kind="var" path="navx-mxp"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/navx_frc.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/CTRE_Phoenix-sources.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/CTRE_Phoenix.jar" sourcepath="/CTR"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

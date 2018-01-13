@@ -1,11 +1,10 @@
 package org.hackbots.acutator;
 
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Relay.Value;
 
@@ -13,18 +12,18 @@ public class ActuatorConfig
 {
 	private static ActuatorConfig instance;
 
-	private CANTalon rightTalonOne;
-	private CANTalon leftTalonTwo;
-	private CANTalon rightTalonTwo;
-	private CANTalon leftTalonOne;
-	private CANTalon rightTalonThree;
-	private CANTalon leftTalonThree;
+	private TalonSRX rightTalonOne;
+	private TalonSRX leftTalonTwo;
+	private TalonSRX rightTalonTwo;
+	private TalonSRX leftTalonOne;
+	private TalonSRX rightTalonThree;
+	private TalonSRX leftTalonThree;
 	
-	private CANTalon agitatorTalon;
-	private CANTalon climberTalon1;
-	private CANTalon climberTalon2;
-	private CANTalon shooterTalon;
-	private CANTalon intakeTalon;
+	private TalonSRX agitatorTalon;
+	private TalonSRX climberTalon1;
+	private TalonSRX climberTalon2;
+	private TalonSRX shooterTalon;
+	private TalonSRX intakeTalon;
 
 	private Motor rightMotorOne;
 	private Motor leftMotorTwo;
@@ -73,20 +72,20 @@ public class ActuatorConfig
 		System.out.println("Open!");
 		//topSolenoid.set(Value.kForward);
 		
-		rightTalonOne = new CANTalon(0);
-		rightTalonTwo = new CANTalon(1);
-		rightTalonThree = new CANTalon(2);
+		rightTalonOne = new TalonSRX(0);
+		rightTalonTwo = new TalonSRX(1);
+		rightTalonThree = new TalonSRX(2);
 		
-		leftTalonOne = new CANTalon(5);
-		leftTalonTwo = new CANTalon(4);			
-		leftTalonThree = new CANTalon(3);
+		leftTalonOne = new TalonSRX(5);
+		leftTalonTwo = new TalonSRX(4);			
+		leftTalonThree = new TalonSRX(3);
 		
 		//Make the agitator (hopper) 1/2 power
-		agitatorTalon = new CANTalon (9);
-		climberTalon1 = new CANTalon (7);
-		climberTalon2 = new CANTalon (10);
-		shooterTalon = new CANTalon (6);
-		intakeTalon = new CANTalon (8);
+		agitatorTalon = new TalonSRX (9);
+		climberTalon1 = new TalonSRX (7);
+		climberTalon2 = new TalonSRX (10);
+		shooterTalon = new TalonSRX (6);
+		intakeTalon = new TalonSRX (8);
 		
 		rightMotorOne = new Motor(rightTalonOne);
 		rightMotorTwo = new Motor(rightTalonTwo);
@@ -113,14 +112,14 @@ public class ActuatorConfig
 		agitatorMotor.setCurrentLimit(60);
 		intakeMotor.setCurrentLimit(60);
 		
-		leftTalonThree.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		leftTalonThree.configEncoderCodesPerRev(2048);
-		leftTalonThree.setPosition(0);
+		leftTalonThree.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
+		//leftTalonThree.configEncoderCodesPerRev(2048);
+		leftTalonThree.getSensorCollection().getQuadraturePosition();
 		
 
-		rightTalonTwo.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		rightTalonTwo.configEncoderCodesPerRev(2048);
-		rightTalonTwo.setPosition(0);
+		rightTalonTwo.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
+		//rightTalonTwo.configEncoderCodesPerRev(2048);
+		rightTalonTwo.getSensorCollection().getQuadraturePosition();
 
 		leftTripleMotor = new TripleMotor(leftMotorOne, leftMotorTwo, leftMotorThree);
 		rightTripleMotor = new TripleMotor(rightMotorOne, rightMotorTwo, rightMotorThree);
@@ -163,12 +162,12 @@ public class ActuatorConfig
 		return intakeMotor;
 	}
 	
-	public CANTalon getRightEncoder()
+	public TalonSRX getRightEncoder()
 	{
 		return rightTalonTwo;
 	}
 	
-	public CANTalon getLeftEncoder()
+	public TalonSRX getLeftEncoder()
 	{
 		return leftTalonThree;
 	}
